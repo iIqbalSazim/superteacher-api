@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_25_060040) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_25_091921) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "registration_codes", force: :cascade do |t|
+    t.string "code"
+    t.boolean "is_used"
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_registration_codes_on_code"
+  end
 
   create_table "student_profiles", force: :cascade do |t|
     t.integer "student_id"
