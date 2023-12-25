@@ -87,6 +87,8 @@ GEM
     debug (1.9.1)
       irb (~> 1.10)
       reline (>= 0.3.8)
+    doorkeeper (5.6.8)
+      railties (>= 5)
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
@@ -94,6 +96,7 @@ GEM
       activesupport (>= 6.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
+    interactor (3.1.2)
     io-console (0.7.1)
     irb (1.11.0)
       rdoc
@@ -199,6 +202,8 @@ PLATFORMS
 DEPENDENCIES
   bootsnap
   debug
+  doorkeeper
+  interactor
   pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.2)

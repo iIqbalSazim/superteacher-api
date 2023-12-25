@@ -46,3 +46,7 @@ group :development do
 end
 
 gem 'sidekiq'
+
+gem 'interactor'
+
+gem 'doorkeeper'

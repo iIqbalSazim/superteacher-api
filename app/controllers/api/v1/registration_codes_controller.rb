@@ -1,22 +1,22 @@
 class Api::V1::RegistrationCodesController < ApplicationController
-    def generate_code
-        unused_codes = RegistrationCode.where(is_used: false)
-        if unused_codes.length == 0
-            generated_code = `rake registration_code:generate`.strip
 
-            render json: { code: generated_code, message: "Code generated successfully." }
+    def generate_code
+        result = RegistrationCodes::GenerateCode.call
+
+        if result.success?
+            render json: { code: result.code, message: "Code generated successfully" }
         else
-            render json: { message: "Failed to generate new code. There are unused codes in the database." }
+            render json: { error: result.error, message: result.message, }
         end
     end
 
     def all_codes
-        unused_codes = RegistrationCode.where(is_used: false).pluck(:code)
+        result = RegistrationCodes::AllCodes.call
 
-        if unused_codes.length == 0
-            render json: { message: "No codes are available. Please generate new code."}
+        if result.success?
+            render json: { codes: result.codes, message: "Codes retrieved successfully" }
         else
-            render json: { codes: unused_codes, message: "Codes retrieved successfully." }
+            render json: { error: result.error, message: result.message }
         end
     end
 end
