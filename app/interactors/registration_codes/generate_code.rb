@@ -2,18 +2,13 @@ class RegistrationCodes::GenerateCode
     include Interactor
 
     def call
-        unused_codes = RegistrationCode.where(is_used: false)
+        generated_code = `rake registration_code:generate`.strip
 
-        if unused_codes.length == 0
-            generated_code = `rake registration_code:generate`.strip
-
-            if generated_code
-                context.code = generated_code
-            else
-                context.fail!(error: "Failed to generate new code", message: "New code generation failed")
-            end
+        if generated_code
+            context.code = generated_code
         else
-            context.fail!(error: "Failed to generate new code", message: "There are unused codes in the database.")
+            context.fail!(message: "Failed to generate new code", error: "New code generation failed")
         end
+        
     end
 end

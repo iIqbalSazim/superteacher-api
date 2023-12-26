@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_25_173242) do
 
   create_table "student_profiles", force: :cascade do |t|
     t.integer "student_id"
-    t.string "education_level"
+    t.json "education"
     t.string "address"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -64,7 +64,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_25_173242) do
     t.integer "teacher_id"
     t.string "highest_education_level"
     t.string "major_subject"
-    t.text "subjects_to_teach"
+    t.text "subjects_to_teach", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_teacher_profiles_on_teacher_id"

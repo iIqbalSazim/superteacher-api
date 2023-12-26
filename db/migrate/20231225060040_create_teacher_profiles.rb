@@ -4,7 +4,7 @@ class CreateTeacherProfiles < ActiveRecord::Migration[7.1]
       t.integer :teacher_id
       t.string :highest_education_level
       t.string :major_subject
-      t.text :subjects_to_teach
+      t.text :subjects_to_teach, array: true, default: []
 
       t.timestamps
     end

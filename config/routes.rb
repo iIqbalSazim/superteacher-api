@@ -9,6 +9,7 @@ Rails.application.routes.draw do
 
       post 'generate_code', to: 'registration_codes#generate_code'
       get 'codes', to: 'registration_codes#all_codes'
+      post 'code', to: 'registration_codes#validate_code'
     end
   end
 end

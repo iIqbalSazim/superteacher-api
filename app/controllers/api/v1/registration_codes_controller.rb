@@ -19,4 +19,14 @@ class Api::V1::RegistrationCodesController < ApplicationController
             render json: { error: result.error, message: result.message }
         end
     end
+
+    def validate_code
+        result = RegistrationCodes::ValidateCode.call(code: params[:code])
+
+        if result.success?
+            render json: { code: result.code, message: "Code validation successful" }
+        else
+            render json: { error: result.error, message: result.message }, status: result.status
+        end
+    end
 end
