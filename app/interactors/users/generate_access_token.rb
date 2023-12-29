@@ -3,7 +3,7 @@ class Users::GenerateAccessToken
 
   def call
     user = context.user_data
-    application = Doorkeeper::Application.find_by(uid: 'v9NQGzvqsvjNM8KiJDN6pKxWE1Apv-x_5xrJ9w3SgV8')
+    application = Doorkeeper::Application.find_by(uid: 'rqveltKwvfhgifdWivi4m3fWUlIjU4kJm2xMZ54FTcQ')
 
     token_request = Doorkeeper::AccessToken.create!(
       resource_owner_id: user.id,

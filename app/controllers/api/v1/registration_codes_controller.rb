@@ -1,4 +1,5 @@
 class Api::V1::RegistrationCodesController < ApplicationController
+    skip_before_action :doorkeeper_authorize!
 
     def generate_code
         result = RegistrationCodes::GenerateCode.call

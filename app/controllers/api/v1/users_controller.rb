@@ -1,4 +1,5 @@
 class Api::V1::UsersController < ApplicationController
+    skip_before_action :doorkeeper_authorize!
 
     def create_new_user
         case user_params[:role]
@@ -9,7 +10,8 @@ class Api::V1::UsersController < ApplicationController
         end
 
         if result.success?
-            render json: { user: result.user_data, message: "New user created", token: result.token }
+            user = result.user_data.attributes.except("password")
+            render json: { user: user, message: "New user created", token: result.token }
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end

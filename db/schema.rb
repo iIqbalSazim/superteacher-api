@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_25_173242) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_29_125113) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "classrooms", force: :cascade do |t|
+    t.bigint "teacher_id", null: false
+    t.string "title"
+    t.string "subject"
+    t.time "class_time"
+    t.string "days", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["teacher_id"], name: "index_classrooms_on_teacher_id"
+  end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
     t.bigint "resource_owner_id"
@@ -52,7 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_25_173242) do
   end
 
   create_table "student_profiles", force: :cascade do |t|
-    t.integer "student_id"
+    t.bigint "student_id", null: false
     t.json "education"
     t.string "address"
     t.datetime "created_at", null: false
@@ -61,7 +72,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_25_173242) do
   end
 
   create_table "teacher_profiles", force: :cascade do |t|
-    t.integer "teacher_id"
+    t.bigint "teacher_id", null: false
     t.string "highest_education_level"
     t.string "major_subject"
     t.text "subjects_to_teach", default: [], array: true
@@ -83,5 +94,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_25_173242) do
     t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "classrooms", "users", column: "teacher_id", on_delete: :cascade
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "student_profiles", "users", column: "student_id", on_delete: :cascade
+  add_foreign_key "teacher_profiles", "users", column: "teacher_id", on_delete: :cascade
 end
