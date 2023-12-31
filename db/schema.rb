@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_29_125113) do
+ActiveRecord::Schema[7.1].define(version: 2023_12_31_150400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "classroom_students", force: :cascade do |t|
+    t.bigint "classroom_id", null: false
+    t.bigint "student_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classroom_id"], name: "index_classroom_students_on_classroom_id"
+    t.index ["student_id"], name: "index_classroom_students_on_student_id"
+  end
 
   create_table "classrooms", force: :cascade do |t|
     t.bigint "teacher_id", null: false
@@ -94,6 +103,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_29_125113) do
     t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "classroom_students", "classrooms", on_delete: :cascade
+  add_foreign_key "classroom_students", "users", column: "student_id", on_delete: :cascade
   add_foreign_key "classrooms", "users", column: "teacher_id", on_delete: :cascade
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "student_profiles", "users", column: "student_id", on_delete: :cascade

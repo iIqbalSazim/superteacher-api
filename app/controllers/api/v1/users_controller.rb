@@ -17,6 +17,16 @@ class Api::V1::UsersController < ApplicationController
         end
     end
 
+    def get_unenrolled_students
+        result = Users::GetUnenrolledStudents.call(classroom_id: params[:classroom_id])
+
+        if result.success?
+            render json: { students: result.students, message: "Students retrieved succesfully" }
+        else
+            render json: { error: result.error, message: result.message }, status: result.status
+        end
+    end
+
     private
 
     def user_params
