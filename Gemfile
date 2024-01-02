@@ -52,3 +52,7 @@ gem 'interactor'
 gem 'doorkeeper'
 
 gem 'byebug'
+
+gem "panko_serializer"
+
+gem 'pundit'

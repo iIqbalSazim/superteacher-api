@@ -5,23 +5,33 @@ class ClassroomStudents::EnrollStudent
     classroom_id = context.params[:classroom_id]
     student_id = context.params[:student_id]
 
-    enrolled_student = User.find_by(id: student_id)
+    student_to_be_enrolled = User.find_by(id: student_id)
 
-    if enrolled_student
+    if student_to_be_enrolled
       classroom = Classroom.find_by(id: classroom_id)
 
       if classroom
-        new_enrollment = ClassroomStudent.create(classroom_id: classroom.id, student_id: enrolled_student.id)
+        existing_enrollment = ClassroomStudent.find_by(classroom_id: classroom.id, student_id: enrolled_student.id)
 
-        if new_enrollment.persisted?
-          context.enrollment = new_enrollment
-          context.student = enrolled_student
-        else
+        if existing_enrollment
           context.fail!(
             error: "Enrollment failed",
-            message: "Failed to enroll the student in the classroom",
+            message: "Student is already enrolled in the classroom",
             status: :unprocessable_entity
           )
+        else
+          new_enrollment = ClassroomStudent.create(classroom_id: classroom.id, student_id: enrolled_student.id)
+
+          if new_enrollment.persisted?
+            context.enrollment = new_enrollment
+            context.student = enrolled_student
+          else
+            context.fail!(
+              error: "Enrollment failed",
+              message: "Failed to enroll the student in the classroom",
+              status: :unprocessable_entity
+            )
+          end
         end
       else
         context.fail!(

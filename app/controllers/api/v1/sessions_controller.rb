@@ -5,8 +5,8 @@ class Api::V1::SessionsController < ApplicationController
         result = Users::LoginFlow.call(session_params: session_params)
 
         if result.success?
-            user = result.user_data.attributes.except("password")
-            render json: { user: user, message: "Login successful", token: result.token}
+            serialized_user = UserSerializer.new.serialize(result.user_data)
+            render json: { user: serialized_user, message: "Login successful", token: result.token}
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end

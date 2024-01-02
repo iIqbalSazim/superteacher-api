@@ -1,10 +1,14 @@
 class Api::V1::ClassroomsController < ApplicationController
+    include Panko
+    before_action :authorize_create_classroom, only: [:create_classroom]
 
     def get_classrooms
         result = Classrooms::GetClassrooms.call(user_id: current_user.id)
 
         if result.success?
-            render json: { classrooms: result.classrooms, message: "Classrooms fetched successfully" }
+            serialized_classrooms = ArraySerializer.new(result.classrooms, each_serializer: ClassroomSerializer).to_a
+
+            render json: { classrooms: serialized_classrooms, message: "Classrooms fetched successfully" }
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end
@@ -14,7 +18,8 @@ class Api::V1::ClassroomsController < ApplicationController
         result = Classrooms::CreateClassroom.call(classroom_params: classroom_params, teacher_id: current_user.id)
 
         if result.success?
-            render json: { classroom: result.new_classroom, message: "Classroom generated successfully" }
+            serialized_classroom = ClassroomSerializer.new.serialize(result.new_classroom)
+            render json: { classroom: serialized_classroom, message: "Classroom generated successfully" }
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end
@@ -28,5 +33,11 @@ class Api::V1::ClassroomsController < ApplicationController
             :class_time,
             days: []
         )
+    end
+
+    private
+
+    def authorize_create_classroom
+        authorize :classroom, :create_classroom?
     end
 end
