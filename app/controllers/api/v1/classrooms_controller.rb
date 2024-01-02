@@ -10,7 +10,7 @@ class Api::V1::ClassroomsController < ApplicationController
 
             render json: { classrooms: serialized_classrooms, message: "Classrooms fetched successfully" }
         else
-            render json: { error: result.error, message: result.message }, status: result.status
+            render json: { error: result.error }, status: result.status
         end
     end
 

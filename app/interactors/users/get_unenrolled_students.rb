@@ -10,7 +10,7 @@ class Users::GetUnenrolledStudents
     if students.present?
       context.students = students
     else
-      context.fail!(message: "No students found", error: "Students not found", status: :unprocessable_entity)
+      context.fail!( error: "Students not found", status: :unprocessable_entity)
     end
   end
 end

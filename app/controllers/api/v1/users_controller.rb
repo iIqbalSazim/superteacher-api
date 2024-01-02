@@ -24,7 +24,7 @@ class Api::V1::UsersController < ApplicationController
         if result.success?
             render json: { students: result.students, message: "Students retrieved succesfully" }
         else
-            render json: { error: result.error, message: result.message }, status: result.status
+            render json: { error: result.error }, status: result.status
         end
     end
 

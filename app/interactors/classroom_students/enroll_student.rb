@@ -24,6 +24,7 @@ class ClassroomStudents::EnrollStudent
 
           if new_enrollment.persisted?
             context.enrollment = new_enrollment
+            context.classroom = classroom
             context.student = student_to_be_enrolled
           else
             context.fail!(

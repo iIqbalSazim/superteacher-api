@@ -21,7 +21,6 @@ class ClassroomStudents::GetStudents
         else
             context.fail!(
                 error: "Students not found",
-                message: "No students found for the specified classroom_id",
                 status: :unprocessable_entity
             )
         end

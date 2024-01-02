@@ -11,7 +11,6 @@ class Classrooms::GetClassrooms
         else
             context.fail!(
                 error: "Classrooms not found",
-                message: "No classrooms found for the specified teacher_id",
             )
         end
     end
