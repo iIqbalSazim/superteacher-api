@@ -18,8 +18,21 @@ class Api::V1::ClassroomStudentsController < ApplicationController
         result = ClassroomStudents::EnrollStudent.call(params: classroom_student_params)
 
         if result.success?
+            ClassroomStudentMailer.with(student: result.student, classroom: result.classroom).enroll_student_email.deliver_later
+
             serialized_student = UserSerializer.new.serialize(result.student)
             render json: { student: serialized_student, message: "Student enrolled successfully"}
+        else
+            render json: { error: result.error, message: result.message }, status: result.status
+        end
+    end
+
+    def remove_student
+        result = ClassroomStudents::RemoveStudent.call(params: classroom_student_params)
+
+        if result.success?
+                        serialized_student = UserSerializer.new.serialize(result.student)
+            render json: { removed_student: serialized_student, message: "Student removed from class successfully" }
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end
