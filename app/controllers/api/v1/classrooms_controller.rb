@@ -3,7 +3,12 @@ class Api::V1::ClassroomsController < ApplicationController
     before_action :authorize_create_classroom, only: [:create_classroom]
 
     def get_classrooms
-        result = Classrooms::GetClassrooms.call(user_id: current_user.id)
+        case current_user.role
+        when "student"
+            result = Classrooms::GetClassroomsStudent.call(user_id: current_user.id)
+        when "teacher"
+            result = Classrooms::GetClassroomsTeacher.call(user_id: current_user.id)
+        end
 
         if result.success?
             serialized_classrooms = ArraySerializer.new(result.classrooms, each_serializer: ClassroomSerializer).to_a

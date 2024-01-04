@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_31_150400) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_04_052546) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "classroom_global_messages", force: :cascade do |t|
+    t.bigint "classroom_id", null: false
+    t.bigint "user_id", null: false
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classroom_id"], name: "index_classroom_global_messages_on_classroom_id"
+    t.index ["user_id"], name: "index_classroom_global_messages_on_user_id"
+  end
 
   create_table "classroom_students", force: :cascade do |t|
     t.bigint "classroom_id", null: false
@@ -103,6 +113,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_31_150400) do
     t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "classroom_global_messages", "classrooms", on_delete: :cascade
+  add_foreign_key "classroom_global_messages", "users", on_delete: :cascade
   add_foreign_key "classroom_students", "classrooms", on_delete: :cascade
   add_foreign_key "classroom_students", "users", column: "student_id", on_delete: :cascade
   add_foreign_key "classrooms", "users", column: "teacher_id", on_delete: :cascade

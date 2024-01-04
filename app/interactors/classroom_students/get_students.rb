@@ -7,7 +7,7 @@ class ClassroomStudents::GetStudents
         all_student_ids = ClassroomStudent.where(classroom_id: classroom_id).pluck(:student_id)
 
         if all_student_ids.present?
-            students = User.where(id: all_student_ids)
+            students = User.where(id: all_student_ids, role: "student")
 
             if students.present?
                 context.students = students

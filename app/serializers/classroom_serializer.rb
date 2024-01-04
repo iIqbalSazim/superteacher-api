@@ -1,3 +1,5 @@
 class ClassroomSerializer < Panko::Serializer
-  attributes :id, :teacher_id, :title, :subject, :class_time, :days
+  attributes :id, :title, :subject, :class_time, :days
+
+  has_one :teacher, serializer: UserSerializer
 end

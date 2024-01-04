@@ -17,6 +17,8 @@ Rails.application.routes.draw do
       post "enroll", to: "classroom_students#enroll_student"
       delete "classrooms/students", to: "classroom_students#remove_student"
 
+      get "stream", to: "classroom_global_messages#get_messages"
+      post "stream/message", to: "classroom_global_messages#create_message"
 
       post "generate_code", to: "registration_codes#generate_code"
       get "codes", to: "registration_codes#all_codes"
