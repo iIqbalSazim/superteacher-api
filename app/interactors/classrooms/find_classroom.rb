@@ -1,8 +1,8 @@
-class ClassroomStudents::FindClassroom
+class Classrooms::FindClassroom
   include Interactor
 
   def call
-    classroom_id = context.params[:classroom_id]
+    classroom_id = context.classroom_id
 
     classroom = Classroom.find_by(id: classroom_id)
 

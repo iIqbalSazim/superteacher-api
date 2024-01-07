@@ -1,24 +1,11 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Registration code endpoints:
 
-Things you may want to cover:
+### To generate new code
 
-* Ruby version
+- POST http://localhost:3000/api/v1/generate_code
 
-* System dependencies
+### To get all codes
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+- GET http://localhost:3000/api/v1/codes

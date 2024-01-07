@@ -1,6 +1,6 @@
 class Api::V1::ClassroomsController < ApplicationController
     include Panko
-    before_action :authorize_create_classroom, only: [:create_classroom]
+    before_action :authorize_classroom_actions, only: [:create_classroom, :update_classroom, :delete_classroom]
 
     def get_classrooms
         case current_user.role
@@ -30,6 +30,29 @@ class Api::V1::ClassroomsController < ApplicationController
         end
     end
 
+    def update_classroom
+        result = Classrooms::UpdateClassroomFlow.call(classroom_params: classroom_params, classroom_id: params[:id])
+
+        if result.success?
+            serialized_classroom = ClassroomSerializer.new.serialize(result.updated_classroom)
+            render json: { classroom: serialized_classroom, message: "Classroom updated successfully" }
+        else
+            render json: { error: result.error, message: result.message }, status: result.status
+        end
+    end
+
+    def delete_classroom
+        result = Classrooms::DeleteClassroomFlow.call(classroom_id: params[:id])
+
+        if result.success?
+            render json: { message: "Classroom deleted successfully", deleted_classroom_id: params[:id] }
+        else
+            render json: { error: result.error, message: result.message }, status: result.status
+        end
+    end
+
+    private
+
     def classroom_params
         params.require(:classroom).permit(
             :teacher_id,
@@ -40,9 +63,11 @@ class Api::V1::ClassroomsController < ApplicationController
         )
     end
 
-    private
-
-    def authorize_create_classroom
-        authorize :classroom, :create_classroom?
+    def authorize_classroom_actions
+        if action_name == 'create_classroom'
+            authorize :classroom, :create_classroom?
+        elsif action_name == 'update_classroom' || action_name == 'delete_classroom'
+            authorize Classroom.find_by(id: params[:id])
+        end
     end
 end
