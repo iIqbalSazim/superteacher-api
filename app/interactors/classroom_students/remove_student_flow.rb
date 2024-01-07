@@ -2,6 +2,6 @@ class ClassroomStudents::RemoveStudentFlow
     include Interactor::Organizer
 
     organize ClassroomStudents::FindStudent,
-             ClassroomStudents::FindClassroom,
+             Classrooms::FindClassroom,
              ClassroomStudents::RemoveStudent
 end

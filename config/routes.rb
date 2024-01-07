@@ -10,12 +10,14 @@ Rails.application.routes.draw do
       post "login", to: "sessions#login_user"
       post "logout", to: "sessions#revoke_token"
 
-      post "classrooms", to: "classrooms#create_classroom"
-      get "classrooms", to: "classrooms#get_classrooms"
-
       get "students", to: "classroom_students#get_students"
       post "enroll", to: "classroom_students#enroll_student"
       delete "classrooms/students", to: "classroom_students#remove_student"
+
+      get "classrooms", to: "classrooms#get_classrooms"
+      post "classrooms", to: "classrooms#create_classroom"
+      put "classrooms/:id", to: "classrooms#update_classroom"
+      delete "classrooms/:id", to: "classrooms#delete_classroom"
 
       get "stream", to: "classroom_global_messages#get_messages"
       post "stream/message", to: "classroom_global_messages#create_message"

@@ -36,12 +36,6 @@ class ApplicationPolicy
     false
   end
 
-  private
-
-  def user_teacher_of_classroom?
-    Classroom.exists?(id: record.classroom_id, teacher_id: user.id)
-  end
-
   class Scope
     def initialize(user, scope)
       @user = user
@@ -55,5 +49,11 @@ class ApplicationPolicy
     private
 
     attr_reader :user, :scope
+  end
+
+  private
+
+  def user_teacher_of_classroom?
+    Classroom.exists?(id: record.classroom_id, teacher_id: user.id)
   end
 end

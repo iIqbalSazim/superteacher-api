@@ -15,7 +15,7 @@ class Api::V1::ClassroomStudentsController < ApplicationController
     end
 
     def enroll_student
-        result = ClassroomStudents::EnrollStudentFlow.call(params: classroom_student_params)
+        result = ClassroomStudents::EnrollStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id])
 
         if result.success?
             ClassroomStudentMailer.with(student: result.student, classroom: result.classroom).enroll_student_email.deliver_later
@@ -28,7 +28,7 @@ class Api::V1::ClassroomStudentsController < ApplicationController
     end
 
     def remove_student
-        result = ClassroomStudents::RemoveStudentFlow.call(params: classroom_student_params)
+        result = ClassroomStudents::RemoveStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id])
 
         if result.success?
             serialized_removed_student = UserSerializer.new.serialize(result.removed_student)

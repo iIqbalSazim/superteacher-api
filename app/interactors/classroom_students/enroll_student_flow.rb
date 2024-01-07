@@ -2,6 +2,6 @@ class ClassroomStudents::EnrollStudentFlow
     include Interactor::Organizer
 
     organize ClassroomStudents::FindStudent,
-             ClassroomStudents::FindClassroom,
+             Classrooms::FindClassroom,
              ClassroomStudents::EnrollStudent
 end
