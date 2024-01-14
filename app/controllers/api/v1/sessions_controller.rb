@@ -1,5 +1,5 @@
 class Api::V1::SessionsController < ApplicationController
-    skip_before_action :doorkeeper_authorize!
+    skip_before_action :doorkeeper_authorize!, only: [:login_user]
 
     def login_user
         result = Users::LoginFlow.call(session_params: session_params)

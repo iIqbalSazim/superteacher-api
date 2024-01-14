@@ -1,6 +1,6 @@
 class Api::V1::ClassroomsController < ApplicationController
     include Panko
-    before_action :authorize_classroom_actions, only: [:create_classroom, :update_classroom, :delete_classroom]
+    before_action :authorize_classroom_actions
 
     def get_classrooms
         case current_user.role
@@ -31,7 +31,7 @@ class Api::V1::ClassroomsController < ApplicationController
     end
 
     def update_classroom
-        result = Classrooms::UpdateClassroomFlow.call(classroom_params: classroom_params, classroom_id: params[:id])
+        result = Classrooms::UpdateClassroomFlow.call(classroom_params: classroom_params, classroom_id: params[:id], current_user: current_user)
 
         if result.success?
             serialized_classroom = ClassroomSerializer.new.serialize(result.updated_classroom)
@@ -42,7 +42,7 @@ class Api::V1::ClassroomsController < ApplicationController
     end
 
     def delete_classroom
-        result = Classrooms::DeleteClassroomFlow.call(classroom_id: params[:id])
+        result = Classrooms::DeleteClassroomFlow.call(classroom_id: params[:id], current_user: current_user)
 
         if result.success?
             render json: { message: "Classroom deleted successfully", deleted_classroom_id: params[:id] }
@@ -59,6 +59,7 @@ class Api::V1::ClassroomsController < ApplicationController
             :title,
             :subject,
             :class_time,
+            :meet_link,
             days: []
         )
     end
@@ -66,8 +67,10 @@ class Api::V1::ClassroomsController < ApplicationController
     def authorize_classroom_actions
         if action_name == 'create_classroom'
             authorize :classroom, :create_classroom?
-        elsif action_name == 'update_classroom' || action_name == 'delete_classroom'
-            authorize Classroom.find_by(id: params[:id])
+        elsif action_name == 'update_classroom'
+            authorize :classroom, :update_classroom?
+        elsif action_name == 'delete_classroom'
+            authorize :classroom, :delete_classroom?
         end
     end
 end

@@ -1,4 +1,4 @@
-class ClassroomStudents::GetStudents
+class ClassroomStudents::GetEnrolledStudents
   include Interactor
 
     def call
@@ -10,7 +10,7 @@ class ClassroomStudents::GetStudents
             students = User.where(id: all_student_ids, role: "student")
 
             if students.present?
-                context.students = students
+                context.enrolled_students = students
             else
                 context.fail!(
                     error: "Students not found",

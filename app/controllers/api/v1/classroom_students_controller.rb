@@ -3,10 +3,10 @@ class Api::V1::ClassroomStudentsController < ApplicationController
     before_action :authorize_classroom_student, only: [:enroll_student, :remove_student]
 
     def get_students
-        result = ClassroomStudents::GetStudents.call(classroom_id: params[:classroom_id])
+        result = ClassroomStudents::GetEnrolledStudents.call(classroom_id: params[:classroom_id])
 
         if result.success?
-            serialized_students = ArraySerializer.new(result.students, each_serializer: UserSerializer).to_a
+            serialized_students = ArraySerializer.new(result.enrolled_students, each_serializer: UserSerializer).to_a
 
             render json: { students: serialized_students, message: "Students fetched successfully" }
         else
@@ -15,7 +15,7 @@ class Api::V1::ClassroomStudentsController < ApplicationController
     end
 
     def enroll_student
-        result = ClassroomStudents::EnrollStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id])
+        result = ClassroomStudents::EnrollStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id], current_user: current_user)
 
         if result.success?
             ClassroomStudentMailer.with(student: result.student, classroom: result.classroom).enroll_student_email.deliver_later
@@ -28,7 +28,7 @@ class Api::V1::ClassroomStudentsController < ApplicationController
     end
 
     def remove_student
-        result = ClassroomStudents::RemoveStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id])
+        result = ClassroomStudents::RemoveStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id], current_user: current_user)
 
         if result.success?
             serialized_removed_student = UserSerializer.new.serialize(result.removed_student)

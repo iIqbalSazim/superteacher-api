@@ -1,6 +1,7 @@
 class Classrooms::UpdateClassroomFlow
     include Interactor::Organizer
 
-    organize Classrooms::FindClassroom,
+    organize Shared::FindClassroom,
+             Shared::ValidateClassroomTeacher,
              Classrooms::UpdateClassroom
 end

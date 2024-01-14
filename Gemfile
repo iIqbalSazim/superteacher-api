@@ -56,3 +56,5 @@ gem 'byebug'
 gem "panko_serializer"
 
 gem 'pundit'
+
+gem 'cloudinary'

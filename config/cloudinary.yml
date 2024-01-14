@@ -1,0 +1,11 @@
+development: 
+  cloud_name: "dvhqefik1"
+  api_key: "867516748656139"
+  api_secret: "pulv2gYQYD8JZk7OrpHCjU1HlzI"
+  secure: true
+
+production:
+  cloud_name: "dvhqefik1"
+  api_key: "867516748656139"
+  api_secret: "pulv2gYQYD8JZk7OrpHCjU1HlzI"
+  secure: true

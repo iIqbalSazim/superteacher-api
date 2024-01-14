@@ -4,10 +4,10 @@ class ClassroomPolicy < ApplicationPolicy
   end
 
   def update_classroom?
-    user.role == "teacher" && record.teacher_id == user.id
+    user.role == "teacher" 
   end
 
   def delete_classroom?
-    user.role == "teacher" && record.teacher_id == user.id
+    user.role == "teacher" 
   end
 end

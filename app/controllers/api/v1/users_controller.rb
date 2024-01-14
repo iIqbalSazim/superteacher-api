@@ -1,6 +1,7 @@
 class Api::V1::UsersController < ApplicationController
     include Panko
-    skip_before_action :doorkeeper_authorize!
+    before_action :authorize_user_actions
+    skip_before_action :doorkeeper_authorize!, only: [:create_new_user]
 
     def create_new_user
         case user_params[:role]
@@ -43,5 +44,11 @@ class Api::V1::UsersController < ApplicationController
                 :level, :english_bangla_medium, :class_level, :degree_level, :semester_year
             ],
         )
+    end
+
+    def authorize_user_actions
+        if action_name == 'get_unenrolled_students'
+            authorize :user, :get_unenrolled_students?
+        end
     end
 end

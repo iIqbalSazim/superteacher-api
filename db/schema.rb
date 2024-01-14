@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_04_052546) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_14_130951) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,6 +37,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_04_052546) do
     t.bigint "teacher_id", null: false
     t.string "title"
     t.string "subject"
+    t.string "meet_link"
     t.time "class_time"
     t.string "days", default: [], array: true
     t.datetime "created_at", null: false
@@ -81,6 +82,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_04_052546) do
     t.index ["code"], name: "index_registration_codes_on_code"
   end
 
+  create_table "resources", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.string "resource_type"
+    t.string "url"
+    t.bigint "classroom_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classroom_id"], name: "index_resources_on_classroom_id"
+  end
+
   create_table "student_profiles", force: :cascade do |t|
     t.bigint "student_id", null: false
     t.json "education"
@@ -119,6 +131,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_04_052546) do
   add_foreign_key "classroom_students", "users", column: "student_id", on_delete: :cascade
   add_foreign_key "classrooms", "users", column: "teacher_id", on_delete: :cascade
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "resources", "classrooms", on_delete: :cascade
   add_foreign_key "student_profiles", "users", column: "student_id", on_delete: :cascade
   add_foreign_key "teacher_profiles", "users", column: "teacher_id", on_delete: :cascade
 end

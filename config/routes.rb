@@ -19,6 +19,11 @@ Rails.application.routes.draw do
       put "classrooms/:id", to: "classrooms#update_classroom"
       delete "classrooms/:id", to: "classrooms#delete_classroom"
 
+      post "cloudinary/upload", to: "cloudinary#upload_file"
+
+      get "resources", to: "resources#get_resources"
+      post "resources", to: "resources#create_resource"
+
       get "stream", to: "classroom_global_messages#get_messages"
       post "stream/message", to: "classroom_global_messages#create_message"
 
