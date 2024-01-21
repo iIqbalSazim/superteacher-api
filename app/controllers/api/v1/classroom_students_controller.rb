@@ -40,14 +40,19 @@ class Api::V1::ClassroomStudentsController < ApplicationController
 
     private
 
-    def authorize_classroom_student
-        authorize ClassroomStudent.new(classroom_id: classroom_student_params[:classroom_id])
-    end
-
     def classroom_student_params
         params.require(:classroom_student).permit(
             :student_id,
             :classroom_id,
         )
+    end
+
+    def authorize_classroom_student
+        if action_name == "enroll_student"
+            authorize :classroom_student, :enroll_student?
+        end
+        if action_name = "remove_student"
+            authorize :classroom_student, :remove_student?
+        end
     end
 end

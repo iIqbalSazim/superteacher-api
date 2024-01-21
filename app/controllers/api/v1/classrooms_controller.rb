@@ -1,6 +1,6 @@
 class Api::V1::ClassroomsController < ApplicationController
     include Panko
-    before_action :authorize_classroom_actions
+    before_action :authorize_classroom_actions, only: [:create_classroom, :update_classroom, :delete_classroom] 
 
     def get_classrooms
         case current_user.role

@@ -1,6 +1,6 @@
 class Api::V1::UsersController < ApplicationController
     include Panko
-    before_action :authorize_user_actions
+    before_action :authorize_user_actions, only: [:get_unenrolled_students]
     skip_before_action :doorkeeper_authorize!, only: [:create_new_user]
 
     def create_new_user

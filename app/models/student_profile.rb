@@ -1,5 +1,5 @@
 class StudentProfile < ApplicationRecord
-    belongs_to :user, foreign_key: 'student_id'
+    belongs_to :student, class_name: 'User'
 
     validates :education, presence: true, length: { maximum: 255 }
     validates :address, presence: true, length: { maximum: 1000 }

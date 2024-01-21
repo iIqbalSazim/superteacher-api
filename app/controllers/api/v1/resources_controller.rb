@@ -1,6 +1,6 @@
 class Api::V1::ResourcesController < ApplicationController
     include Panko
-    before_action :authorize_resource_actions
+    before_action :authorize_resource_actions, only: [:create_resource]
 
     def get_resources
         result = Resources::GetResources.call(classroom_id: params[:classroom_id])

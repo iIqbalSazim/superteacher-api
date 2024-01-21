@@ -10,6 +10,12 @@ Rails.application.routes.draw do
       post "login", to: "sessions#login_user"
       post "logout", to: "sessions#revoke_token"
 
+      get "profile/teacher", to: "teacher_profiles#get_teacher_profile"
+      post "profile/teacher/:id", to: "teacher_profiles#update_teacher_profile"
+
+      get "profile/student", to: "student_profiles#get_student_profile"
+      post "profile/student/:id", to: "student_profiles#update_student_profile"
+
       get "students", to: "classroom_students#get_students"
       post "enroll", to: "classroom_students#enroll_student"
       delete "classrooms/students", to: "classroom_students#remove_student"

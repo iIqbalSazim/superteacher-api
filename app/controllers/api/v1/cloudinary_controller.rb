@@ -1,5 +1,5 @@
 class Api::V1::CloudinaryController < ApplicationController
-    before_action :authorize_resource_actions
+    before_action :authorize_resource_actions, only: [:upload_file]
 
     def upload_file
         result = Cloudinary::UploadFile.call(params: params[:file])
