@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_14_130951) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_20_124247) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -75,10 +75,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_14_130951) do
 
   create_table "registration_codes", force: :cascade do |t|
     t.string "code"
-    t.boolean "is_used"
-    t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_used"
+    t.string "email"
+    t.integer "attempts_count", default: 3
     t.index ["code"], name: "index_registration_codes_on_code"
   end
 

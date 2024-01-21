@@ -2,10 +2,17 @@
 
 ## Registration code endpoints:
 
-### To generate new code
+### To generate a new code
 
-- POST http://localhost:3000/api/v1/generate_code
+- **Endpoint:** `POST http://localhost:3000/api/v1/generate_code`
+- **Request Body:**
+  - Example:
+    ```
+    {
+      "email": "example@email.com"
+    }
+    ```
 
 ### To get all codes
 
-- GET http://localhost:3000/api/v1/codes
+- **Endpoint:** `GET http://localhost:3000/api/v1/codes`
