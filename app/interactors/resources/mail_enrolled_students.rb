@@ -7,7 +7,11 @@ class Resources::MailEnrolledStudents
         enrolled_students = context.enrolled_students
         teacher = context.teacher
 
-        student_emails = enrolled_students.pluck(:email)
+        all_student_ids = ClassroomStudent.where(classroom_id: classroom.id).pluck(:student_id)
+
+        if all_student_ids.present?
+            student_emails = User.where(id: all_student_ids, role: "student").pluck(:email)
+        end
 
         ResourceMailer.with(teacher: teacher, resource: resource, student_emails: student_emails, classroom: classroom).create_resource_email.deliver_later
     end

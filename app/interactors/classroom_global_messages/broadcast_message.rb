@@ -7,6 +7,6 @@ class ClassroomGlobalMessages::BroadcastMessage
 
         serialized_message = ClassroomGlobalMessageSerializer.new.serialize(message)
 
-        ActionCable.server.broadcast "classroom_#{classroom_id}_global_chat", serialized_message
+        BroadcastGlobalMessageJob.perform_now(classroom_id, serialized_message)
     end
 end

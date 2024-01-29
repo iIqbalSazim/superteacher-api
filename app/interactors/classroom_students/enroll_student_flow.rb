@@ -4,5 +4,6 @@ class ClassroomStudents::EnrollStudentFlow
     organize ClassroomStudents::FindStudent,
              Shared::FindClassroom,
              Shared::ValidateClassroomTeacher,
-             ClassroomStudents::EnrollStudent
+             ClassroomStudents::EnrollStudent,
+             ClassroomStudents::EnrollmentNotification
 end

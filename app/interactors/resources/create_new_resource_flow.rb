@@ -5,6 +5,5 @@ class Resources::CreateNewResourceFlow
              Resources::FindTeacher,
              Shared::FindClassroom,
              Shared::ValidateClassroomTeacher,
-             ClassroomStudents::GetEnrolledStudents,
              Resources::MailEnrolledStudents
 end

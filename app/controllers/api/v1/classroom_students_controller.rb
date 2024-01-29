@@ -18,8 +18,6 @@ class Api::V1::ClassroomStudentsController < ApplicationController
         result = ClassroomStudents::EnrollStudentFlow.call(params: classroom_student_params, classroom_id: classroom_student_params[:classroom_id], current_user: current_user)
 
         if result.success?
-            ClassroomStudentMailer.with(student: result.student, classroom: result.classroom).enroll_student_email.deliver_later
-
             serialized_student = UserSerializer.new.serialize(result.student)
             render json: { student: serialized_student, message: "Student enrolled successfully"}
         else
