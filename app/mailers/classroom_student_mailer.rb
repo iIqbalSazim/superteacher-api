@@ -3,6 +3,6 @@ class ClassroomStudentMailer < ApplicationMailer
         @student = params[:student]
         @classroom = params[:classroom]
 
-        mail(to: "ishmam.iqbal@sazim.io", subject: "Enrollment update!")
+        mail(to: @student[:email], subject: "Enrollment update!")
     end
 end

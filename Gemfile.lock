@@ -89,9 +89,6 @@ GEM
     connection_pool (2.4.1)
     crass (1.0.6)
     date (3.3.4)
-    debug (1.9.1)
-      irb (~> 1.10)
-      reline (>= 0.3.8)
     domain_name (0.6.20240107)
     doorkeeper (5.6.8)
       railties (>= 5)
@@ -230,7 +227,6 @@ DEPENDENCIES
   bootsnap
   byebug
   cloudinary
-  debug
   doorkeeper
   interactor
   panko_serializer
@@ -240,7 +236,6 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.1.2)
   sidekiq
-  tzinfo-data
 
 RUBY VERSION
    ruby 3.2.2p53
