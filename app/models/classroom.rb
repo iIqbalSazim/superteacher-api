@@ -5,8 +5,8 @@ class Classroom < ApplicationRecord
     validates :teacher, presence: true
     validates :title, presence: true, length: { maximum: 255 }
     validates :subject, presence: true, length: { maximum: 255 }
-    validates :class_time, presence: true
-    validates :days, presence: true, length: { minimum: 1 }
+    validates :class_time, presence: true, length: { maximum: 255 }
+    validates :days, presence: true, length: { minimum: 1, maximum: 7 }
 
     validate :validate_days_format
 

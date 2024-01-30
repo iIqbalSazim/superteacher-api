@@ -9,6 +9,7 @@ class User < ApplicationRecord
     validates :password, presence: true, length: { maximum: 255 }
     validates :first_name, presence: true, length: { maximum: 255 }
     validates :last_name, presence: true, length: { maximum: 255 }
+    validates :phone_number, length: { maximum: 10 }
     validates :gender, presence: true
     validates :role, presence: true
 
