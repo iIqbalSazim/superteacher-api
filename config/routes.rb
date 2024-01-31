@@ -30,10 +30,6 @@ Rails.application.routes.draw do
 
       get "stream", to: "classroom_global_messages#get_messages"
       post "stream/message", to: "classroom_global_messages#create_message"
-
-      post "generate_code", to: "registration_codes#generate_code"
-      get "codes", to: "registration_codes#all_codes"
-      post "code", to: "registration_codes#validate_code"
     end
   end
 end
