@@ -45,6 +45,8 @@ group :development do
   # gem "spring"
 end
 
+gem 'json'
+
 gem 'sidekiq'
 
 gem 'interactor'
@@ -58,3 +60,9 @@ gem "panko_serializer"
 gem 'pundit'
 
 gem 'cloudinary'
+
+gem "minitest"
+
+gem "mocha"
+
+gem "shoulda"
