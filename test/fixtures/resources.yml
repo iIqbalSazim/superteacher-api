@@ -1,0 +1,7 @@
+resource_one:
+  id: 1
+  classroom_id: 1
+  title: "Resource 1"
+  description: "This is the test resource 1"
+  resource_type: "assignment"
+  url: "http://testOne.com"

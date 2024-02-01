@@ -14,7 +14,7 @@ class Api::V1::ResourcesController < ApplicationController
     end
 
     def create_resource
-        result = Resources::CreateNewResourceFlow.call(resource: resource_params, classroom_id: resource_params[:classroom_id], current_user: current_user)
+        result = Resources::CreateNewResourceFlow.call(resource_params: resource_params, classroom_id: resource_params[:classroom_id], current_user: current_user)
 
         if result.success?
             serialized_resource = ResourceSerializer.new.serialize(result.resource)

@@ -1,6 +1,10 @@
 class Classroom < ApplicationRecord
     belongs_to :teacher, class_name: 'User'
+
     has_many :classroom_global_messages
+    has_many :classroom_students
+
+    has_many :students, class_name: 'User', through: :classroom_students
 
     validates :teacher, presence: true
     validates :title, presence: true, length: { maximum: 255 }

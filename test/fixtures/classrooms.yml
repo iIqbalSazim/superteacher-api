@@ -1,0 +1,21 @@
+classroom_one:
+  id: 1
+  teacher_id: 1
+  title: "Test class one"
+  subject: "Chemistry"
+  meet_link: "https://example.com"
+  class_time: "2000-01-01T12:00:00Z"
+  days:
+    - "Sunday"
+    - "Tuesday"
+
+classroom_two:
+  id: 2
+  teacher_id: 1
+  title: "Test class two"
+  subject: "Biology"
+  meet_link: "https://example.com"
+  class_time: "2000-01-01T12:00:00Z"
+  days:
+    - "Sunday"
+    - "Monday"

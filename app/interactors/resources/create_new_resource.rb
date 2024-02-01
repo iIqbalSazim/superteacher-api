@@ -2,7 +2,7 @@ class Resources::CreateNewResource
     include Interactor
 
     def call
-        resource = context.resource
+        resource = context.resource_params
 
         new_resource = Resource.new(resource)
 
@@ -11,7 +11,7 @@ class Resources::CreateNewResource
         else
             context.fail!(
                 error: "Something went wrong!",
-                message: "User failed to save.",
+                message: "Resource failed to save.",
                 status: :internal_server_error
             )
         end
