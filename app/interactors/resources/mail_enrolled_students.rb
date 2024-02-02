@@ -6,11 +6,12 @@ class Resources::MailEnrolledStudents
     delegate(*REQUIRED_PARAMS, to: :context)
 
     def call
-        all_student_ids = ClassroomStudent.where(classroom_id: classroom.id).pluck(:student_id)
+        all_students = classroom.students
 
-        if all_student_ids.present?
-            student_emails = User.where(id: all_student_ids, role: "student").pluck(:email)
-            ResourceMailer.with(teacher: teacher, resource: resource, student_emails: student_emails, classroom: classroom).create_resource_email.deliver_later
+        if all_students && resource && classroom
+            all_students.each do |student|
+                ResourceMailer.with(resource: resource, student_email: student.email, classroom: classroom).create_resource_email.deliver_later
+            end
         end
     end
 end

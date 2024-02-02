@@ -1,10 +1,11 @@
 class ClassroomGlobalMessages::GetMessages
     include Interactor
 
-    def call
-        classroom_id = context.classroom_id
-        current_user = context.current_user
+    REQUIRED_PARAMS = %i[current_user classroom_id].freeze
 
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+    def call
         all_messages = ClassroomGlobalMessage.where(classroom_id: classroom_id)
 
         if all_messages.present?

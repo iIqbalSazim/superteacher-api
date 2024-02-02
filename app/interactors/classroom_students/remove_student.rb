@@ -1,16 +1,17 @@
 class ClassroomStudents::RemoveStudent
   include Interactor
+  
+  REQUIRED_PARAMS = %i[student_to_update classroom].freeze
+
+  delegate(*REQUIRED_PARAMS, to: :context)
 
   def call
-    student_to_be_removed = context.student_to_update
-    classroom = context.classroom
-
-    enrollment_to_remove = ClassroomStudent.find_by(classroom_id: classroom.id, student_id: student_to_be_removed.id)
+    enrollment_to_remove = ClassroomStudent.find_by(classroom_id: classroom.id, student_id: student_to_update.id)
 
     if enrollment_to_remove
       if enrollment_to_remove.destroy
         context.removed_enrollment = enrollment_to_remove
-        context.removed_student = student_to_be_removed
+        context.removed_student = student_to_update
       else
         context.fail!(
           error: "Removal failed",

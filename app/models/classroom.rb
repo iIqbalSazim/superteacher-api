@@ -1,8 +1,9 @@
 class Classroom < ApplicationRecord
     belongs_to :teacher, class_name: 'User'
 
-    has_many :classroom_global_messages
-    has_many :classroom_students
+    has_many :classroom_global_messages, dependent: :destroy
+    has_many :classroom_students, dependent: :destroy
+    has_many :resources, dependent: :destroy
 
     has_many :students, class_name: 'User', through: :classroom_students
 

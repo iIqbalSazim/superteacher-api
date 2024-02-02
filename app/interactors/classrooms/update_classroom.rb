@@ -1,10 +1,11 @@
 class Classrooms::UpdateClassroom
-  include Interactor
+    include Interactor
+
+    REQUIRED_PARAMS = %i[classroom_params classroom].freeze
+
+    delegate(*REQUIRED_PARAMS, to: :context)
 
     def call
-        classroom_params = context.classroom_params
-        classroom = context.classroom
-
         if classroom.update(classroom_params)
             context.updated_classroom = classroom
         else

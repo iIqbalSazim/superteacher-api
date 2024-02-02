@@ -1,4 +1,5 @@
 class Resource < ApplicationRecord
+    belongs_to :classroom
     enum resource_type: { assignment: 'assignment', material: 'material' }
 
     validates :title, presence: true, length: { maximum: 255 }

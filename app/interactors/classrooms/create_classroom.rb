@@ -1,10 +1,12 @@
 class Classrooms::CreateClassroom
-  include Interactor
+    include Interactor
 
-  def call
-        classroom_params = context.classroom_params
+    REQUIRED_PARAMS = %i[classroom_params teacher_id].freeze
 
-        classroom_params[:teacher_id] = context.teacher_id
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+    def call
+        classroom_params[:teacher_id] = teacher_id
 
         new_classroom = Classroom.new(
             classroom_params

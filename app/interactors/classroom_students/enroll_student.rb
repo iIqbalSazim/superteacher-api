@@ -1,11 +1,12 @@
 class ClassroomStudents::EnrollStudent
   include Interactor
 
-  def call
-    student_to_be_enrolled = context.student_to_update
-    classroom = context.classroom
+  REQUIRED_PARAMS = %i[student_to_update classroom].freeze
 
-    existing_enrollment = ClassroomStudent.find_by(classroom_id: classroom.id, student_id: student_to_be_enrolled.id)
+  delegate(*REQUIRED_PARAMS, to: :context)
+
+  def call
+    existing_enrollment = ClassroomStudent.find_by(classroom_id: classroom.id, student_id: student_to_update.id)
 
     if existing_enrollment
       context.fail!(
@@ -14,12 +15,12 @@ class ClassroomStudents::EnrollStudent
         status: :unprocessable_entity
       )
     else
-      new_enrollment = ClassroomStudent.create(classroom_id: classroom.id, student_id: student_to_be_enrolled.id)
+      new_enrollment = ClassroomStudent.create(classroom_id: classroom.id, student_id: student_to_update.id)
 
       if new_enrollment.persisted?
         context.enrollment = new_enrollment
         context.classroom = classroom
-        context.student = student_to_be_enrolled
+        context.student = student_to_update
       else
         context.fail!(
           error: "Enrollment failed",

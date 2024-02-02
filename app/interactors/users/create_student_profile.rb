@@ -1,14 +1,15 @@
 class Users::CreateStudentProfile
     include Interactor
 
-    def call
-        user = context.user_params
-        new_user = context.new_user
+    REQUIRED_PARAMS = %i[user_params new_user].freeze
 
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+    def call
         student_profile = StudentProfile.new(
             student_id: new_user.id,
-            education: user[:education],
-            address: user[:address]
+            education: user_params[:education],
+            address: user_params[:address]
         )
 
         if student_profile.save

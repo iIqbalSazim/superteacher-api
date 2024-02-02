@@ -4,7 +4,7 @@ class Users::GetUnenrolledStudents
   def call
     classroom_id = context.classroom_id
     students = User.where(role: "student").where.not(
-      id: ClassroomStudent.where(classroom_id: classroom_id).pluck(:student_id)
+        id: Classroom.find_by(id: classroom_id).student_ids
       )
 
     if students.present?

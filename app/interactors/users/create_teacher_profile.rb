@@ -1,15 +1,16 @@
 class Users::CreateTeacherProfile
     include Interactor
 
-    def call
-        user = context.user_params
-        new_user = context.new_user
+    REQUIRED_PARAMS = %i[user_params new_user].freeze
 
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+    def call
         teacher_profile = TeacherProfile.new(
             teacher_id: new_user.id,
-            highest_education_level: user[:highest_education_level],
-            major_subject: user[:major_subject],
-            subjects_to_teach: user[:subjects_to_teach]
+            highest_education_level: user_params[:highest_education_level],
+            major_subject: user_params[:major_subject],
+            subjects_to_teach: user_params[:subjects_to_teach]
         )
 
         if teacher_profile.save

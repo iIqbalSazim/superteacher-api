@@ -1,13 +1,14 @@
 class ClassroomGlobalMessages::CreateMessage
     include Interactor
 
+    REQUIRED_PARAMS = %i[params current_user].freeze
+
+    delegate(*REQUIRED_PARAMS, to: :context)
+
     def call
-        classroom_global_message_params = context.params
-        current_user = context.current_user
+        params[:user_id] = current_user.id
 
-        classroom_global_message_params[:user_id] = current_user.id
-
-        new_message = ClassroomGlobalMessage.create(classroom_global_message_params)
+        new_message = ClassroomGlobalMessage.create(params)
 
         if new_message.persisted?
             context.new_message = new_message

@@ -1,10 +1,11 @@
 class Shared::ValidateClassroomTeacher
   include Interactor
 
-  def call
-    classroom = context.classroom
-    current_user = context.current_user
+  REQUIRED_PARAMS = %i[current_user classroom].freeze
 
+  delegate(*REQUIRED_PARAMS, to: :context)
+
+  def call
     if classroom.teacher_id != current_user.id
       context.fail!(
         error: "Unauthorized",

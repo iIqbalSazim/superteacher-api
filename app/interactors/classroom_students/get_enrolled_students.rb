@@ -4,23 +4,14 @@ class ClassroomStudents::GetEnrolledStudents
     def call
         classroom_id = context.classroom_id
 
-        all_student_ids = ClassroomStudent.where(classroom_id: classroom_id).pluck(:student_id)
+        students = Classroom.find_by(id: classroom_id).students
 
-        if all_student_ids.present?
-            students = User.where(id: all_student_ids, role: "student")
-
-            if students.present?
-                context.enrolled_students = students
-            else
-                context.fail!(
-                    error: "Students not found",
-                    message: "No students found for the specified IDs in the user table",
-                    status: :unprocessable_entity
-                )
-            end
+        if students.present?
+            context.enrolled_students = students
         else
             context.fail!(
                 error: "Students not found",
+                message: "No students found for the specified IDs in the user table",
                 status: :unprocessable_entity
             )
         end

@@ -5,6 +5,8 @@ class User < ApplicationRecord
     has_one :student_profile, foreign_key: 'student_id', dependent: :destroy
     has_one :teacher_profile, foreign_key: 'teacher_id', dependent: :destroy
 
+    has_many :classroom_global_messages
+
     validates :email, presence: true, uniqueness: true, length: { maximum: 255 }
     validates :password, presence: true, length: { maximum: 255 }
     validates :first_name, presence: true, length: { maximum: 255 }
