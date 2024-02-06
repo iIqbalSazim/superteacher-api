@@ -1,6 +1,5 @@
 class Api::V1::ClassroomGlobalMessagesController < ApplicationController
     include Panko
-    before_action :authorize_classroom_global_message, only: [:get_messages, :create_message]
 
     def get_messages
         result = ClassroomGlobalMessages::GetMessages.call(classroom_id: params[:classroom_id], current_user: current_user)
@@ -15,7 +14,7 @@ class Api::V1::ClassroomGlobalMessagesController < ApplicationController
     end
 
     def create_message
-        result = ClassroomGlobalMessages::CreateMessageFlow.call(params: classroom_global_message_params, current_user: current_user)
+        result = ClassroomGlobalMessages::CreateMessageFlow.call(params: classroom_global_message_params, current_user: current_user, classroom_id: params[:classroom_id])
 
         if result.success?
             serialized_message = ClassroomGlobalMessageSerializer.new.serialize(result.new_message)
@@ -33,13 +32,5 @@ class Api::V1::ClassroomGlobalMessagesController < ApplicationController
             :classroom_id,
             :text,
         )
-    end
-
-    def authorize_classroom_global_message
-        if action_name == 'get_messages'
-            authorize ClassroomGlobalMessage.new(classroom_id: params[:classroom_id])
-        elsif action_name == 'create_message'
-            authorize ClassroomGlobalMessage.new(classroom_id: classroom_global_message_params[:classroom_id])
-        end
     end
 end
