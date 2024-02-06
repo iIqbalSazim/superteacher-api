@@ -19,7 +19,7 @@ class Classrooms::Students::RemoveStudent < BaseInteractor
   private
 
   def handle_enrollment_result(enrollment)
-    if enrollment
+    if enrollment.present?
       remove_enrollment(enrollment)
     else
       handle_removal_failure(STUDENT_IS_NOT_ENROLLED)

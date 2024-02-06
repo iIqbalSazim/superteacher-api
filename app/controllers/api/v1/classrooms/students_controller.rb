@@ -36,7 +36,7 @@ class Api::V1::Classrooms::StudentsController < BaseController
         if result.success?
             render json: { removed_student: result.removed_student }, status: :ok
         else
-            render json: { error: result.error, message: result.message }, status: result.status
+            render json: { message: result.message }, status: result.status
         end
     end
 

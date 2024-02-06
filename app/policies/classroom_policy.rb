@@ -8,14 +8,14 @@ class ClassroomPolicy < ApplicationPolicy
   end
 
   def create?
-    user.role == "teacher"
+    user.teacher?
   end
 
   def update?
-    user.role == "teacher" 
+    user.teacher? 
   end
 
   def destroy?
-    user.role == "teacher" 
+    user.teacher? 
   end
 end

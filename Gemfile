@@ -55,14 +55,14 @@ gem 'doorkeeper'
 
 gem 'byebug'
 
-gem "panko_serializer"
+gem 'panko_serializer'
 
 gem 'pundit'
 
 gem 'cloudinary'
 
-gem "minitest"
+gem 'minitest'
 
-gem "mocha"
+gem 'mocha'
 
-gem "shoulda"
+gem 'shoulda'

@@ -18,8 +18,6 @@ class Classrooms::Students::GetStudents < BaseInteractor
         end
     end
 
-    private
-
     def fetch_enrolled_students
         context.students = classroom.students
      end

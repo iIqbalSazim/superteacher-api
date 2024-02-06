@@ -4,6 +4,6 @@ class Classrooms::ResourcePolicy < ApplicationPolicy
   end
 
   def create?
-    user.role == "teacher"
+    user.teacher?
   end
 end

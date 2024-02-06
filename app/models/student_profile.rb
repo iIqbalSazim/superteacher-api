@@ -1,4 +1,4 @@
-class StudentProfile < ApplicationRecord
+class StudentProfile < Profile
     belongs_to :student, class_name: 'User'
 
     validates :education, presence: true, length: { maximum: 255 }

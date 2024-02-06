@@ -2,7 +2,7 @@ class Cloudinary::UploadFile < BaseInteractor
     include Interactor
     include Cloudinary
 
-    REQUIRED_PARAMS = %i[params].freeze
+    REQUIRED_PARAMS = %i[file_params].freeze
 
     FILE_UPLOAD_FAILED = "Failed to upload file"
 
@@ -11,17 +11,19 @@ class Cloudinary::UploadFile < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        file = context.params
-
-        begin
-            uploaded_file = Cloudinary::Uploader.upload(file)
-            context.url = uploaded_file["url"]
-        rescue CloudinaryException => e
-            handle_upload_failure(e)
-        end
+        handle_file_upload
     end
 
     private
+
+    def handle_file_upload
+        begin
+            uploaded_file = Cloudinary::Uploader.upload(file_params)
+            context.url = uploaded_file["url"]
+        rescue CloudinaryException => e
+            handle_upload_failure(e)
+        end       
+    end
 
     def handle_upload_failure(exception)
         context.fail!(

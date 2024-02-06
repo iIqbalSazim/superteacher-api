@@ -17,10 +17,6 @@ class Users::CreateUserProfile < BaseInteractor
 
   private
 
-  def create_new_profile
-    UserProfile.new(profile_params)
-  end
-
   def user_profile
     role == "teacher" ? TeacherProfile : StudentProfile
   end

@@ -1,5 +1,5 @@
 class CloudinaryPolicy < ApplicationPolicy
     def upload_file?
-        user.role == "teacher"
+        user.teacher?
     end
 end

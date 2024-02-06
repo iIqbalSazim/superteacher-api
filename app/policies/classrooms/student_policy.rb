@@ -4,14 +4,14 @@ class Classrooms::StudentPolicy < ApplicationPolicy
   end
 
   def unenrolled_students?
-    user.role == "teacher"
+    user.teacher?
   end
 
   def enroll?
-    user.role == "teacher"
+    user.teacher?
   end
 
   def remove?
-    user.role == "teacher" 
+    user.teacher? 
   end
 end
