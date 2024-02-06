@@ -8,9 +8,9 @@ class Api::V1::UsersController < BaseController
         if result.success?
             serialized_user = UserSerializer.new.serialize(result.user_data)
             
-            render json: { user: serialized_user, token: result.token }, status: :ok
+            render json: { user: serialized_user, token: { access_token: result.token, token_type: 'Bearer' } }, status: :ok
         else
-            render json: { error: result.error, message: result.message }, status: result.status
+            render json: { message: result.message }, status: result.status
         end
     end
     

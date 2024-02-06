@@ -1,20 +1,41 @@
-class Users::GenerateAccessToken
+class Users::GenerateAccessToken < BaseInteractor
   include Interactor
 
-  def call
-    user = context.user_data
-    application = Doorkeeper::Application.find_by(uid: 'rqveltKwvfhgifdWivi4m3fWUlIjU4kJm2xMZ54FTcQ')
+    REQUIRED_PARAMS = %i[user_data].freeze
 
-    token_request = Doorkeeper::AccessToken.create!(
-      resource_owner_id: user.id,
-      application_id: application.id,
-      scopes: ''
-    )
+    TOKEN_CREATION_FAILED = "Token creation failed"
+    UNABLE_TO_CREATE_TOKEN = "Unable to create token"
+
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+  def call
+    validate_params(REQUIRED_PARAMS)
+
+    token_request = create_access_token(user_data[:id])
 
     if token_request
-      context.token = { access_token: token_request.token, token_type: 'Bearer' }
+      context.token = token_request.token
     else
-      context.fail!(message: "Unable to create token", error: "Token creation failed", status: :internal_server_error)
+      handle_token_creation_failure
     end
   end
+
+  private 
+
+  def create_access_token(user_id)
+    Doorkeeper::AccessToken.create!(
+      resource_owner_id: user_id,
+      application_id: 1,
+      scopes: ''
+    )
+  end
+
+  def handle_token_creation_failure
+    context.fail!(
+      message: UNABLE_TO_CREATE_TOKEN,
+      error: TOKEN_CREATION_FAILED,
+      status: :internal_server_error
+    )
+  end
+
 end

@@ -3,7 +3,8 @@ class CreateRegistrationCodes < ActiveRecord::Migration[7.1]
     create_table :registration_codes do |t|
       t.string :code
       t.boolean :is_used
-      t.datetime :expires_at
+      t.string :email
+      t.integer :attempts_count, default: 3
 
       t.timestamps
     end

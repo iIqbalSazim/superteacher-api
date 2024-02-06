@@ -1,14 +1,12 @@
 class StudentProfiles::UpdateStudentProfile
     include Interactor
 
-    REQUIRED_PARAMS = %i[user_id params].freeze
+    REQUIRED_PARAMS = %i[id params].freeze
 
     delegate(*REQUIRED_PARAMS, to: :context)
 
     def call
-        student_id = user_id
-
-        student_profile = StudentProfile.find_by(student_id: student_id)
+        student_profile = StudentProfile.find_by(student_id: id)
 
         if student_profile
             if student_profile.update(

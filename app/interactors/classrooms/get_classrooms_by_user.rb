@@ -1,21 +1,27 @@
-class Classrooms::GetClassroomsByUser
+class Classrooms::GetClassroomsByUser < BaseInteractor
     include Interactor
 
+    REQUIRED_PARAMS = %i[current_user].freeze
+
+    CLASSROOMS_NOT_FOUND = "Classrooms not found"
+
+    delegate(*REQUIRED_PARAMS, to: :context)
+
     def call
-        user_id = context.user_id
+        validate_params REQUIRED_PARAMS
 
-        if context.user_role == "teacher"
-            all_classrooms = Classroom.where(teacher_id: user_id)
-        elsif context.user_role == "student"
-            all_classrooms = Classroom.where(id: ClassroomStudent.where(student_id: user_id).pluck(:classroom_id))
-        end
+        all_classrooms = fetch_classrooms
 
-        if all_classrooms.present?
-            context.classrooms = all_classrooms
+        context.classrooms = all_classrooms
+    end
+
+    private
+
+    def fetch_classrooms
+        if current_user.teacher?
+            Classroom.where(teacher_id: current_user.id)
         else
-            context.fail!(
-                error: "Classrooms not found"
-            )
+            Classroom.left_outer_joins(:classroom_students).where(classroom_students: { student_id: current_user.id })
         end
     end
 end

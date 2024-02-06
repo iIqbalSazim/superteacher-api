@@ -1,29 +1,27 @@
-class Users::CreateUserProfile
+class Users::CreateUserProfile < BaseInteractor
   include Interactor
 
-  REQUIRED_PARAMS = %i[user_params new_user].freeze
+  REQUIRED_PARAMS = %i[user_data user_params].freeze
+
+  PROFILE_CREATION_FAILED = "User and profile creation failed"
 
   delegate(*REQUIRED_PARAMS, to: :context)
 
   def call
-    profile_data = UserProfile.new(profile_params)
+    validate_params REQUIRED_PARAMS
 
-    if profile_data.save
-      context.user_data = new_user
-      context.profile_data = profile_data
-    else
-      new_user.destroy
-      context.fail!(
-        message: "Failed to create #{role} profile",
-        error: "User and profile creation failed",
-        status: :unprocessable_entity
-      )
-    end
+    profile_data = user_profile.new(profile_params)
+
+    save_profile_data(profile_data)
   end
 
   private
 
-  def UserProfile
+  def create_new_profile
+    UserProfile.new(profile_params)
+  end
+
+  def user_profile
     role == "teacher" ? TeacherProfile : StudentProfile
   end
 
@@ -32,23 +30,37 @@ class Users::CreateUserProfile
   end
 
   def common_params
-    { "#{role}_id".to_sym => new_user.id }
+    { "#{role}_id".to_sym => user_data.id }
   end
 
   def role_specific_params
-    case role
-    when "teacher"
-      {
-        highest_education_level: user_params[:highest_education_level],
-        major_subject: user_params[:major_subject],
-        subjects_to_teach: user_params[:subjects_to_teach]
-      }
-    when "student"
-      {
-        education: user_params[:education],
-        address: user_params[:address]
-      }
+    if role == "teacher"
+      teacher_params
+    else
+      student_params
     end
+  end
+
+  def save_profile_data(profile_data)
+    handle_failed_to_create_profile unless profile_data.save
+
+    context.profile_data = profile_data
+  end
+
+  def handle_failed_to_create_profile
+      user_data.destroy
+      context.fail!(
+        message: "Failed to create #{role} profile",
+        status: :unprocessable_entity
+      )
+  end
+
+  def teacher_params
+    user_params.slice(:highest_education_level, :major_subject, :subjects_to_teach)
+  end
+
+  def student_params
+    user_params.slice(:education, :address)
   end
 
   def role

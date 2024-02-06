@@ -1,18 +1,33 @@
-class Shared::FindClassroom
+class Shared::FindClassroom < BaseInteractor
   include Interactor
 
+  REQUIRED_PARAMS = %i[classroom_id].freeze
+
+  CLASSROOM_NOT_FOUND = "Classroom not found"
+
+  delegate(*REQUIRED_PARAMS, to: :context)
+
   def call
-    classroom_id = context.classroom_id
+    validate_params REQUIRED_PARAMS
 
     classroom = Classroom.find_by(id: classroom_id)
 
-    if classroom
+    handle_classroom_result(classroom)
+  end
+
+  private
+
+  def handle_classroom_result(classroom)
+    if classroom.present?
       context.classroom = classroom
     else
-      context.fail!(
-        error: "Classroom not found",
-        status: :unprocessable_entity
-      )
+      handle_classroom_not_found
     end
+  end
+
+  def handle_classroom_not_found
+    context.fail!(
+      message: CLASSROOM_NOT_FOUND, 
+    )
   end
 end

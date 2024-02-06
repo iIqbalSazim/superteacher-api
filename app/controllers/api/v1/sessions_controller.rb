@@ -3,14 +3,14 @@ class Api::V1::SessionsController < BaseController
     skip_before_action :authorize_resource
 
     def login
-        result = Users::LoginFlow.call(session_params: session_params)
+        result = Users::LoginFlow.call(user_params: session_params)
 
         if result.success?
             serialized_user = UserSerializer.new.serialize(result.user_data)
             
-            render json: { user: serialized_user, token: result.token}, status: :ok
+            render json: { user: serialized_user, token: { access_token: result.token, token_type: 'Bearer'} }, status: :ok
         else
-            render json: { error: result.error, message: result.message }, status: result.status
+            render json: { message: result.message }, status: :unprocessable_entity
         end
     end
     
@@ -20,7 +20,7 @@ class Api::V1::SessionsController < BaseController
         if result.success?
             render json: { message: "Token successfully revoked" }, status: :ok
         else
-            render json: { error: result.error, message: result.message }, status: result.status
+            render json: { message: result.message }, status: :unprocessable_entity
         end
     end
     

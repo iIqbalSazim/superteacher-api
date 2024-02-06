@@ -1,35 +1,46 @@
-class Users::CreateNewUser
+class Users::CreateNewUser < BaseInteractor
     include Interactor
 
-    def call
-        user = context.user_params
+    REQUIRED_PARAMS = %i[user_params].freeze
 
-        if existing_user = User.find_by(email: user[:email])
+    USER_ALREADY_EXISTS = "User with this email already exists"
+    FAILED_TO_SAVE_USER = "Failed to save user"
+
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+    def call
+        validate_params REQUIRED_PARAMS
+
+        if user_already_exists?
             context.fail!(
-                message: "User with this email already exists",
-                error: "User creation failed",
+                message: USER_ALREADY_EXISTS,
                 status: :unprocessable_entity
             )
         else
-            new_user = User.new(
-                email: user[:email],
-                password: user[:password],
-                first_name: user[:first_name],
-                last_name: user[:last_name],
-                gender: user[:gender],
-                phone_number: user[:phone_number],
-                role: user[:role]
-            )
-
-            if new_user.save
-                context.new_user = new_user
-            else
-                context.fail!(
-                    error: "Something went wrong!",
-                    message: "User failed to save.",
-                    status: :internal_server_error
-                )
-            end
+            create_and_save_new_user
         end
+    end
+
+    private
+
+    def user_already_exists?
+        User.exists?(email: user_params[:email])
+    end
+
+    def create_and_save_new_user
+        new_user = User.new(new_user_params)
+
+        if new_user.save
+            context.user_data = new_user
+        else
+            context.fail!(
+                message: FAILED_TO_SAVE_USER,
+                status: :unprocessable_entity
+            )
+        end
+    end
+
+    def new_user_params
+        user_params.slice(:email, :password, :first_name, :last_name, :gender, :phone_number, :role)
     end
 end

@@ -1,12 +1,12 @@
 class TeacherProfiles::UpdateTeacherProfile
     include Interactor
 
-    REQUIRED_PARAMS = %i[user_id params].freeze
+    REQUIRED_PARAMS = %i[id params].freeze
 
     delegate(*REQUIRED_PARAMS, to: :context)
 
     def call
-        teacher_id = user_id
+        teacher_id = id
 
         teacher_profile = TeacherProfile.find_by(teacher_id: teacher_id)
 

@@ -1,17 +1,18 @@
-class Classrooms::DeleteClassroom
+class Classrooms::DeleteClassroom < BaseInteractor
     include Interactor
 
-    def call
-        classroom = context.classroom
+    REQUIRED_PARAMS = %i[classroom].freeze
 
-        if classroom
-            classroom.destroy
-        else
-            context.fail!(
-                error: "Classroom not found",
-                message: "Classroom with given ID not found.",
-                status: :not_found
-            )
-        end
+    CLASSROOM_DELETE_FAILED = "Failed to delete classroom"
+
+    delegate(*REQUIRED_PARAMS, to: :context)
+
+    def call
+        validate_params REQUIRED_PARAMS
+
+        context.fail!(
+            message: CLASSROOM_DELETE_FAILED,
+            status: :unprocessable_entity
+        ) unless classroom.destroy
     end
 end

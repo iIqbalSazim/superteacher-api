@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+    has_secure_password
     enum role: { student: 'student', teacher: 'teacher' }
     enum gender: { Male: 'Male', Female: 'Female' }
 
@@ -15,7 +16,11 @@ class User < ApplicationRecord
     validates :gender, presence: true
     validates :role, presence: true
 
-    def authenticate(password)
-        self.password == password
+    def student?
+        self[:role] == "student"
+    end
+
+    def teacher?
+        self[:role] == "teacher"
     end
 end

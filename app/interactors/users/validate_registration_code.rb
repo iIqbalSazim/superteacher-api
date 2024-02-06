@@ -1,40 +1,48 @@
-class Users::ValidateRegistrationCode
+class Users::ValidateRegistrationCode < BaseInteractor
     include Interactor
 
+    REQUIRED_PARAMS = %i[user_params].freeze
+
+    VALIDATION_ATTEMPTS_EXCEEDED = "Validation attempts exceeded. Please contact the admin."
+    INVALID_CODE = "Invalid registration code. Please try again or contact the admin."
+
+    delegate(*REQUIRED_PARAMS, to: :context)
+
     def call
-        return unless context.user_params[:role] == "teacher"
+        validate_params REQUIRED_PARAMS
 
-        code = context.user_params[:code]
-        email = context.user_params[:email]
+        return unless user_params[:role] == "teacher"
 
-        existing_code = RegistrationCode.find_by(email: email)
+        existing_code = RegistrationCode.find_by(email: user_params[:email])
 
-        if existing_code
-            if existing_code.attempts_count > 0
-                if existing_code.code == code
-                    context.code = existing_code.code
-                    existing_code.update!(is_used: true, attempts_count: 0)
-                else
-                    existing_code.update!(attempts_count: existing_code.attempts_count - 1)
-                    context.fail!(
-                        error: "Failed to validate code",
-                        message: "Invalid registration code. Please try again.",
-                        status: :unprocessable_entity
-                    )
-                end
+        handle_invalid_code unless existing_code.present?
+
+        validate_attempts(existing_code)
+    end
+
+    private
+
+    def validate_attempts(existing_code)
+        if existing_code.attempts_count > 0
+            if existing_code.code == user_params[:code]
+                context.code = existing_code.code
+                existing_code.update!(is_used: true, attempts_count: 0)
             else
-                context.fail!(
-                    error: "Failed to validate code",
-                    message: "Validation attempts exceeded. Please contact the admin.",
-                    status: :forbidden
-                )
+                existing_code.update!(attempts_count: existing_code.attempts_count - 1)
+                handle_invalid_code
             end
         else
             context.fail!(
-                error: "Failed to validate code",
-                message: "Invalid code.",
-                status: :unprocessable_entity
+                message: VALIDATION_ATTEMPTS_EXCEEDED,
+                status: :forbidden
             )
-        end
+        end 
+    end
+
+    def handle_invalid_code
+        context.fail!(
+            message: INVALID_CODE,
+            status: :unprocessable_entity
+        )
     end
 end
