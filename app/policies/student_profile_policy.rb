@@ -1,5 +1,5 @@
 class StudentProfilePolicy < ApplicationPolicy
-    def update_student_profile?
+    def update?
         user.role == "student"
     end
 end

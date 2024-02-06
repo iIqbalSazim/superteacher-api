@@ -11,7 +11,6 @@ class Shared::FindClassroom
     else
       context.fail!(
         error: "Classroom not found",
-        message: "Classroom does not exist in the database",
         status: :unprocessable_entity
       )
     end

@@ -1,24 +1,26 @@
-class Api::V1::ResourcesController < ApplicationController
-    include Panko
-    before_action :authorize_resource_actions, only: [:create_resource]
+class Api::V1::Classrooms::ResourcesController < BaseController
 
-    def get_resources
+    def index
         result = Resources::GetResources.call(classroom_id: params[:classroom_id])
 
         if result.success?
             serialized_resources = ArraySerializer.new(result.resources, each_serializer: ResourceSerializer).to_a
-            render json: { resources: serialized_resources, message: "Resources fetched successfully" }
+
+            render json: { resources: serialized_resources }, status: :ok
         else
             render json: { error: result.error }, status: result.status
         end 
     end
 
-    def create_resource
-        result = Resources::CreateNewResourceFlow.call(resource_params: resource_params, classroom_id: resource_params[:classroom_id], current_user: current_user)
+    def create
+        result = Resources::CreateNewResourceFlow.call(resource_params: resource_params,
+                                                       classroom_id: resource_params[:classroom_id],
+                                                       current_user: current_user)
 
         if result.success?
             serialized_resource = ResourceSerializer.new.serialize(result.resource)
-            render json: { resource: serialized_resource, message: "Resource created successfully" }
+
+            render json: { resource: serialized_resource }, status: :ok
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end
@@ -30,9 +32,7 @@ class Api::V1::ResourcesController < ApplicationController
         params.require(:resource).permit(:title, :description, :resource_type, :url, :classroom_id)
     end
 
-    def authorize_resource_actions
-        if action_name == 'create_resource'
-            authorize :resource, :create_resource?
-        end
+    def resource_model
+        [:classrooms, :resource]
     end
 end

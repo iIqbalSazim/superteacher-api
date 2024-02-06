@@ -2,6 +2,8 @@ class Users::ValidateRegistrationCode
     include Interactor
 
     def call
+        return unless context.user_params[:role] == "teacher"
+
         code = context.user_params[:code]
         email = context.user_params[:email]
 

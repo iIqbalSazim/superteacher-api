@@ -29,3 +29,5 @@
 
 en:
   hello: "Hello world"
+  authorization:
+    not_authorized_error: "You are not authorized."

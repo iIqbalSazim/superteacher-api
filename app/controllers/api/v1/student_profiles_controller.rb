@@ -1,14 +1,13 @@
-class Api::V1::StudentProfilesController < ApplicationController
-    include Panko
-    before_action :authorize_student_profile, only: [:update_student_profile]
+class Api::V1::StudentProfilesController < BaseController
 
-    def update_student_profile
-        result = StudentProfiles::UpdateStudentProfileFlow.call(params: student_profile_params, id: params[:id])
+    def update
+        result = StudentProfiles::UpdateStudentProfileFlow.call(params: student_profile_params,
+                                                              id: params[:id])
 
         if result.success?
             serialized_student_profile = StudentProfileSerializer.new.serialize(result.profile)
 
-            render json: { profile: serialized_student_profile, message: "Student profile updated" }
+            render json: { profile: serialized_student_profile }, status: :ok
         else
             render json: { error: result.error, message: result.message }, status: result.status
         end
@@ -25,9 +24,7 @@ class Api::V1::StudentProfilesController < ApplicationController
         )
     end
 
-    def authorize_student_profile
-        if action_name = "update_student_profile"
-            authorize :student_profile, :update_student_profile?
-        end
+    def resource_model
+        :student_profile
     end
 end

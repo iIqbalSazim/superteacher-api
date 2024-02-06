@@ -5,31 +5,28 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      get "users/students", to: "users#get_unenrolled_students"
-      post "users", to: "users#create_new_user"
-      post "login", to: "sessions#login_user"
+      post "users", to: "users#create"
+
+      post "login", to: "sessions#login"
       post "logout", to: "sessions#revoke_token"
 
-      post "profile/teacher/:id", to: "teacher_profiles#update_teacher_profile"
+      post "profile/teacher/:id", to: "teacher_profiles#update"
+      post "profile/student/:id", to: "student_profiles#update"
 
-      post "profile/student/:id", to: "student_profiles#update_student_profile"
+      resources :classrooms, only: [:index, :create, :update, :destroy, :show] do
+        resources :global_messages, only: [:index, :create], path: 'messages', controller: 'classrooms/global_messages'
 
-      get "students", to: "classroom_students#get_students"
-      post "enroll", to: "classroom_students#enroll_student"
-      delete "classrooms/students", to: "classroom_students#remove_student"
+        resources :students, only: [:index], controller: 'classrooms/students'
 
-      get "classrooms", to: "classrooms#get_classrooms"
-      post "classrooms", to: "classrooms#create_classroom"
-      put "classrooms/:id", to: "classrooms#update_classroom"
-      delete "classrooms/:id", to: "classrooms#delete_classroom"
+        # get "students/unenrolled", to: "classrooms/students#unenrolled_students"
+        post "students/enroll", to: "classrooms/students#enroll"
+        put "students/remove", to: "classrooms/students#remove"
 
+        resources :resources, only: [:index, :create], controller: 'classrooms/resources'
+      end
+
+      # mentioned something about third party
       post "cloudinary/upload", to: "cloudinary#upload_file"
-
-      get "resources", to: "resources#get_resources"
-      post "resources", to: "resources#create_resource"
-
-      get "stream", to: "classroom_global_messages#get_messages"
-      post "stream/message", to: "classroom_global_messages#create_message"
     end
   end
 end

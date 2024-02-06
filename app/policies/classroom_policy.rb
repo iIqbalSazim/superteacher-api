@@ -1,13 +1,21 @@
 class ClassroomPolicy < ApplicationPolicy
-  def create_classroom?
+  def index?
+    true
+  end
+
+  def show?
+    true
+  end
+
+  def create?
     user.role == "teacher"
   end
 
-  def update_classroom?
+  def update?
     user.role == "teacher" 
   end
 
-  def delete_classroom?
+  def destroy?
     user.role == "teacher" 
   end
 end

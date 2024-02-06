@@ -1,8 +1,8 @@
-class Users::TeacherRegistrationFlow
-  include Interactor::Organizer
+class Users::UserRegistrationFlow
+    include Interactor::Organizer
 
     organize Users::ValidateRegistrationCode,
              Users::CreateNewUser,
-             Users::CreateTeacherProfile,
+             Users::CreateUserProfile,
              Users::GenerateAccessToken
 end
