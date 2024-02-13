@@ -42,6 +42,7 @@ Doorkeeper.configure do
   #   end
   # end
 
+  skip_client_authentication_for_password_grant true
   # You can use your own model classes if you need to extend (or even override) default
   # Doorkeeper models such as `Application`, `AccessToken` and `AccessGrant.
   #

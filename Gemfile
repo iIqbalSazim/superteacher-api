@@ -45,6 +45,8 @@ group :development do
   # gem "spring"
 end
 
+gem 'bcrypt'
+
 gem 'json'
 
 gem 'sidekiq'

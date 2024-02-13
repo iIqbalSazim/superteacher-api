@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  use_doorkeeper do
-    skip_controllers :authorizations, :applications, :authorized_applications
+  scope 'api/v1' do
+    use_doorkeeper do
+      # it accepts :authorizations, :tokens, :applications and :authorized_applications
+      skip_controllers :applications, :authorized_applications, :authorizations
+    end
   end
 
   namespace :api do

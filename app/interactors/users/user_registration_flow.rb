@@ -3,6 +3,5 @@ class Users::UserRegistrationFlow
 
     organize Users::ValidateRegistrationCode,
              Users::CreateNewUser,
-             Users::CreateUserProfile,
-             Users::GenerateAccessToken
+             Users::CreateUserProfile
 end
