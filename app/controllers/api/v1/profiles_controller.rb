@@ -17,9 +17,29 @@ class Api::V1::ProfilesController < BaseController
 
     def profile_params
         if current_user.teacher?
-            params.require(:profile).permit(:first_name, :last_name, :gender, :highest_education_level, :major_subject, subjects_to_teach: [])
+            params.require(:profile).permit(
+                :first_name,
+                :last_name,
+                :gender,
+                :highest_education_level,
+                :major_subject,
+                subjects_to_teach: []
+            )
         elsif current_user.student?
-            params.require(:profile).permit(:first_name, :last_name, :gender, :phone_number, :address, education: [:level, :english_bangla_medium, :class_level, :degree_level, :semester_year])
+            params.require(:profile).permit(
+                :first_name,
+                :last_name,
+                :gender,
+                :phone_number,
+                :address,
+                education: [
+                    :level,
+                    :english_bangla_medium,
+                    :class_level,
+                    :degree_level,
+                    :semester_year
+                ]
+            )
         end
     end
 

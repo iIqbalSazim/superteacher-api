@@ -18,8 +18,14 @@ class Api::V1::UsersController < BaseController
 
     def user_params
         params.require(:user).permit(
-            :email, :password, :gender, :first_name, :last_name, :phone_number, :role,
             :code,
+            :email,
+            :password,
+            :gender,
+            :first_name,
+            :last_name,
+            :phone_number,
+            :role,
             :address,
             :major_subject,
             :highest_education_level,

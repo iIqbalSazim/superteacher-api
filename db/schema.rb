@@ -10,9 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_14_130951) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_16_090640) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assignments", force: :cascade do |t|
+    t.bigint "resource_id", null: false
+    t.datetime "due_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["resource_id"], name: "index_assignments_on_resource_id"
+  end
 
   create_table "classroom_global_messages", force: :cascade do |t|
     t.bigint "classroom_id", null: false
@@ -43,6 +51,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_14_130951) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["teacher_id"], name: "index_classrooms_on_teacher_id"
+  end
+
+  create_table "exams", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "description"
+    t.datetime "date", null: false
+    t.bigint "classroom_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["classroom_id"], name: "index_exams_on_classroom_id"
   end
 
   create_table "oauth_access_tokens", force: :cascade do |t|
@@ -126,11 +144,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_14_130951) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "assignments", "resources", on_delete: :cascade
   add_foreign_key "classroom_global_messages", "classrooms", on_delete: :cascade
   add_foreign_key "classroom_global_messages", "users", on_delete: :cascade
   add_foreign_key "classroom_students", "classrooms", on_delete: :cascade
   add_foreign_key "classroom_students", "users", column: "student_id", on_delete: :cascade
   add_foreign_key "classrooms", "users", column: "teacher_id", on_delete: :cascade
+  add_foreign_key "exams", "classrooms", on_delete: :cascade
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "resources", "classrooms", on_delete: :cascade
   add_foreign_key "student_profiles", "users", column: "student_id", on_delete: :cascade

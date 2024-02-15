@@ -1,4 +1,4 @@
-class Classrooms::Resources::GetResources < BaseInteractor
+class Classrooms::Exams::GetExams < BaseInteractor
     include Interactor
 
     REQUIRED_PARAMS = %i[classroom_id].freeze
@@ -8,8 +8,8 @@ class Classrooms::Resources::GetResources < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        resources = Resource.where(classroom_id: classroom_id)
+        exams = Exam.where(classroom_id: classroom_id)
 
-        context.resources = resources
+        context.exams = exams
     end
 end

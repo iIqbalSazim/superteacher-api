@@ -1,4 +1,4 @@
-class Users::AuthenticateUser
+class Users::AuthenticateUser < BaseInteractor
   include Interactor
 
   REQUIRED_PARAMS = %i[user_params].freeze
@@ -8,6 +8,8 @@ class Users::AuthenticateUser
   delegate(*REQUIRED_PARAMS, to: :context)
 
   def call
+    validate_params REQUIRED_PARAMS
+
     existing_user = User.find_by(email: user_params[:email])
 
     if existing_user && existing_user.authenticate(user_params[:password])

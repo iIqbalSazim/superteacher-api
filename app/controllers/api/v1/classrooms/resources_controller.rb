@@ -14,7 +14,7 @@ class Api::V1::Classrooms::ResourcesController < BaseController
     end
 
     def create
-        result = Classrooms::Resources::CreateNewResourceFlow.call(resource_params: resource_params,
+        result = Classrooms::Resources::CreateNewResourceFlow.call(params: resource_params,
                                                                    classroom_id: resource_params[:classroom_id],
                                                                    current_user: current_user)
 
@@ -30,7 +30,14 @@ class Api::V1::Classrooms::ResourcesController < BaseController
     private 
     
     def resource_params
-        params.require(:resource).permit(:title, :description, :resource_type, :url, :classroom_id)
+        params.require(:resource).permit(
+            :title,
+            :description,
+            :resource_type,
+            :url,
+            :classroom_id,
+            :due_date
+        )
     end
 
     def resource_model
