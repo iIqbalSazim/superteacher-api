@@ -1,3 +1,3 @@
 class ExamSerializer < Panko::Serializer
-  attributes :id, :title, :description, :created_at, :date
+  attributes :id, :title, :classroom_id, :description, :created_at, :date
 end

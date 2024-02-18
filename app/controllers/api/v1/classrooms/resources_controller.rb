@@ -27,6 +27,33 @@ class Api::V1::Classrooms::ResourcesController < BaseController
         end
     end
 
+    def update
+        result = Classrooms::Resources::UpdateResourceFlow.call(params: resource_params,
+                                                                classroom_id: params[:classroom_id],
+                                                                resource_id: params[:id],
+                                                                current_user: current_user)
+
+        if result.success?
+            serialized_resource = ResourceSerializer.new.serialize(result.resource)
+
+            render json: { resource: serialized_resource }, status: :ok
+        else
+            render json: { message: result.message }, status: result.status
+        end
+    end
+
+    def destroy
+        result = Classrooms::Resources::DeleteResourceFlow.call(classroom_id: params[:classroom_id],
+                                                                resource_id: params[:id],
+                                                                current_user: current_user)
+
+        if result.success?
+            render status: :ok
+        else
+            render json: { message: result.message }, status: result.status
+        end
+    end
+
     private 
     
     def resource_params

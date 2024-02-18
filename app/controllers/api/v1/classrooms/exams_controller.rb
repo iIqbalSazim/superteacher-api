@@ -27,6 +27,33 @@ class Api::V1::Classrooms::ExamsController < BaseController
         end
     end
 
+    def update
+        result = Classrooms::Exams::UpdateExamFlow.call(params: exam_params,
+                                                        classroom_id: params[:classroom_id],
+                                                        exam_id: params[:id],
+                                                        current_user: current_user)
+
+        if result.success?
+            serialized_exam = ExamSerializer.new.serialize(result.exam)
+
+            render json: { exam: serialized_exam }, status: :ok
+        else
+            render json: { message: result.message }, status: result.status
+        end
+    end
+
+    def destroy
+        result = Classrooms::Exams::DeleteExamFlow.call(classroom_id: params[:classroom_id],
+                                                        exam_id: params[:id],
+                                                        current_user: current_user)
+
+        if result.success?
+            render status: :ok
+        else
+            render json: { message: result.message }, status: result.status
+        end
+    end
+
     private 
     
     def exam_params

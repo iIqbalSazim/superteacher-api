@@ -23,9 +23,9 @@ Rails.application.routes.draw do
         post "students/enroll", to: "classrooms/students#enroll"
         put "students/remove", to: "classrooms/students#remove"
 
-        resources :resources, only: [:index, :create], controller: 'classrooms/resources'
+        resources :resources, only: [:index, :create, :update, :destroy], controller: 'classrooms/resources'
 
-        resources :exams, only: [:index, :create], controller: 'classrooms/exams'
+        resources :exams, only: [:index, :create, :update, :destroy], controller: 'classrooms/exams'
       end
 
       post "cloudinary/upload", to: "cloudinary#upload_file"
