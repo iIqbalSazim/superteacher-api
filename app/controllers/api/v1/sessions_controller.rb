@@ -8,7 +8,7 @@ class Api::V1::SessionsController < BaseController
         if result.success?
             serialized_user = UserSerializer.new.serialize(result.user_data)
             
-            render json: { user: serialized_user, token: { access_token: result.token, token_type: 'Bearer'} }, status: :ok
+            render json: { user: serialized_user }, status: :ok
         else
             render json: { message: result.message }, status: :unprocessable_entity
         end
