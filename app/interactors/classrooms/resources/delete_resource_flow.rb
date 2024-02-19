@@ -2,6 +2,6 @@ class Classrooms::Resources::DeleteResourceFlow
     include Interactor::Organizer
 
     organize Shared::FindClassroom,
-             Shared::ValidateClassroomTeacher,
+             Shared::ValidateUserAccess,
              Classrooms::Resources::DeleteResource
 end

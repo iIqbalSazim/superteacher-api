@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_16_090640) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_18_172040) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -121,6 +121,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_090640) do
     t.index ["student_id"], name: "index_student_profiles_on_student_id"
   end
 
+  create_table "submissions", force: :cascade do |t|
+    t.bigint "student_id", null: false
+    t.bigint "assignment_id", null: false
+    t.datetime "submitted_on"
+    t.string "url"
+    t.string "submission_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assignment_id"], name: "index_submissions_on_assignment_id"
+    t.index ["student_id", "assignment_id"], name: "index_submissions_on_student_id_and_assignment_id", unique: true
+    t.index ["student_id"], name: "index_submissions_on_student_id"
+  end
+
   create_table "teacher_profiles", force: :cascade do |t|
     t.bigint "teacher_id", null: false
     t.string "highest_education_level"
@@ -154,5 +167,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_16_090640) do
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "resources", "classrooms", on_delete: :cascade
   add_foreign_key "student_profiles", "users", column: "student_id", on_delete: :cascade
+  add_foreign_key "submissions", "assignments", on_delete: :cascade
+  add_foreign_key "submissions", "users", column: "student_id", on_delete: :cascade
   add_foreign_key "teacher_profiles", "users", column: "teacher_id", on_delete: :cascade
 end

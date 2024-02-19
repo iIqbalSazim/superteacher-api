@@ -26,6 +26,10 @@ Rails.application.routes.draw do
         resources :resources, only: [:index, :create, :update, :destroy], controller: 'classrooms/resources'
 
         resources :exams, only: [:index, :create, :update, :destroy], controller: 'classrooms/exams'
+
+        resources :assignments, only: [] do
+          resources :submissions, only: [:create, :destroy], controller: 'classrooms/assignments/submissions'
+        end
       end
 
       post "cloudinary/upload", to: "cloudinary#upload_file"

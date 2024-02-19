@@ -2,6 +2,6 @@ class Classrooms::DeleteClassroomFlow
     include Interactor::Organizer
 
     organize Shared::FindClassroom,
-             Shared::ValidateClassroomTeacher,
+             Shared::ValidateUserAccess,
              Classrooms::DeleteClassroom
 end

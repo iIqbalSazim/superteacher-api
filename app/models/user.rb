@@ -9,10 +9,10 @@ class User < ApplicationRecord
     has_many :classroom_global_messages
 
     validates :email, presence: true, uniqueness: true, length: { maximum: 255 }
-    validates :password, presence: true, length: { maximum: 255 }
+    validates :password_digest, presence: true, length: { maximum: 255 }
     validates :first_name, presence: true, length: { maximum: 255 }
     validates :last_name, presence: true, length: { maximum: 255 }
-    validates :phone_number, length: { maximum: 10 }
+    validates :phone_number, length: { maximum: 11 }
     validates :gender, presence: true
     validates :role, presence: true
 

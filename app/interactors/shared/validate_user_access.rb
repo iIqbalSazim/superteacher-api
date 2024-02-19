@@ -8,7 +8,7 @@ class Shared::ValidateUserAccess < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        classroom = Classroom.find(classroom_id)
+        classroom = Classroom.find_by!(id: classroom_id)
 
         validate_teacher_access(classroom) if current_user.teacher?
         validate_student_access(classroom) if current_user.student?
@@ -31,6 +31,7 @@ class Shared::ValidateUserAccess < BaseInteractor
     def handle_unauthorized_access
         context.fail!(
             message: YOU_ARE_NOT_AUTHORIZED,
+            status: :forbidden
         )
     end
 end

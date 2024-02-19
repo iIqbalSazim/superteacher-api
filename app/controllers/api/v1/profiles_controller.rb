@@ -21,6 +21,8 @@ class Api::V1::ProfilesController < BaseController
                 :first_name,
                 :last_name,
                 :gender,
+                :address,
+                :education,
                 :highest_education_level,
                 :major_subject,
                 subjects_to_teach: []
