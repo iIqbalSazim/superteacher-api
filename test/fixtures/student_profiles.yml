@@ -1,0 +1,10 @@
+student_profile:
+  id: 1
+  student_id: 10
+  address: "Test"
+  education:
+    level: "University"
+    english_bangla_medium: ""
+    class_level: ""
+    degree_level: "Bachelors"
+    semester_year: "2023"
