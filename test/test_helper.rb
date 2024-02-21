@@ -31,15 +31,13 @@ module ActiveSupport
 
   class ActionController::TestCase
     def setup_controller_with_fake_user
-      fake_user = User.find_by(id: 1)
+      @fake_user = users(:teacher_user)
 
       token = mock
       token.stubs(:acceptable?).returns(true)
-      token.stubs(:resource_owner_id).returns(fake_user.id)
+      token.stubs(:resource_owner_id).returns(@fake_user.id)
 
       @controller.stubs(:doorkeeper_token).returns(token)
     end
   end
 end
-
-

@@ -3,8 +3,6 @@ class Classrooms::GetClassroomsByUser < BaseInteractor
 
     REQUIRED_PARAMS = %i[current_user].freeze
 
-    CLASSROOMS_NOT_FOUND = "Classrooms not found"
-
     delegate(*REQUIRED_PARAMS, to: :context)
 
     def call

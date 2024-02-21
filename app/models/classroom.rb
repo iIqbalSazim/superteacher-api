@@ -18,6 +18,8 @@ class Classroom < ApplicationRecord
     private
 
     def validate_days_format
+        return if days.nil?
+        
         valid_days = %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday]
 
         days.each do |day|
