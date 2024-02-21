@@ -129,4 +129,41 @@ class Api::V1::ClassroomsControllerTest < ActionController::TestCase
 
         assert_response :unprocessable_entity
     end
+
+    test "#destroy responds with success" do
+        params = @classroom_params.dup
+
+        params = params.merge({
+            id: 1,
+        })
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+
+        Classrooms::DeleteClassroomFlow.expects(:call).returns(interactor_result)
+
+        delete :destroy, params: params
+
+        assert_response :ok
+    end
+
+    test "#destroy does not respond with success" do
+        params = @classroom_params.dup
+
+        params = params.merge({
+            id: 999,
+        })
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error")
+        interactor_result.expects(:status).returns(:unprocessable_entity)
+        
+        Classrooms::DeleteClassroomFlow.expects(:call).returns(interactor_result)
+
+        delete :destroy, params: params
+
+        assert_response :unprocessable_entity
+    end
+
 end
