@@ -68,3 +68,5 @@ gem 'minitest'
 gem 'mocha'
 
 gem 'shoulda'
+
+gem 'rails-controller-testing'

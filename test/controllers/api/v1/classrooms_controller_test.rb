@@ -90,4 +90,43 @@ class Api::V1::ClassroomsControllerTest < ActionController::TestCase
 
         assert_response :unprocessable_entity
     end
+
+    test "#update responds with success" do
+        params = @classroom_params.dup
+
+        params = params.merge({
+            id: 1,
+        })
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+        interactor_result.expects(:updated_classroom).returns({})
+
+        ClassroomSerializer.any_instance.stubs(:serialize).returns({})
+
+        Classrooms::UpdateClassroomFlow.expects(:call).returns(interactor_result)
+
+        put :update, params: params
+
+        assert_response :ok
+    end
+
+    test "#update does not respond with success" do
+        params = @classroom_params.dup
+
+        params = params.merge({
+            id: 999,
+        })
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error")
+        interactor_result.expects(:status).returns(:unprocessable_entity)
+        
+        Classrooms::UpdateClassroomFlow.expects(:call).returns(interactor_result)
+
+        put :update, params: params
+
+        assert_response :unprocessable_entity
+    end
 end
