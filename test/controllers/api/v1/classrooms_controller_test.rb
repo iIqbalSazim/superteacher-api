@@ -39,6 +39,32 @@ class Api::V1::ClassroomsControllerTest < ActionController::TestCase
         assert_response :unprocessable_entity
     end
 
+    test "#show responds with success" do
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+        interactor_result.expects(:classroom).returns({})
+
+        ClassroomSerializer.any_instance.stubs(:serialize).returns({})
+
+        Shared::FindClassroom.expects(:call).returns(interactor_result)
+
+        get :show, params: { id: 1 }
+
+        assert_response :ok
+    end
+
+    test "#show does not respond with success" do
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error")
+
+        Shared::FindClassroom.expects(:call).returns(interactor_result)
+
+        get :show, params: { id: 1 }
+
+        assert_response :unprocessable_entity
+    end
+
     test "#create responds with success" do
         interactor_result = mock
         interactor_result.expects(:success?).returns(true)
