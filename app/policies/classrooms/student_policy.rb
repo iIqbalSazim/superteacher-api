@@ -3,10 +3,6 @@ class Classrooms::StudentPolicy < ApplicationPolicy
     true
   end
 
-  def unenrolled_students?
-    user.teacher?
-  end
-
   def enroll?
     user.teacher?
   end

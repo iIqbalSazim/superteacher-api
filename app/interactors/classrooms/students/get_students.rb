@@ -3,9 +3,6 @@ class Classrooms::Students::GetStudents < BaseInteractor
 
     REQUIRED_PARAMS = %i[classroom filter].freeze
 
-    STUDENTS_NOT_FOUND = "Students not found"
-    ENROLLED_NOT_FOUND = "No enrolled students found"
-
     delegate(*REQUIRED_PARAMS, to: :context)
 
     def call
@@ -19,12 +16,10 @@ class Classrooms::Students::GetStudents < BaseInteractor
     end
 
     def fetch_enrolled_students
-        context.students = classroom.students
-     end
+        context.students = User.where(role: "student").where(id: classroom.student_ids)
+    end
 
     def fetch_unenrolled_students
-        unenrolled_students = User.where(role: "student").where.not(id: classroom.student_ids)
-
-        context.students = unenrolled_students
+        context.students = User.where(role: "student").where.not(id: classroom.student_ids)
     end
 end
