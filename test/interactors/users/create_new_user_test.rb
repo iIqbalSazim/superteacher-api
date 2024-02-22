@@ -22,7 +22,7 @@ class Users::CreateNewUserTest < ActiveSupport::TestCase
 
   test "returns error if user already exists" do
     invalid_user_params = @user_params.dup
-    invalid_user_params[:email] = users(:teacher_user)[:email]
+    invalid_user_params[:email] = users(:math_classroom_teacher)[:email]
 
     result = Users::CreateNewUser.call(user_params: invalid_user_params)
 

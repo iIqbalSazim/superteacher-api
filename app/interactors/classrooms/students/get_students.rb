@@ -8,7 +8,7 @@ class Classrooms::Students::GetStudents < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        if filter == "unenrolled"
+        if filter == User::UNENROLLED_STUDENT
             fetch_unenrolled_students
         else
             fetch_enrolled_students

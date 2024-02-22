@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Classrooms::GlobalMessages::BroadcastMessageTest < ActiveSupport::TestCase
     def setup
-        @classroom = classrooms(:classroom_one)
+        @classroom = classrooms(:math_classroom)
         @message = classroom_global_messages(:message_one)
     end
 

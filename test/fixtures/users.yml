@@ -1,4 +1,4 @@
-teacher_user:
+math_classroom_teacher:
   id: 1
   email: "teacher@email.com"
   password_digest: "password"
@@ -25,6 +25,16 @@ student_user:
   first_name: "Student"
   last_name: "User"
   gender: "Male"
+  phone_number: nil
+  role: "student"
+
+math_student_two:
+  id: 12
+  email: "math@user.com"
+  password_digest: "password"
+  first_name: "Math"
+  last_name: "User"
+  gender: "Female"
   phone_number: nil
   role: "student"
 

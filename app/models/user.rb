@@ -1,5 +1,9 @@
 class User < ApplicationRecord
     has_secure_password
+
+    UNENROLLED_STUDENT = "unenrolled"
+    ENROLLED_STUDENT = "enrolled"
+
     enum role: { student: 'student', teacher: 'teacher' }
     enum gender: { Male: 'Male', Female: 'Female' }
 

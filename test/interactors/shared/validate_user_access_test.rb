@@ -2,11 +2,11 @@ require 'test_helper'
 
 class Shared::ValidateUserAccessTest < ActiveSupport::TestCase
     def setup
-        @teacher_with_classroom = users(:teacher_user)
+        @teacher_with_classroom = users(:math_classroom_teacher)
         @teacher_without_classroom = users(:teacher_user_2)
         @student = users(:student_user)
         @not_enrolled_student = users(:student_user_2)
-        @classroom = classrooms(:classroom_one)
+        @classroom = classrooms(:math_classroom)
     end
 
     test "teacher has access to the classroom they teach" do

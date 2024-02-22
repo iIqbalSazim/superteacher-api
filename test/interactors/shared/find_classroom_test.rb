@@ -2,7 +2,7 @@ require 'test_helper'
 
 class FindClassroomTest < ActiveSupport::TestCase
     test "finds the classroom when valid id is passed" do
-        classroom_id = classrooms(:classroom_one).id
+        classroom_id = classrooms(:math_classroom).id
 
         result = Shared::FindClassroom.call(classroom_id: classroom_id)
 

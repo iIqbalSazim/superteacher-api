@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ClassroomPolicyTest < ActiveSupport::TestCase
     def setup
-        @teacher_user = users(:teacher_user)
+        @teacher_user = users(:math_classroom_teacher)
         @student_user = users(:student_user)
     end
 

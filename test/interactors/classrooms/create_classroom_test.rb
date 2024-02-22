@@ -8,7 +8,7 @@ class CreateClassroomTest < ActiveSupport::TestCase
             subject: "Math",
             class_time: "10:00 AM",
             days: ["Monday", "Wednesday", "Friday"],
-            teacher_id: users(:teacher_user).id
+            teacher_id: users(:math_classroom_teacher).id
         }
     end
 

@@ -1,15 +1,15 @@
-classroom_one:
+math_classroom:
   id: 1
   teacher_id: 1
   title: "Test class one"
-  subject: "Chemistry"
+  subject: "Math"
   meet_link: "https://example.com"
   class_time: "2000-01-01T12:00:00Z"
   days:
     - "Sunday"
     - "Tuesday"
 
-classroom_two:
+biology_classroom:
   id: 2
   teacher_id: 1
   title: "Test class two"
@@ -19,3 +19,15 @@ classroom_two:
   days:
     - "Sunday"
     - "Monday"
+
+empty_classroom:
+  id: 3
+  teacher_id: 1
+  title: "Empty classroom"
+  subject: "Physics"
+  meet_link: "https://example.com"
+  class_time: "2000-01-01T12:00:00Z"
+  days:
+    - "Sunday"
+    - "Monday"
+    - "Thursday"

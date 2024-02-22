@@ -3,8 +3,8 @@ require 'test_helper'
 class Classrooms::GlobalMessages::CreateMessageTest < ActiveSupport::TestCase
     def setup
         @params = {
-            user_id: users(:teacher_user).id,
-            classroom_id: classrooms(:classroom_one).id,
+            user_id: users(:math_classroom_teacher).id,
+            classroom_id: classrooms(:math_classroom).id,
             text: "Test message"
         }
     end

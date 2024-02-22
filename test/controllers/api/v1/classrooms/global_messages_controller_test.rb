@@ -4,8 +4,8 @@ class Api::V1::Classrooms::GlobalMessagesControllerTest < ActionController::Test
     setup :setup_controller_with_fake_user
 
     def setup
-        @user = users(:teacher_user)
-        @classroom = classrooms(:classroom_one)
+        @user = users(:math_classroom_teacher)
+        @classroom = classrooms(:math_classroom)
         @message_params = {
             classroom_id: 1,
             global_message: {

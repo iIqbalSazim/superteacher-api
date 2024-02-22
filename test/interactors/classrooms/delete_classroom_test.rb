@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Classrooms::DeleteClassroomTest < ActiveSupport::TestCase
     def setup
-        @classroom = classrooms(:classroom_one)
+        @classroom = classrooms(:math_classroom)
     end
 
     test "delete classroom successfully" do

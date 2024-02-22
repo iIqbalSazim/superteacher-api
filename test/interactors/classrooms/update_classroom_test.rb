@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Classrooms::UpdateClassroomTest < ActiveSupport::TestCase
     def setup
-        @classroom = classrooms(:classroom_one)
+        @classroom = classrooms(:math_classroom)
         @classroom_params = {
             title: "Updated Classroom",
             subject: "Updated Subject",

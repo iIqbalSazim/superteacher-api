@@ -42,7 +42,7 @@ class UserTest < ActiveSupport::TestCase
     end
 
     test '#teacher_profile exists for teacher user' do
-        user = users(:teacher_user)
+        user = users(:math_classroom_teacher)
 
         assert_not_nil user.teacher_profile
         assert_nil user.student_profile

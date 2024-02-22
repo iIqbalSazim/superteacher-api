@@ -2,3 +2,8 @@ classroom_student_1:
   id: 1
   student_id: 10
   classroom_id: 1
+
+math_classroom_student_two:
+  id: 2
+  student_id: 12
+  classroom_id: 1
