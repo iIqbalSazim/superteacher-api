@@ -1,39 +1,57 @@
 require 'test_helper'
 
 class Users::ValidateRegistrationCodeTest < ActiveSupport::TestCase
+
+    ERROR_MSG_VALIDATION_ATTEMPTS_EXCEEDED = Users::ValidateRegistrationCode::VALIDATION_ATTEMPTS_EXCEEDED 
+    ERROR_MSG_INVALID_CODE = Users::ValidateRegistrationCode::INVALID_CODE  
+
     def setup
-        @user_params = { email: "test@email.com", role: "teacher", code: "valid1" }
+        @registration_code = registration_codes(:valid_code)
+        @user_params = {
+            email: registration_codes(:valid_code)[:email],
+            role: "teacher",
+            code: registration_codes(:valid_code)[:code]
+        }
     end
 
-  test "validates registration code when correct params are passed" do
-    registration_code = registration_codes(:valid_code)
+    test "validates registration code when correct params are passed" do
+        result = Users::ValidateRegistrationCode.call(user_params: @user_params)
 
-    result = Users::ValidateRegistrationCode.call(user_params: @user_params)
+        assert result.success?
+        assert_equal @registration_code.code, result.code
+        assert @registration_code.reload.is_used
+        assert_equal 0, @registration_code.attempts_count
+    end
 
-    assert result.success?
-    assert_equal registration_code.code, result.code
-    assert registration_code.reload.is_used
-    assert_equal 0, registration_code.attempts_count
-  end
+    test "returns error and decrements attempts_count if registration code is wrong" do
+        user_params = @user_params.merge(code: "!valid")
 
-    test "returns error if registration code is invalid" do
-        result = Users::ValidateRegistrationCode.call(user_params: @user_params.merge(code: "invalid_code"))
+        result = Users::ValidateRegistrationCode.call(user_params: user_params)
 
         assert_not result.success?
-        assert_equal "Invalid registration code. Please try again or contact the admin.", result.message
+        assert_equal ERROR_MSG_INVALID_CODE, result.message
+        assert_equal 2, @registration_code.reload.attempts_count
+    end
+
+    test "returns error if wrong email" do
+        user_params = @user_params.merge(email: "invalid@email.com")
+
+        result = Users::ValidateRegistrationCode.call(user_params: user_params)
+
+        assert_not result.success?
+        assert_equal ERROR_MSG_INVALID_CODE, result.message
     end
 
     test "returns error if registration code attempts are exceeded" do
-        registration_code = registration_codes(:valid_code)
-        registration_code.update(attempts_count: 0)
+        @registration_code.update(attempts_count: 0)
 
         result = Users::ValidateRegistrationCode.call(user_params: @user_params)
 
         assert_not result.success?
-        assert_equal "Validation attempts exceeded. Please contact the admin.", result.message
+        assert_equal ERROR_MSG_VALIDATION_ATTEMPTS_EXCEEDED, result.message
     end
 
-    test "does not validate registration code if user role is not teacher" do
+    test "returns if user role is student" do
         user_params = @user_params.merge(role: "student")
 
         result = Users::ValidateRegistrationCode.call(user_params: user_params)

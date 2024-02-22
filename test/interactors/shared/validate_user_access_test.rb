@@ -1,37 +1,58 @@
 require 'test_helper'
 
 class Shared::ValidateUserAccessTest < ActiveSupport::TestCase
+
+    ERROR_MSG_CLASSROOM_NOT_FOUND = Shared::ValidateUserAccess::CLASSROOM_NOT_FOUND
+    ERROR_MSG_YOU_ARE_NOT_AUTHORIZED = BaseInteractor::YOU_ARE_NOT_AUTHORIZED
+
     def setup
-        @teacher_with_classroom = users(:math_classroom_teacher)
-        @teacher_without_classroom = users(:teacher_user_2)
-        @student = users(:student_user)
-        @not_enrolled_student = users(:student_user_2)
-        @classroom = classrooms(:math_classroom)
+        @math_classroom = classrooms(:math_classroom)
     end
 
     test "teacher has access to the classroom they teach" do
-        result = Shared::ValidateUserAccess.call(current_user: @teacher_with_classroom, classroom_id: @classroom.id)
+        math_teacher = users(:math_teacher)
+
+        result = Shared::ValidateUserAccess.call(current_user: math_teacher, classroom_id: @math_classroom.id)
 
         assert result.success?
     end
 
     test "teacher does not have access to a classroom they do not teach" do
-        result = Shared::ValidateUserAccess.call(current_user: @teacher_without_classroom, classroom_id: @classroom.id)
+        teacher_without_access = users(:biology_classroom_teacher)
+
+        result = Shared::ValidateUserAccess.call(current_user: teacher_without_access, classroom_id: @math_classroom.id)
 
         assert_not result.success?
         assert_equal :forbidden, result.status
+        assert_equal ERROR_MSG_YOU_ARE_NOT_AUTHORIZED, result.message
     end
 
     test "student has access to a classroom they are enrolled in" do
-        result = Shared::ValidateUserAccess.call(current_user: @student, classroom_id: @classroom.id)
+        enrolled_student = users(:math_student)
+
+        result = Shared::ValidateUserAccess.call(current_user: enrolled_student, classroom_id: @math_classroom.id)
 
         assert result.success?
     end
 
     test "student does not have access to a classroom they are not enrolled in" do
-        result = Shared::ValidateUserAccess.call(current_user: @not_enrolled_student, classroom_id: @classroom.id)
+        unenrolled_student = users(:unenrolled_student)
+
+        result = Shared::ValidateUserAccess.call(current_user: unenrolled_student, classroom_id: @math_classroom.id)
 
         assert_not result.success?
         assert_equal :forbidden, result.status
+        assert_equal ERROR_MSG_YOU_ARE_NOT_AUTHORIZED, result.message
+    end
+
+    test "throws error if classroom does not exist in the database" do
+        enrolled_student = users(:math_student)
+        non_existing_classroom_id = 999
+
+        result = Shared::ValidateUserAccess.call(current_user: enrolled_student, classroom_id: non_existing_classroom_id)
+
+        assert_not result.success?
+        assert_equal :unprocessable_entity, result.status
+        assert_equal ERROR_MSG_CLASSROOM_NOT_FOUND, result.message
     end
 end

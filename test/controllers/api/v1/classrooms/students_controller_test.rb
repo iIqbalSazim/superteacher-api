@@ -4,7 +4,7 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
     setup :setup_controller_with_fake_user
 
     setup do
-        @enroll_student_params = {
+        @student_params = {
             filter: "enrolled",
             classroom_id: 1,
             classroom_student: {
@@ -21,7 +21,7 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
 
         Classrooms::Students::GetStudentsFlow.expects(:call).returns(interactor_result)
 
-        get :index, params: @enroll_student_params
+        get :index, params: @student_params
 
         assert_response :ok
     end
@@ -33,7 +33,7 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
 
         Classrooms::Students::GetStudentsFlow.expects(:call).returns(interactor_result)
 
-        get :index, params: @enroll_student_params
+        get :index, params: @student_params
 
         assert_response :unprocessable_entity
     end
@@ -47,7 +47,7 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
 
         Classrooms::Students::EnrollStudentFlow.expects(:call).returns(interactor_result)
 
-        post :enroll, params: @enroll_student_params
+        post :enroll, params: @student_params
 
         assert_response :ok
     end
@@ -60,7 +60,7 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
 
         Classrooms::Students::EnrollStudentFlow.expects(:call).returns(interactor_result)
 
-        post :enroll, params: @enroll_student_params
+        post :enroll, params: @student_params
 
         assert_response :unprocessable_entity
     end

@@ -31,7 +31,7 @@ module ActiveSupport
 
   class ActionController::TestCase
     def setup_controller_with_fake_user
-      @fake_user = users(:math_classroom_teacher)
+      @fake_user = users(:math_teacher)
 
       token = mock
       token.stubs(:acceptable?).returns(true)

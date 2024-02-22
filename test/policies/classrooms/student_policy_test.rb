@@ -2,8 +2,8 @@ require 'test_helper'
 
 class Classrooms::StudentPolicyTest < ActiveSupport::TestCase
     def setup
-        @teacher_user = users(:math_classroom_teacher)
-        @student_user = users(:student_user)
+        @teacher_user = users(:math_teacher)
+        @student_user = users(:math_student)
     end
 
     test 'teacher user is authorized to call index' do

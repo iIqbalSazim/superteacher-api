@@ -11,7 +11,7 @@ class ClassroomGlobalMessageTest < ActiveSupport::TestCase
 
     test "message is created with validations passing" do
         classroom = classrooms(:math_classroom)
-        user = users(:math_classroom_teacher)
+        user = users(:math_teacher)
         valid_message = ClassroomGlobalMessage.new(
             text: "Valid message text",
             classroom_id: classroom.id,

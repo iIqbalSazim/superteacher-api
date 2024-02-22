@@ -3,15 +3,24 @@ class Shared::ValidateUserAccess < BaseInteractor
 
     REQUIRED_PARAMS = %i[current_user classroom_id].freeze
 
+    CLASSROOM_NOT_FOUND = "Classroom not found"
+
     delegate(*REQUIRED_PARAMS, to: :context)
 
     def call
         validate_params REQUIRED_PARAMS
 
-        classroom = Classroom.find_by!(id: classroom_id)
+        classroom = Classroom.find_by(id: classroom_id)
 
-        validate_teacher_access(classroom) if current_user.teacher?
-        validate_student_access(classroom) if current_user.student?
+        if classroom.present?
+            validate_teacher_access(classroom) if current_user.teacher?
+            validate_student_access(classroom) if current_user.student?
+        else
+            context.fail!(
+                message: CLASSROOM_NOT_FOUND,
+                status: :unprocessable_entity
+            )
+        end
     end
 
     private

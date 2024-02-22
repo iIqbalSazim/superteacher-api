@@ -7,8 +7,10 @@ class GetStudentsTest < ActiveSupport::TestCase
 
     test "get enrolled students" do
         math_classroom = classrooms(:math_classroom)
-
-        enrolled_students = [users(:student_user), users(:math_student_two)]
+        enrolled_students = [
+            users(:math_student),
+            users(:math_student_two)
+        ]
 
         result = Classrooms::Students::GetStudents.call(classroom: math_classroom, filter: ENROLLED)
 
@@ -18,7 +20,7 @@ class GetStudentsTest < ActiveSupport::TestCase
 
     test "get unenrolled students" do
         math_classroom = classrooms(:math_classroom)
-        unenrolled_students = [users(:student_user_2)]
+        unenrolled_students = [users(:unenrolled_student)]
 
         result = Classrooms::Students::GetStudents.call(classroom: math_classroom, filter: UNENROLLED)
 
@@ -33,6 +35,5 @@ class GetStudentsTest < ActiveSupport::TestCase
 
         assert result.success?
         assert_equal [], result.students
-
     end
 end

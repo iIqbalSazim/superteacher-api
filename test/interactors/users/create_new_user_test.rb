@@ -1,41 +1,41 @@
 require 'test_helper'
 
 class Users::CreateNewUserTest < ActiveSupport::TestCase
-    def setup
-        @user_params = {
-          email: "test@email.com",
-          password: "password",
-          first_name: "firstName",
-          last_name: "lastName",
-          gender: "Male",
-          phone_number: "12345678911",
-          role: "teacher"
-        }
-    end
+
+  ERROR_MSG_USER_ALREADY_EXISTS = Users::CreateNewUser::USER_ALREADY_EXISTS
+  ERROR_MSG_FAILED_TO_SAVE_USER = Users::CreateNewUser::FAILED_TO_SAVE_USER
 
   test "creates new user when correct params are passed" do
-    result = Users::CreateNewUser.call(user_params: @user_params)
+    user_params = {
+      email: "test@email.com",
+      password: "password",
+      first_name: "firstName",
+      last_name: "lastName",
+      gender: "Male",
+      role: "teacher"
+    }
+
+    result = Users::CreateNewUser.call(user_params: user_params)
 
     assert result.success?
     assert_not_nil result.user_data
   end
 
   test "returns error if user already exists" do
-    invalid_user_params = @user_params.dup
-    invalid_user_params[:email] = users(:math_classroom_teacher)[:email]
+    existing_user_email = users(:math_teacher)[:email]
 
-    result = Users::CreateNewUser.call(user_params: invalid_user_params)
+    result = Users::CreateNewUser.call(user_params: { email: existing_user_email })
 
     assert_not result.success?
     assert_nil result.user_data
-    assert_not_nil result.message
+    assert_equal ERROR_MSG_USER_ALREADY_EXISTS, result.message
   end
 
   test "returns error if incorrect params are passed" do
-    result = Users::CreateNewUser.call(user_params: { email: "test@user.com"})
+    result = Users::CreateNewUser.call(user_params: {})
 
     assert_not result.success?
     assert_nil result.user_data
-    assert_not_nil result.message
+    assert_equal ERROR_MSG_FAILED_TO_SAVE_USER, result.message
   end
 end

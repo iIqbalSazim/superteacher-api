@@ -2,5 +2,5 @@ valid_code:
   id: 1
   email: "test@email.com"
   is_used: false
-  code: "valid1"
+  code: "123456"
   attempts_count: 3

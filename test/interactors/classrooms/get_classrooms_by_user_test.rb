@@ -1,22 +1,36 @@
 require 'test_helper'
 
 class GetClassroomsByUserTest < ActiveSupport::TestCase
-    def setup
-        @teacher_user = users(:math_classroom_teacher)
-        @student_user = users(:student_user)
-    end
 
     test "should get classrooms for teacher user" do
-        result = Classrooms::GetClassroomsByUser.call(current_user: @teacher_user)
+        teacher_user = users(:math_teacher)
+
+        classrooms_owned_by_teacher = [classrooms(:math_classroom)]
+
+        result = Classrooms::GetClassroomsByUser.call(current_user: teacher_user)
 
         assert result.success?
-        assert_not_nil result.classrooms
+        assert_equal classrooms_owned_by_teacher, result.classrooms
     end
 
+
     test "should get classrooms for student user" do
-        result = Classrooms::GetClassroomsByUser.call(current_user: @student_user)
+        student_user = users(:math_student)
+
+        student_enrolled_classrooms = [classrooms(:math_classroom)]
+
+        result = Classrooms::GetClassroomsByUser.call(current_user: student_user)
 
         assert result.success?
-        assert_not_nil result.classrooms
+        assert_equal student_enrolled_classrooms, result.classrooms
+    end
+
+    test "should return empty array if no classrooms" do
+        unenrolled_student = users(:unenrolled_student)
+
+        result = Classrooms::GetClassroomsByUser.call(current_user: unenrolled_student)
+
+        assert result.success?
+        assert [], result.classroom
     end
 end

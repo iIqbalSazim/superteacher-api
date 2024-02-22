@@ -1,19 +1,24 @@
 require 'test_helper'
 
 class Classrooms::GlobalMessages::BroadcastMessageTest < ActiveSupport::TestCase
-    def setup
-        @classroom = classrooms(:math_classroom)
-        @message = classroom_global_messages(:message_one)
-    end
 
     test "should broadcast message successfully" do
-        result = Classrooms::GlobalMessages::BroadcastMessage.call(classroom_id: @classroom.id, new_message: @message)
+        classroom = classrooms(:math_classroom)
+        message = classroom_global_messages(:message_one)
+
+        result = Classrooms::GlobalMessages::BroadcastMessage.call(
+            classroom_id: classroom.id,
+            new_message: message
+        )
 
         assert result.success?
     end
 
     test "should fail to broadcast message without required parameters" do
-        result = Classrooms::GlobalMessages::BroadcastMessage.call(classroom_id: nil, new_message: nil)
+        result = Classrooms::GlobalMessages::BroadcastMessage.call(
+            classroom_id: 1,
+            new_message: nil
+        )
 
         assert_not result.success?
     end

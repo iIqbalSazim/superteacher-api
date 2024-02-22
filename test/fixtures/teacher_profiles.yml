@@ -1,8 +1,8 @@
-teacher_profile:
+math_teacher_profile:
   id: 1
   teacher_id: 1
   highest_education_level: "Masters"
-  major_subject: "Biology"
+  major_subject: "Math"
   subjects_to_teach:
     - "Physics"
     - "Biology"

@@ -15,7 +15,7 @@ class ClassroomTest < ActiveSupport::TestCase
 
     test "should validate days format" do
         classroom = Classroom.new(
-            teacher: users(:math_classroom_teacher),
+            teacher: users(:math_teacher),
             title: "Test Classroom",
             subject: "Test Subject",
             class_time: "10:00 AM - 12:00 PM",
@@ -25,7 +25,7 @@ class ClassroomTest < ActiveSupport::TestCase
         assert classroom.valid?
 
         invalid_classroom = Classroom.new(
-            teacher: users(:math_classroom_teacher),
+            teacher: users(:math_teacher),
             title: "Test Classroom",
             subject: "Test Subject",
             class_time: "10:00 AM - 12:00 PM",

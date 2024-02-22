@@ -11,7 +11,7 @@ math_classroom:
 
 biology_classroom:
   id: 2
-  teacher_id: 1
+  teacher_id: 2
   title: "Test class two"
   subject: "Biology"
   meet_link: "https://example.com"
@@ -22,7 +22,7 @@ biology_classroom:
 
 empty_classroom:
   id: 3
-  teacher_id: 1
+  teacher_id: 3
   title: "Empty classroom"
   subject: "Physics"
   meet_link: "https://example.com"

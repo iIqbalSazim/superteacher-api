@@ -2,7 +2,7 @@ require 'test_helper'
 
 class UserSerializerTest < ActiveSupport::TestCase
     test 'should render correct attributes if user is a teacher' do
-        user_data = users(:math_classroom_teacher)
+        user_data = users(:math_teacher)
 
         serialized_object = UserSerializer.new.serialize(user_data)
         parsed_object = JSON.parse(serialized_object.to_json)
@@ -18,7 +18,7 @@ class UserSerializerTest < ActiveSupport::TestCase
     end
 
     test 'should render correct attributes if user is a student' do
-        user_data = users(:student_user)
+        user_data = users(:math_student)
 
         serialized_object = UserSerializer.new.serialize(user_data)
         parsed_object = JSON.parse(serialized_object.to_json)

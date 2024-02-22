@@ -9,7 +9,7 @@ class ClassroomStudentTest < ActiveSupport::TestCase
 
     test "student is created when validations passing and association established with classroom and student" do
         classroom = classrooms(:math_classroom)
-        student = users(:student_user)
+        student = users(:math_student)
 
         classroom_student = ClassroomStudent.new(classroom: classroom, student: student)
 

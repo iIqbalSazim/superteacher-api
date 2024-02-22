@@ -10,7 +10,7 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
     end
 
     test "successfully enrolls student" do
-        unenrolled_student = users(:student_user_2)
+        unenrolled_student = users(:unenrolled_student)
 
         params = {
             student_id: unenrolled_student.id,
@@ -24,7 +24,7 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
     end
 
     test "fails to enroll student when record creation fails" do
-        unenrolled_student = users(:student_user_2)
+        unenrolled_student = users(:unenrolled_student)
 
         params = {
             student_id: unenrolled_student.id,
@@ -41,7 +41,7 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
     end
 
     test "fails to enroll already enrolled student" do
-        enrolled_student = users(:student_user)
+        enrolled_student = users(:math_student)
 
         params = {
             student_id: enrolled_student.id,

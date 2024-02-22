@@ -4,6 +4,8 @@ class Users::CreateUserProfile < BaseInteractor
   REQUIRED_PARAMS = %i[user_data user_params].freeze
 
   PROFILE_CREATION_FAILED = "User and profile creation failed"
+  STUDENT_PROFILE_CREATION_FAILED = "Failed to create student profile"
+  TEACHER_PROFILE_CREATION_FAILED = "Failed to create teacher profile"
 
   delegate(*REQUIRED_PARAMS, to: :context)
 
@@ -45,10 +47,18 @@ class Users::CreateUserProfile < BaseInteractor
 
   def handle_failed_to_create_profile
       user_data.destroy
-      context.fail!(
-        message: "Failed to create #{role} profile",
-        status: :unprocessable_entity
-      )
+      if role == "teacher"
+        context.fail!(
+          message: TEACHER_PROFILE_CREATION_FAILED,
+          status: :unprocessable_entity
+        )
+      else
+        context.fail!(
+          message: STUDENT_PROFILE_CREATION_FAILED,
+          status: :unprocessable_entity
+        )
+      end
+
   end
 
   def teacher_params
