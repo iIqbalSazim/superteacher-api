@@ -17,4 +17,16 @@ class Classrooms::GlobalMessagePolicyTest < ActiveSupport::TestCase
 
         assert policy.index?
     end
+
+    test 'teacher user authorized to call create' do
+        policy = Classrooms::GlobalMessagePolicy.new(@teacher_user, User)
+
+        assert policy.create?
+    end
+
+    test 'student user authorized to call create' do
+        policy = Classrooms::GlobalMessagePolicy.new(@student_user, User)
+
+        assert policy.create?
+    end
 end
