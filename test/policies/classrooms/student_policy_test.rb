@@ -29,4 +29,17 @@ class Classrooms::StudentPolicyTest < ActiveSupport::TestCase
 
         assert_not policy.enroll?
     end
+
+
+    test 'teacher user is authorized to call remove' do
+        policy = Classrooms::StudentPolicy.new(@teacher_user, User)
+
+        assert policy.remove?
+    end
+
+    test 'student user is not authorized to call remove' do
+        policy = Classrooms::StudentPolicy.new(@student_user, User)
+
+        assert_not policy.remove?
+    end
 end

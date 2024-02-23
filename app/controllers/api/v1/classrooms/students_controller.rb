@@ -34,7 +34,9 @@ class Api::V1::Classrooms::StudentsController < BaseController
                                                               current_user: current_user)
 
         if result.success?
-            render json: { removed_student: result.removed_student }, status: :ok
+            serialized_student = UserSerializer.new.serialize(result.removed_student)
+
+            render json: { removed_student: serialized_student }, status: :ok
         else
             render json: { message: result.message }, status: result.status
         end

@@ -64,4 +64,32 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
 
         assert_response :unprocessable_entity
     end
+
+    test "#remove responds with success" do
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+        interactor_result.expects(:removed_student).returns({})
+
+        UserSerializer.any_instance.stubs(:serialize).returns({})
+
+        Classrooms::Students::RemoveStudentFlow.expects(:call).returns(interactor_result)
+
+        put :remove, params: @student_params
+
+        assert_response :ok
+    end
+
+    test "#remove does not respond with success" do
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error message")
+        interactor_result.expects(:status).returns(:unprocessable_entity)
+
+        Classrooms::Students::RemoveStudentFlow.expects(:call).returns(interactor_result)
+
+        put :remove, params: @student_params
+
+        assert_response :unprocessable_entity
+    end
+
 end
