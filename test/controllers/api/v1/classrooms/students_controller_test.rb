@@ -91,5 +91,4 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
 
         assert_response :unprocessable_entity
     end
-
 end

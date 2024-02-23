@@ -1,0 +1,6 @@
+math_exam_one:
+  id: 1
+  classroom_id: 1
+  title: "Math exam 1"
+  description: "This is the test exam 1"
+  date: "Thu, 22 Feb 2024"

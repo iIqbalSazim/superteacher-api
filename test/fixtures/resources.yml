@@ -1,7 +1,15 @@
-resource_one:
+math_resource_one:
   id: 1
   classroom_id: 1
-  title: "Resource 1"
+  title: "Math Resource 1"
   description: "This is the test resource 1"
   resource_type: "assignment"
+  url: "http://testOne.com"
+
+biology_resource_one:
+  id: 2
+  classroom_id: 2
+  title: "Biology Resource 1"
+  description: "This is the test resource 1"
+  resource_type: "material"
   url: "http://testOne.com"
