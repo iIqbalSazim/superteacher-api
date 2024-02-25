@@ -1,5 +1,5 @@
 class GlobalMessageSerializer < Panko::Serializer
-  attributes :id, :classroom_id, :text, :created_at, :updated_at, :user
+  attributes :id, :classroom_id, :text, :created_at, :user
 
   def user
     {

@@ -18,8 +18,6 @@ class Api::V1::PasswordsController < BaseController
 
         if result.success?
             render json: { message: "Email sent" }, status: :ok
-        else
-            render json: { message: result.message }, status: :unprocessable_entity
         end
     end
     

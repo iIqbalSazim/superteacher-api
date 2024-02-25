@@ -15,9 +15,7 @@ class Passwords::Forgot < BaseInteractor
     if user.present?
       generate_new_password_and_mail_user(user)
     else
-      context.fail!(
-        message: USER_DOES_NOT_EXIST
-      )
+      return
     end
   end
 
@@ -39,6 +37,11 @@ class Passwords::Forgot < BaseInteractor
   end
 
   def generate_strong_password
-    SecureRandom.urlsafe_base64(16)
-  end 
+    loop do
+      password = SecureRandom.urlsafe_base64(16)
+      if password.match?(/(?=.*[A-Z])(?=.*[a-z])(?=.*\d)/)
+        return password
+      end
+    end 
+  end
 end

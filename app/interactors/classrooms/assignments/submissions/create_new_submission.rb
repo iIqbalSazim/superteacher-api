@@ -1,7 +1,7 @@
 class Classrooms::Assignments::Submissions::CreateNewSubmission < BaseInteractor
     include Interactor
 
-    REQUIRED_PARAMS = %i[params resource_id].freeze
+    REQUIRED_PARAMS = %i[params].freeze
 
     SUBMISSION_FAILED = "Failed to create submission"
     EXISTING_SUBMISSION_ERROR = "You have already submitted. Please delete the previous submission and try again."

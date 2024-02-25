@@ -31,7 +31,7 @@ Rails.application.routes.draw do
         resources :exams, only: [:index, :create, :update, :destroy], controller: 'classrooms/exams'
 
         resources :assignments, only: [] do
-          resources :submissions, only: [:create, :destroy], controller: 'classrooms/assignments/submissions'
+          resources :submissions, only: [:index, :create, :destroy], controller: 'classrooms/assignments/submissions'
         end
       end
 

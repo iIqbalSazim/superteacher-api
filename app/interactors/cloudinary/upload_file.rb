@@ -4,7 +4,7 @@ class Cloudinary::UploadFile < BaseInteractor
 
     REQUIRED_PARAMS = %i[file_params].freeze
 
-    FAILED_TO_UPLOAD = "Failed to upload file"
+    FAILED_TO_UPLOAD = "Failed to upload. Please try again."
 
     delegate(*REQUIRED_PARAMS, to: :context) 
 

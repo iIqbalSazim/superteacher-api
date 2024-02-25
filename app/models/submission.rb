@@ -20,9 +20,7 @@ class Submission < ApplicationRecord
   end
 
   def check_submission_status
-    if submitted_on.nil? || assignment.nil? || assignment.due_date.nil?
-      self.submission_status = :pending
-    elsif submitted_on > assignment.due_date
+    if self.submitted_on > assignment.due_date
       self.submission_status = :late
     else
       self.submission_status = :submitted

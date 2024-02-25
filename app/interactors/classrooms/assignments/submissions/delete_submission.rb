@@ -1,7 +1,7 @@
 class Classrooms::Assignments::Submissions::DeleteSubmission < BaseInteractor
     include Interactor
 
-    REQUIRED_PARAMS = %i[submission_id resource_id].freeze
+    REQUIRED_PARAMS = %i[submission_id assignment_id].freeze
 
     DELETE_FAILED = "Failed to delete submission"
     DOES_NOT_EXIST = "Submission does not exist"
@@ -11,7 +11,7 @@ class Classrooms::Assignments::Submissions::DeleteSubmission < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        submission = Submission.find_by(id: submission_id, assignment_id: resource_id)
+        submission = Submission.find_by(id: submission_id, assignment_id: assignment_id)
 
         if submission
             delete_submission(submission)
@@ -26,9 +26,13 @@ class Classrooms::Assignments::Submissions::DeleteSubmission < BaseInteractor
     private
 
     def delete_submission(submission)
-        context.fail!(
-            message: DELETE_FAILED,
-            status: :unprocessable_entity
-        ) unless submission.destroy
+        if submission.destroy  
+            context.submission_id = submission.id
+        else
+            context.fail!(
+                message: DELETE_FAILED,
+                status: :unprocessable_entity
+            )
+        end
     end
 end

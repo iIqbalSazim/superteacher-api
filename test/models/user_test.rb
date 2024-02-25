@@ -8,7 +8,7 @@ class UserTest < ActiveSupport::TestCase
     should validate_presence_of(:gender)
     should validate_presence_of(:role)
 
-    test 'user is created with validations passing' do
+    test 'teacher user is created with validations passing' do
         valid_user = User.new(
             email: 'valid@email.com',
             password: 'validPassword',
@@ -16,6 +16,22 @@ class UserTest < ActiveSupport::TestCase
             last_name: 'validLastName',
             gender: 'Male',
             role: 'teacher',
+        )
+
+        assert valid_user.valid?
+        assert_empty valid_user.errors
+    end
+
+
+    test 'student user is created with validations passing' do
+        valid_user = User.new(
+            email: 'valid@email.com',
+            password: 'validPassword',
+            first_name: 'validFirstName',
+            last_name: 'validLastName',
+            gender: 'Male',
+            role: 'student',
+            phone_number: '01726578681'
         )
 
         assert valid_user.valid?
