@@ -81,4 +81,89 @@ class Api::V1::Classrooms::ExamsControllerTest < ActionController::TestCase
 
         assert_response :unprocessable_entity
     end
+
+    test "#update responds with success" do
+        exam_params = {
+            classroom_id: 1,
+            id: 1,
+            exam: {
+                title: "Test exam",
+                description: "Test description",
+                classroom_id: 1,
+                date: "30 Mar, 2024"
+            }
+        }
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+        interactor_result.expects(:exam).returns({})
+
+        ExamSerializer.any_instance.stubs(:serialize).returns({})
+
+        Classrooms::Exams::UpdateExamFlow.expects(:call).returns(interactor_result)
+
+        put :update, params: exam_params
+
+        assert_response :ok
+    end
+
+    test "#update does not respond with success" do
+        exam_params = {
+            classroom_id: 1,
+            id: 1,
+            exam: {
+                title: "Test exam",
+                description: "Test description",
+                classroom_id: 1,
+                date: "30 Mar, 2024"
+            }
+        }
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error")
+        interactor_result.expects(:status).returns(:unprocessable_entity)
+
+        ExamSerializer.any_instance.stubs(:serialize).returns({})
+
+        Classrooms::Exams::UpdateExamFlow.expects(:call).returns(interactor_result)
+
+        put :update, params: exam_params
+        
+        assert_response :unprocessable_entity
+    end
+
+    test "#destroy responds with success" do
+        exam_params = {
+            classroom_id: 1,
+            id: 1
+        }
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+
+        Classrooms::Exams::DeleteExamFlow.expects(:call).returns(interactor_result)
+
+        delete :destroy, params: exam_params
+
+        assert_response :ok
+    end
+
+    test "#destroy does not respond with success" do
+        exam_params = {
+            classroom_id: 1,
+            id: 1
+        }
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error")
+        interactor_result.expects(:status).returns(:unprocessable_entity)
+        
+        Classrooms::Exams::DeleteExamFlow.expects(:call).returns(interactor_result)
+
+        delete :destroy, params: exam_params
+
+        assert_response :unprocessable_entity
+    end
 end
