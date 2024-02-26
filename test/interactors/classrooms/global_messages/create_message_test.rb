@@ -25,8 +25,6 @@ class Classrooms::GlobalMessages::CreateMessageTest < ActiveSupport::TestCase
             text: nil
         }
 
-        ClassroomGlobalMessage.any_instance.stubs(:persisted?).returns(false)
-
         result = Classrooms::GlobalMessages::CreateMessage.call(params: invalid_params)
 
         assert_not result.success?

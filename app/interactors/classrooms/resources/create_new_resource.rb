@@ -4,6 +4,7 @@ class Classrooms::Resources::CreateNewResource < BaseInteractor
     REQUIRED_PARAMS = %i[params].freeze
 
     RESOURCE_CREATION_FAILED = "Failed to create resource"
+    ASSIGNMENT_CREATION_FAILED = "Failed to create resource assignment"
 
     delegate(*REQUIRED_PARAMS, to: :context)
 
@@ -19,11 +20,23 @@ class Classrooms::Resources::CreateNewResource < BaseInteractor
 
     def save_resource(resource)
         if resource.save
-            resource.create_assignment(assignment_params(resource.id)) unless resource.material?
+            handle_assignment_creation(resource) unless resource.material?
             context.resource = resource
         else
             context.fail!(
                 message: RESOURCE_CREATION_FAILED,
+                status: :unprocessable_entity
+            )
+        end
+    end
+
+    def handle_assignment_creation(resource)
+        assignment = resource.create_assignment(assignment_params(resource.id))
+
+        unless assignment.persisted?
+            resource.destroy
+            context.fail!(
+                message: ASSIGNMENT_CREATION_FAILED,
                 status: :unprocessable_entity
             )
         end
