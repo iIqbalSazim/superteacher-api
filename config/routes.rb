@@ -13,7 +13,9 @@ Rails.application.routes.draw do
       post "profiles/:id", to: "profiles#update"
 
       put "passwords/reset", to: "passwords#reset"
-      put "passwords/forgot", to: "passwords#forgot"
+      post "passwords/forgot/token", to: "passwords#token"
+      post "passwords/forgot/validate", to: "passwords#validate"
+      put "passwords/forgot/reset", to: "passwords#reset_forgot"
 
       post "login", to: "sessions#login"
       post "logout", to: "sessions#revoke_token"

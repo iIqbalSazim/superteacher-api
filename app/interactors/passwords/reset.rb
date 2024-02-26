@@ -20,6 +20,5 @@ class Passwords::Reset < BaseInteractor
         status: :unprocessable_entity
       )
     end
-    
   end
 end

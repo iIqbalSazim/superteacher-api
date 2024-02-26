@@ -1,7 +1,7 @@
 class PasswordMailer < ApplicationMailer
-    def forgot_password_email
+    def password_token_email
         @email = params[:email]
-        @new_password = params[:new_password]
+        @token = params[:token]
 
         mail(to: @email, subject: "Reset Password")
     end
