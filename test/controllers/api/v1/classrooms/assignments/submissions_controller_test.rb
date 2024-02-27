@@ -88,4 +88,41 @@ class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionContro
 
         assert_response :unprocessable_entity
     end
+
+    test "#destroy responds with success" do
+        submission_params = {
+            classroom_id: 1,
+            assignment_id: 1,
+            id: 1
+        }
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(true)
+        interactor_result.expects(:submission_id).returns(submission_params[:id])
+
+        Classrooms::Assignments::Submissions::DeleteSubmissionFlow.expects(:call).returns(interactor_result)
+
+        delete :destroy, params: submission_params
+
+        assert_response :ok
+    end
+
+    test "#destroy does not respond with success" do
+        submission_params = {
+            classroom_id: 1,
+            assignment_id: 1,
+            id: 1
+        }
+
+        interactor_result = mock
+        interactor_result.expects(:success?).returns(false)
+        interactor_result.expects(:message).returns("some error")
+        interactor_result.expects(:status).returns(:unprocessable_entity)
+        
+        Classrooms::Assignments::Submissions::DeleteSubmissionFlow.expects(:call).returns(interactor_result)
+
+        delete :destroy, params: submission_params
+
+        assert_response :unprocessable_entity
+    end
 end

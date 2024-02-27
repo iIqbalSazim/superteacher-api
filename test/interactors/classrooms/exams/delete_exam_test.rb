@@ -13,7 +13,7 @@ class Classrooms::Exams::DeleteExamTest < ActiveSupport::TestCase
         assert_nil Exam.find_by(id: math_exam.id)
     end
 
-    test "fail to delete non-existing exam" do
+    test "fail to delete exam" do
         math_exam = exams(:math_exam_one)
 
         Exam.any_instance.stubs(:destroy).returns(false)

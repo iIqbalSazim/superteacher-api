@@ -13,7 +13,7 @@ class Classrooms::DeleteClassroomTest < ActiveSupport::TestCase
         assert_nil Classroom.find_by(id: math_classroom.id)
     end
 
-    test "fail to delete non-existing classroom" do
+    test "fail to delete classroom" do
         math_classroom = classrooms(:math_classroom)
 
         math_classroom.stubs(:destroy).returns(false)

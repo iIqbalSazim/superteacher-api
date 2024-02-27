@@ -29,4 +29,16 @@ class Classrooms::Assignments::SubmisssionPolicyTest < ActiveSupport::TestCase
 
         assert policy.create?
     end
+
+    test 'teacher user not authorized to call destroy' do
+        policy = Classrooms::Assignments::SubmissionPolicy.new(@teacher_user, User)
+
+        assert_not policy.destroy?
+    end
+
+    test 'student user authorized to call destroy' do
+        policy = Classrooms::Assignments::SubmissionPolicy.new(@student_user, User)
+
+        assert policy.destroy?
+    end
 end
