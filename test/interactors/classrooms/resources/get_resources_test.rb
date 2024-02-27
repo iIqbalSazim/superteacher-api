@@ -5,7 +5,7 @@ class Classrooms::Resources::GetResourcesTest < ActiveSupport::TestCase
     test "should get resources by classroom_id" do
         classroom_id = classrooms(:math_classroom).id
 
-        existing_resources = [resources(:math_resource_one)]
+        existing_resources = [resources(:math_resource_one), resources(:math_resource_two)]
 
         result = Classrooms::Resources::GetResources.call(classroom_id: classroom_id)
 

@@ -4,7 +4,7 @@ class Classrooms::Students::EnrollmentNotificationTest < ActiveSupport::TestCase
 
     test "should send enrollment notification email to student" do
         classroom = classrooms(:math_classroom) 
-        student = students(:math_student)  
+        student = users(:math_student)  
 
         ClassroomStudentMailer.expects(:with).with(student: student, classroom: classroom).returns(ClassroomStudentMailer)
         ClassroomStudentMailer.expects(:enroll_student_email).returns(ClassroomStudentMailer)

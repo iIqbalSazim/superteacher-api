@@ -2,8 +2,8 @@ class Api::V1::Classrooms::Assignments::SubmissionsController < BaseController
 
     def index
         result = Classrooms::Assignments::Submissions::GetSubmissionsFlow.call(classroom_id: params[:classroom_id],
-                                                                              assignment_id: params[:assignment_id],
-                                                                              current_user: current_user)
+                                                                               assignment_id: params[:assignment_id],
+                                                                               current_user: current_user)
 
         if result.success?
             serialized_submissions = ArraySerializer.new(result.submissions, each_serializer: SubmissionSerializer).to_a

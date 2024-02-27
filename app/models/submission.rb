@@ -5,6 +5,7 @@ class Submission < ApplicationRecord
   enum submission_status: { pending: 'pending', submitted: 'submitted', late: 'late' }
 
   validates :student_id, presence: true
+  validates :assignment_id, presence: true
   validates :submitted_on, presence: true
   validates :url, presence: true, length: { maximum: 255 }
   validates :submission_status, presence: true

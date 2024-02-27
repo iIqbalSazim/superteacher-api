@@ -13,3 +13,11 @@ biology_resource_one:
   description: "This is the test resource 1"
   resource_type: "material"
   url: "http://testOne.com"
+
+math_resource_two:
+  id: 3
+  classroom_id: 1
+  title: "Math Resource 3"
+  description: "This is the test resource 1"
+  resource_type: "assignment"
+  url: "http://testOne.com"

@@ -39,5 +39,15 @@ module ActiveSupport
 
       @controller.stubs(:doorkeeper_token).returns(token)
     end
+
+    def setup_controller_with_fake_student_user
+      @fake_user = users(:math_student)
+
+      token = mock
+      token.stubs(:acceptable?).returns(true)
+      token.stubs(:resource_owner_id).returns(@fake_user.id)
+
+      @controller.stubs(:doorkeeper_token).returns(token)
+    end
   end
 end

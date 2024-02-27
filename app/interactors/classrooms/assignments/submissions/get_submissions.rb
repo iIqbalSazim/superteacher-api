@@ -1,7 +1,7 @@
 class Classrooms::Assignments::Submissions::GetSubmissions < BaseInteractor
     include Interactor
 
-    REQUIRED_PARAMS = %i[assignment_id current_user].freeze
+    REQUIRED_PARAMS = %i[assignment_id].freeze
 
     delegate(*REQUIRED_PARAMS, to: :context)
 

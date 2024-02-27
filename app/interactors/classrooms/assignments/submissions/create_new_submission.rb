@@ -13,7 +13,7 @@ class Classrooms::Assignments::Submissions::CreateNewSubmission < BaseInteractor
 
         existing_submission = Submission.find_by(student_id: params[:student_id], assignment_id: params[:assignment_id])
 
-        if existing_submission
+        if existing_submission.present?
             context.fail!(
                 message: EXISTING_SUBMISSION_ERROR,
                 status: :unprocessable_entity
