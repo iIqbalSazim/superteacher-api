@@ -16,7 +16,7 @@ class User < ApplicationRecord
     validates :password_digest, presence: true, length: { maximum: 255 }
     validates :first_name, presence: true, length: { maximum: 255 }
     validates :last_name, presence: true, length: { maximum: 255 }
-    validates :phone_number, length: { minimum: 11 }, length: { maximum: 11 }
+    validates :phone_number, length: { is: 11 }, allow_blank: true
     validates :gender, presence: true
     validates :role, presence: true
 

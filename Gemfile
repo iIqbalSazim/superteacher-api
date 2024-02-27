@@ -70,3 +70,7 @@ gem 'mocha'
 gem 'shoulda'
 
 gem 'rails-controller-testing'
+
+gem 'simplecov'
+
+gem 'simplecov-cobertura'

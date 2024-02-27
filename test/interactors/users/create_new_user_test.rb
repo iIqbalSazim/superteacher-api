@@ -12,7 +12,7 @@ class Users::CreateNewUserTest < ActiveSupport::TestCase
       first_name: "firstName",
       last_name: "lastName",
       gender: "Male",
-      role: "teacher"
+      role: "teacher",
     }
 
     result = Users::CreateNewUser.call(user_params: user_params)
