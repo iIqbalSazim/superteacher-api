@@ -2,7 +2,8 @@ class Api::V1::ProfilesController < BaseController
 
     def update
         result = Profiles::UpdateProfileFlow.call(params: profile_params,
-                                                current_user: current_user)
+                                                current_user: current_user,
+                                                user_id: params[:id])
 
         if result.success?
             serialized_user = UserSerializer.new.serialize(result.user)
@@ -21,8 +22,6 @@ class Api::V1::ProfilesController < BaseController
                 :first_name,
                 :last_name,
                 :gender,
-                :address,
-                :education,
                 :highest_education_level,
                 :major_subject,
                 subjects_to_teach: []

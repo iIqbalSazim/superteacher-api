@@ -1,4 +1,4 @@
-student_profile:
+math_student_profile:
   id: 1
   student_id: 10
   address: "Test"

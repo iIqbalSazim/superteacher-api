@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       post "users", to: "users#create"
 
-      post "profiles/:id", to: "profiles#update"
+      resources :profiles, only: [:update]
 
       put "passwords/reset", to: "passwords#reset"
       post "passwords/forgot/token", to: "passwords#token"
