@@ -2,6 +2,9 @@ class Api::V1::PasswordsController < BaseController
     skip_before_action :authorize_request, only: [:token, :validate, :reset_forgot]
     skip_before_action :authorize_resource, only: [:token, :validate, :reset_forgot]
 
+    INVALID_CODE = "Invalid code. Please try again"
+    PASSWORD_RESET_SUCCESSFUL = "Password successfully reset"
+
     def reset
         result = Passwords::Reset.call(params: password_params,
                                        current_user: current_user)
@@ -28,7 +31,7 @@ class Api::V1::PasswordsController < BaseController
         if result.success?
             render status: :ok
         else
-            render json: { message: "Invalid code. Please try again" }, status: :unprocessable_entity
+            render json: { message: INVALID_CODE }, status: :unprocessable_entity
         end
     end
     
@@ -37,9 +40,9 @@ class Api::V1::PasswordsController < BaseController
                                                      params: password_params)
 
         if result.success?
-            render json: { message: "Password successfully reset" }, status: :ok
+            render json: { message: PASSWORD_RESET_SUCCESSFUL }, status: :ok
         else
-            render json: {message: result.message}, status: :unprocessable_entity
+            render json: { message: result.message }, status: :unprocessable_entity
         end
     end
     
