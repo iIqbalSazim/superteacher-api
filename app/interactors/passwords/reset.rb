@@ -3,6 +3,8 @@ class Passwords::Reset < BaseInteractor
 
   REQUIRED_PARAMS = %i[params current_user].freeze
 
+  INVALID = "Invalid password"
+
   delegate(*REQUIRED_PARAMS, to: :context)
 
   def call
@@ -14,9 +16,10 @@ class Passwords::Reset < BaseInteractor
         context.fail!(
           message: SOMETHING_WENT_WRONG
         ) unless user.update(password: params["new_password"])
+
     else
       context.fail!(
-        message: "Invalid password",
+        message: INVALID,
         status: :unprocessable_entity
       )
     end

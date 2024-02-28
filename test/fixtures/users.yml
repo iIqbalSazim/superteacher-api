@@ -5,7 +5,6 @@ math_teacher:
   first_name: "Teacher"
   last_name: "User"
   gender: "Male"
-  phone_number: nil
   role: "teacher"
   
 biology_classroom_teacher:
@@ -15,7 +14,6 @@ biology_classroom_teacher:
   first_name: "Teacher"
   last_name: "User 2"
   gender: "Male"
-  phone_number: nil
   role: "teacher"
 
 empty_classroom_teacher:
@@ -25,7 +23,6 @@ empty_classroom_teacher:
   first_name: "Teacher"
   last_name: "User 3"
   gender: "Female"
-  phone_number: nil
   role: "teacher"
 
 math_student:
@@ -35,7 +32,7 @@ math_student:
   first_name: "Student"
   last_name: "User"
   gender: "Male"
-  phone_number: nil
+  phone_number: 01726252782
   role: "student"
 
 math_student_two:
@@ -45,7 +42,7 @@ math_student_two:
   first_name: "Math"
   last_name: "User"
   gender: "Female"
-  phone_number: nil
+  phone_number: 01726252782
   role: "student"
 
 unenrolled_student:
@@ -55,5 +52,5 @@ unenrolled_student:
   first_name: "Student"
   last_name: "User"
   gender: "Male"
-  phone_number: nil
+  phone_number: 01726252782
   role: "student"
