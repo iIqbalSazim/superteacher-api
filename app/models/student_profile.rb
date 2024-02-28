@@ -14,8 +14,8 @@ class StudentProfile < Profile
     INVALID_SCHOOL_CLASS_LEVEL = "Invalid class level for school education"
     INVALID_COLLEGE_CLASS_LEVEL = "Invalid class level for college education"
 
-    SCHOOL_CLASSES = ['7', '8', '9', '10']
-    COLLEGE_CLASSES = ['11', '12']
+    SCHOOL_CLASSES = ['Class 7', 'Class 8', 'Class 9', 'Class 10']
+    COLLEGE_CLASSES = ['Class 11', 'Class 12']
 
     def validate_education_details
         if education.present?

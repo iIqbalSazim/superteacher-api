@@ -49,7 +49,7 @@ class StudentProfileTest < ActiveSupport::TestCase
             education: {
                 level: "School",
                 english_bangla_medium: "English",
-                class_level: "7",
+                class_level: "Class 7",
                 degree_level: "",
                 semester_year: ""
             },
@@ -66,7 +66,7 @@ class StudentProfileTest < ActiveSupport::TestCase
             education: {
                 level: "College",
                 english_bangla_medium: "English",
-                class_level: "11",
+                class_level: "Class 11",
                 degree_level: "",
                 semester_year: ""
             },
@@ -83,7 +83,7 @@ class StudentProfileTest < ActiveSupport::TestCase
             education: {
                 level: "School",
                 english_bangla_medium: "English",
-                class_level: "6",
+                class_level: "Class 6",
                 degree_level: "",
                 semester_year: ""
             },
@@ -101,7 +101,7 @@ class StudentProfileTest < ActiveSupport::TestCase
             education: {
                 level: "College",
                 english_bangla_medium: "English",
-                class_level: "10",
+                class_level: "Class 10",
                 degree_level: "",
                 semester_year: ""
             },
