@@ -10,7 +10,7 @@ class Api::V1::UsersController < BaseController
             
             render json: { user: serialized_user }, status: :ok
         else
-            render json: { message: result.message }, status: result.status
+            render json: { message: result.message, attempts_remaining: result.attempts_remaining }, status: result.status
         end
     end
     
