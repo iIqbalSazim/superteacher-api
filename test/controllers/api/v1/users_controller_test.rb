@@ -25,6 +25,7 @@ class Api::V1::UsersControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(false)
         interactor_result.expects(:message).returns("some error")
         interactor_result.expects(:status).returns(:unprocessable_entity)
+        interactor_result.expects(:attempts_remaining).returns({})
 
         Users::UserRegistrationFlow.expects(:call).returns(interactor_result)
 

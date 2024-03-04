@@ -37,7 +37,7 @@ Rails.application.routes.draw do
         end
       end
 
-      post "cloudinary/upload", to: "cloudinary#upload_file"
+      post "upload/signature", to: "cloudinary#generate_signature"
     end
   end
 end

@@ -1,5 +1,5 @@
 class CloudinaryPolicy < ApplicationPolicy
-    def upload_file?
+    def generate_signature?
         true
     end
 end

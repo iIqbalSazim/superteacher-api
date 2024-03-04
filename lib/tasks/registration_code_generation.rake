@@ -11,6 +11,13 @@ namespace :registration_code do
     end
 
     begin
+      existing_user = User.find_by(email: email)
+
+      if existing_user
+        puts "Error: Email already exists in the User table."
+        exit(1)
+      end
+
       existing = RegistrationCode.find_by(email: email)
 
       if existing

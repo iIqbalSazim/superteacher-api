@@ -1,12 +1,12 @@
 class Api::V1::CloudinaryController < BaseController
 
-    def upload_file
-        result = Cloudinary::UploadFile.call(file_params: params[:file])
+    def generate_signature
+        result = Cloudinary::GenerateSignature.call
 
         if result.success?
-            render json: { url: result.url }, status: :ok
+            render json: { sign_data: result.sign_data }, status: :ok
         else
-            render json: { message: result.message }, status: :unprocessable_entity
+            render json: { message: "Failed to generate signature" },  status: :unprocessable_entity
         end
     end
 
