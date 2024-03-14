@@ -10,21 +10,21 @@ class ResourceTest < ActiveSupport::TestCase
     should validate_presence_of(:url)
     should validate_presence_of(:classroom_id)
 
+    def setup
+        @classroom = create(:classroom)
+    end
+
     test "resource is created with validations passing" do
-        valid_resource = Resource.new(
-            title: "New resource",
-            description: "New resource description",
-            classroom_id: 1, 
-            resource_type: "assignment",
-            url: "http://example-url.com"
-        )
+        classroom = create(:classroom)
+
+        valid_resource = build(:resource, :assignment_resource, classroom: classroom)
 
         assert valid_resource.valid?
         assert_empty valid_resource.errors
     end
 
     test "resource fails to create with validations failing" do
-        invalid_resource = Resource.new
+        invalid_resource = build(:resource, :assignment_resource, resource_type: "", description: "", title: "", url: "", classroom_id: "")
 
         assert_not invalid_resource.valid?
         assert_not_empty invalid_resource.errors[:title]
@@ -35,14 +35,18 @@ class ResourceTest < ActiveSupport::TestCase
     end
 
     test "method resource.assignment? should return true if resource_type is assignment" do
-        assignment_resource = resources(:math_resource_one)
+        classroom = create(:classroom)
+
+        assignment_resource = build(:resource, :assignment_resource, classroom: classroom)
 
         assert assignment_resource.assignment?
         assert_not assignment_resource.material?
     end
 
     test "method resource.material? should return true if resource_type is material" do
-        material_resource = resources(:biology_resource_one)
+        classroom = create(:classroom)
+
+        material_resource = build(:resource, :material_resource, classroom: classroom)
 
         assert material_resource.material?
         assert_not material_resource.assignment?

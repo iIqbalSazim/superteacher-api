@@ -5,11 +5,9 @@ class Classrooms::GlobalMessages::CreateMessageTest < ActiveSupport::TestCase
     ERROR_MSG_FAILED_TO_CREATE_MESSAGE = Classrooms::GlobalMessages::CreateMessage::FAILED_TO_CREATE_MESSAGE
 
     test "should create a new message with valid parameters" do
-        valid_params = {
-            user_id: users(:math_teacher).id,
-            classroom_id: classrooms(:math_classroom).id,
-            text: "Test message"
-        }
+        valid_params = attributes_for(:classroom_global_message,
+                                      user_id: create(:user, :teacher).id,
+                                      classroom_id: create(:classroom).id)
 
         result = Classrooms::GlobalMessages::CreateMessage.call(params: valid_params)
 
@@ -20,8 +18,6 @@ class Classrooms::GlobalMessages::CreateMessageTest < ActiveSupport::TestCase
 
     test "should fail to create message with invalid parameters" do
         invalid_params = {
-            user_id: nil,
-            classroom_id: nil,
             text: nil
         }
 
@@ -33,11 +29,9 @@ class Classrooms::GlobalMessages::CreateMessageTest < ActiveSupport::TestCase
     end
 
     test "should fail with an error if fails to create message" do
-        valid_params = {
-            user_id: users(:math_teacher).id,
-            classroom_id: classrooms(:math_classroom).id,
-            text: "Test message"
-        }
+        valid_params = attributes_for(:classroom_global_message,
+                                      user: create(:user, :teacher),
+                                      classroom: create(:classroom))
 
         ClassroomGlobalMessage.any_instance.stubs(:persisted?).returns(false)
 

@@ -3,7 +3,7 @@ require 'test_helper'
 class SubmissionSerializerTest < ActiveSupport::TestCase
 
     def setup
-        @submission = submissions(:submission_math_assignment_one)
+        @submission = build_stubbed(:submission)
     end
 
     test 'should render correct attributes' do

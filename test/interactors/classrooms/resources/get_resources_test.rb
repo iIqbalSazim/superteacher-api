@@ -3,20 +3,23 @@ require 'test_helper'
 class Classrooms::Resources::GetResourcesTest < ActiveSupport::TestCase
 
     test "should get resources by classroom_id" do
-        classroom_id = classrooms(:math_classroom).id
+        classroom = create(:classroom)
 
-        existing_resources = [resources(:math_resource_one), resources(:math_resource_two)]
+        resource_1 = create(:resource, :assignment_resource, classroom: classroom)
+        resource_2 = create(:resource, :assignment_resource, classroom: classroom)
 
-        result = Classrooms::Resources::GetResources.call(classroom_id: classroom_id)
+        existing_resources = [resource_1, resource_2]
+
+        result = Classrooms::Resources::GetResources.call(classroom_id: classroom.id)
 
         assert result.success?
         assert_equal existing_resources, result.resources
     end
 
     test "should return empty array if no resources" do
-        classroom_id = classrooms(:empty_classroom).id
+        classroom = create(:classroom)
 
-        result = Classrooms::Resources::GetResources.call(classroom_id: classroom_id)
+        result = Classrooms::Resources::GetResources.call(classroom_id: classroom.id)
 
         assert result.success?
         assert_equal [], result.resources

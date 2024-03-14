@@ -6,25 +6,27 @@ class Users::ValidateRegistrationCodeTest < ActiveSupport::TestCase
     ERROR_MSG_INVALID_CODE = Users::ValidateRegistrationCode::INVALID_CODE  
 
     def setup
-        @registration_code = registration_codes(:valid_code)
+        @registration_code = create(:registration_code)
         @user_params = {
-            email: registration_codes(:valid_code)[:email],
+            email: @registration_code.email,
             role: "teacher",
-            code: registration_codes(:valid_code)[:code]
+            code: @registration_code.code
         }
     end
 
     test "validates registration code when correct params are passed" do
         result = Users::ValidateRegistrationCode.call(user_params: @user_params)
 
+        @registration_code.reload
+
         assert result.success?
         assert_equal @registration_code.code, result.code
-        assert @registration_code.reload.is_used
+        assert @registration_code.is_used
         assert_equal 0, @registration_code.attempts_count
     end
 
     test "returns error and decrements attempts_count if registration code is wrong" do
-        user_params = @user_params.merge(code: "!valid")
+        user_params = @user_params.dup.merge!(code: "!valid")
 
         result = Users::ValidateRegistrationCode.call(user_params: user_params)
 
@@ -43,9 +45,15 @@ class Users::ValidateRegistrationCodeTest < ActiveSupport::TestCase
     end
 
     test "returns error if registration code attempts are exceeded" do
-        @registration_code.update(attempts_count: 0)
+        attempts_exceeded_code = create(:registration_code, :attempts_count_zero)
 
-        result = Users::ValidateRegistrationCode.call(user_params: @user_params)
+        user_params = {
+            email: attempts_exceeded_code.email,
+            role: "teacher",
+            code: attempts_exceeded_code.code
+        }
+
+        result = Users::ValidateRegistrationCode.call(user_params: user_params)
 
         assert_not result.success?
         assert_equal ERROR_MSG_VALIDATION_ATTEMPTS_EXCEEDED, result.message

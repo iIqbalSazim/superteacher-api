@@ -4,25 +4,29 @@ class Classrooms::Resources::DeleteResourceTest < ActiveSupport::TestCase
 
     ERROR_MSG_RESOURCE_DELETE_FAILED = Classrooms::Resources::DeleteResource::RESOURCE_DELETE_FAILED
 
-    test "delete resource successfully" do
-        math_resource = resources(:math_resource_one)
+    def setup
+        @classroom = create(:classroom)
+    end
 
-        result = Classrooms::Resources::DeleteResource.call(resource_id: math_resource.id)
+    test "delete resource successfully" do
+        resource = create(:resource, :material_resource, classroom: @classroom)
+
+        result = Classrooms::Resources::DeleteResource.call(resource_id: resource.id)
 
         assert result.success?
-        assert_nil Resource.find_by(id: math_resource.id)
+        assert_nil Resource.find_by(id: resource.id)
     end
 
     test "fail to delete non-existing resource" do
-        math_resource = resources(:math_resource_one)
+        resource = create(:resource, :assignment_resource, classroom: @classroom)
 
         Resource.any_instance.stubs(:destroy).returns(false)
 
-        result = Classrooms::Resources::DeleteResource.call(resource_id: math_resource.id)
+        result = Classrooms::Resources::DeleteResource.call(resource_id: resource.id)
 
         assert_not result.success?
         assert_equal :unprocessable_entity, result.status
         assert_equal ERROR_MSG_RESOURCE_DELETE_FAILED, result.message
-        assert Resource.find_by(id: math_resource.id)
+        assert Resource.find_by(id: resource.id)
     end
 end

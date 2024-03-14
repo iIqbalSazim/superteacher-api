@@ -6,23 +6,9 @@ class Classrooms::Resources::CreateNewResourceTest < ActiveSupport::TestCase
     ERROR_MSG_ASSIGNMENT_CREATION_FAILED = Classrooms::Resources::CreateNewResource::ASSIGNMENT_CREATION_FAILED
 
     def setup
-        @valid_assignment_params = {
-            title: "Assignment title",
-            description: "Assignment description",
-            resource_type: "assignment",
-            url: "http://assignment.com",
-            classroom_id: 1,
-            due_date: "29 Feb, 2024"
-        } 
-
-        @valid_material_params = {
-            title: "Material title",
-            description: "Material description",
-            resource_type: "material",
-            url: "http://material.com",
-            classroom_id: 1
-        } 
-        
+        classroom = create(:classroom)
+        @valid_material_params = attributes_for(:resource, :material_resource, classroom_id: classroom.id)
+        @valid_assignment_params = attributes_for(:resource, :assignment_resource, classroom_id: classroom.id, due_date: "29 Feb, 2024") 
     end
 
     test "should create a new material resource with valid parameters" do

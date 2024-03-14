@@ -7,8 +7,10 @@ class Users::CreateUserProfileTest < ActiveSupport::TestCase
     ERROR_MSG_TEACHER_PROFILE_CREATION_FAILED = Users::CreateUserProfile::TEACHER_PROFILE_CREATION_FAILED
 
     test "creates teacher profile when correct params are passed" do
+        teacher = create(:user, :math_teacher)
+
         teacher_params = {
-            user_data: users(:math_teacher),
+            user_data: teacher,
             user_params: {
                 role: "teacher",
                 highest_education_level: "PhD",
@@ -24,8 +26,10 @@ class Users::CreateUserProfileTest < ActiveSupport::TestCase
     end
 
     test "creates student profile when correct params are passed" do
+        student = create(:user, :unenrolled_student)
+
         student_params = {
-            user_data: users(:unenrolled_student),
+            user_data: student,
             user_params: {
                 role: "student",
                 education: {
@@ -46,14 +50,16 @@ class Users::CreateUserProfileTest < ActiveSupport::TestCase
     end
 
     test "fails to create teacher profile when profile data is invalid" do
+        teacher = create(:user, :math_teacher)
+
         invalid_teacher_params = {
-            user_data: users(:math_teacher),
+            user_data: teacher,
             user_params: {
-                role: "teacher",
-                highest_education_level: "",
-                major_subject: "Mathematics",
-                subjects_to_teach: "Algebra, Geometry"
-            }
+                    role: "teacher",
+                    highest_education_level: "",
+                    major_subject: "Mathematics",
+                    subjects_to_teach: "Algebra, Geometry"
+                }
         }
 
         result = Users::CreateUserProfile.call(invalid_teacher_params)
@@ -65,8 +71,10 @@ class Users::CreateUserProfileTest < ActiveSupport::TestCase
     end
 
     test "fails to create student profile when profile data is invalid" do
+        student = create(:user, :unenrolled_student)
+
         invalid_student_params = {
-            user_data: users(:unenrolled_student),
+            user_data: student,
             user_params: {
                 role: "student",
                 education: {

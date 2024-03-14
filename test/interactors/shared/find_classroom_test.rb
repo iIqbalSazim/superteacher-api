@@ -5,13 +5,13 @@ class FindClassroomTest < ActiveSupport::TestCase
     ERROR_MSG_CLASSROOM_NOT_FOUND = Shared::FindClassroom::CLASSROOM_NOT_FOUND
 
     test "finds the classroom when valid id is passed" do
-        classroom_id = classrooms(:math_classroom).id
+        classroom = create(:classroom)
 
-        result = Shared::FindClassroom.call(classroom_id: classroom_id)
+        result = Shared::FindClassroom.call(classroom_id: classroom.id)
 
         assert result.success?
         assert_not_nil result.classroom
-        assert_equal classroom_id, result.classroom.id
+        assert_equal classroom.id, result.classroom.id
     end
 
     test "returns error if classroom with id does not exist" do

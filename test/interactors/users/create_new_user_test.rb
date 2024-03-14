@@ -22,9 +22,9 @@ class Users::CreateNewUserTest < ActiveSupport::TestCase
   end
 
   test "returns error if user already exists" do
-    existing_user_email = users(:math_teacher)[:email]
+    existing_user = create(:user, :math_teacher)
 
-    result = Users::CreateNewUser.call(user_params: { email: existing_user_email })
+    result = Users::CreateNewUser.call(user_params: { email: existing_user.email })
 
     assert_not result.success?
     assert_nil result.user_data

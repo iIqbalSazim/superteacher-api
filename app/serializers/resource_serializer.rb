@@ -6,6 +6,8 @@ class ResourceSerializer < Panko::Serializer
   def due_date
     if object.resource_type == "assignment"
       object.assignment.due_date
+    else
+      nil
     end
   end
 

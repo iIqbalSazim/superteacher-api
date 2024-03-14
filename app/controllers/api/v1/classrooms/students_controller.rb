@@ -15,7 +15,7 @@ class Api::V1::Classrooms::StudentsController < BaseController
     end
     
     def enroll
-        result = Classrooms::Students::EnrollStudentFlow.call(student_id: classroom_student_params[:student_id],
+        result = Classrooms::Students::EnrollStudentFlow.call(student_id: student_params[:student_id],
                                                               classroom_id: params[:classroom_id],
                                                               current_user: current_user)
 
@@ -29,7 +29,7 @@ class Api::V1::Classrooms::StudentsController < BaseController
     end
 
     def remove
-        result = Classrooms::Students::RemoveStudentFlow.call(student_id: classroom_student_params[:student_id],
+        result = Classrooms::Students::RemoveStudentFlow.call(student_id: student_params[:student_id],
                                                               classroom_id: params[:classroom_id],
                                                               current_user: current_user)
 
@@ -44,8 +44,8 @@ class Api::V1::Classrooms::StudentsController < BaseController
 
     private
 
-    def classroom_student_params
-        params.require(:classroom_student).permit(
+    def student_params
+        params.require(:student).permit(
             :student_id,
             :classroom_id,
         )

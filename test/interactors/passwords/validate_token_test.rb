@@ -5,14 +5,9 @@ class Passwords::ValidateTokenTest < ActiveSupport::TestCase
     ERROR_MSG_TOKEN_INVALID = "Token is invalid"
 
     test 'should validate token with valid email and token' do
-        email = 'test@example.com'
-        token = '12345678'
+        existing_token = create(:password_reset_token)
 
-        existing_token = PasswordResetToken.new(email: email, code: token, is_used: false)
-
-        PasswordResetToken.stubs(:find_by).with(email: email, code: token).returns(existing_token)
-
-        result = Passwords::ValidateToken.call(email: email, token: token)
+        result = Passwords::ValidateToken.call(email: existing_token.email, token: existing_token.code)
 
         assert result.success?
     end
@@ -29,14 +24,9 @@ class Passwords::ValidateTokenTest < ActiveSupport::TestCase
     end
 
     test 'should fail if token is already used' do
-        email = 'test@example.com'
-        token = '12345678'
+        existing_used_token = create(:password_reset_token, :used)
 
-        existing_used_token = PasswordResetToken.new(email: email, code: token, is_used: true)
-
-        PasswordResetToken.stubs(:find_by).with(email: email, code: token).returns(existing_used_token)
-
-        result = Passwords::ValidateToken.call(email: email, token: token)
+        result = Passwords::ValidateToken.call(email: existing_used_token.email, token: existing_used_token.code)
 
         assert_not result.success?
     end

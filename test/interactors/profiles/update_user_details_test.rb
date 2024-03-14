@@ -5,7 +5,7 @@ class Profiles::UpdateUserDetailsTest < ActiveSupport::TestCase
     ERROR_MSG_USER_DOES_NOT_EXIST = Profiles::UpdateUserDetails::USER_DOES_NOT_EXIST 
 
     test 'should update user details with valid parameters' do
-        teacher_user = users(:math_student)
+        teacher_user = create(:user, :teacher)
 
         params = {
             first_name: 'John',

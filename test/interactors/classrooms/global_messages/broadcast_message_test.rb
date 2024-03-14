@@ -3,8 +3,10 @@ require 'test_helper'
 class Classrooms::GlobalMessages::BroadcastMessageTest < ActiveSupport::TestCase
 
     test "should broadcast message successfully" do
-        classroom = classrooms(:math_classroom)
-        message = classroom_global_messages(:message_one)
+        user = create(:user)
+        classroom = create(:classroom)
+        
+        message = create(:classroom_global_message, user: user, classroom: classroom)
 
         result = Classrooms::GlobalMessages::BroadcastMessage.call(
             classroom_id: classroom.id,

@@ -3,7 +3,8 @@ require 'test_helper'
 class ResourceSerializerTest < ActiveSupport::TestCase
 
     def setup
-        @resource = resources(:math_resource_one)
+        @classroom = create(:classroom)
+        @resource = build_stubbed(:resource, :assignment_resource, classroom: @classroom)
     end
 
     test 'should render correct attributes' do
@@ -19,8 +20,6 @@ class ResourceSerializerTest < ActiveSupport::TestCase
     end
 
     test "should serialize due_date, assignment_id and submissions if resource_type is assignment" do
-        @resource[:resource_type] = "assignment"
-
         serialized_object = ResourceSerializer.new.serialize(@resource)
 
         assert_equal @resource.assignment.due_date, serialized_object["due_date"]

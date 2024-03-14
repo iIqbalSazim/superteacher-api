@@ -7,7 +7,7 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
         @student_params = {
             filter: "enrolled",
             classroom_id: 1,
-            classroom_student: {
+            student: {
                 student_id: 11,
                 classroom_id: 1
             }

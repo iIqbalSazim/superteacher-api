@@ -9,17 +9,14 @@ class SubmissionTest < ActiveSupport::TestCase
     should validate_presence_of(:url)
 
     def setup
-        @student = users(:math_student_two)
-        @assignment = assignments(:math_assignment_one)
+        @student = create(:user, :student)
+        @classroom = create(:classroom)
+        @resource = create(:resource, :assignment_resource, classroom: @classroom)
+        @assignment = create(:assignment, resource_id: @resource.id)
     end
 
     test "submission is created with validations passing" do
-        valid_submission = Submission.new(
-            student_id: @student.id,
-            assignment_id: @assignment.id,
-            submitted_on: Date.today,
-            url: "http://example.com",
-        )
+        valid_submission = build(:submission, student: @student, assignment: @assignment)
 
         assert valid_submission.valid?
         assert_empty valid_submission.errors
@@ -53,12 +50,7 @@ class SubmissionTest < ActiveSupport::TestCase
     end
 
     test "submission_status should be 'late' if submitted_on is after assignment's due_date" do
-        valid_submission = Submission.new(
-            student_id: @student.id,
-            assignment_id: @assignment.id,
-            submitted_on: Date.today,
-            url: "http://example.com",
-        )
+        valid_submission = build(:submission, student: @student, assignment: @assignment)
 
         valid_submission.submitted_on = @assignment.due_date + 1.day
         valid_submission.save
@@ -67,12 +59,7 @@ class SubmissionTest < ActiveSupport::TestCase
     end
 
     test "submission_status should be 'submitted' if submitted_on is before or equal to assignment's due_date" do
-        valid_submission = Submission.new(
-            student_id: @student.id,
-            assignment_id: @assignment.id,
-            submitted_on: Date.today,
-            url: "http://example.com",
-        )
+        valid_submission = build(:submission, student: @student, assignment: @assignment)
 
         valid_submission.submitted_on = @assignment.due_date - 1.day
         valid_submission.save

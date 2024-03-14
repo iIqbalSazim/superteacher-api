@@ -1,9 +1,0 @@
-math_assignment_one:
-  id: 1
-  resource_id: 1
-  due_date: "2024-01-01T12:00:00Z"
-
-math_assignment_two:
-  id: 2
-  resource_id: 3
-  due_date: "2024-01-01T12:00:00Z"

@@ -6,11 +6,11 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
     ERROR_MSG_FAILED_TO_ENROLL_STUDENT = Classrooms::Students::EnrollStudent::FAILED_TO_ENROLL_STUDENT 
 
     def setup
-        @classroom = classrooms(:math_classroom)
+        @classroom = create(:classroom)
     end
 
     test "successfully enrolls student" do
-        unenrolled_student = users(:unenrolled_student)
+        unenrolled_student = create(:user, :unenrolled_student)
 
         params = {
             student_id: unenrolled_student.id,
@@ -24,7 +24,7 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
     end
 
     test "fails to enroll student when record creation fails" do
-        unenrolled_student = users(:unenrolled_student)
+        unenrolled_student = create(:user, :unenrolled_student)
 
         params = {
             student_id: unenrolled_student.id,
@@ -41,7 +41,9 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
     end
 
     test "fails to enroll already enrolled student" do
-        enrolled_student = users(:math_student)
+        enrolled_student = create(:user, :student)
+
+        @classroom.students << enrolled_student
 
         params = {
             student_id: enrolled_student.id,

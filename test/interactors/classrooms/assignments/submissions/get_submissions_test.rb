@@ -3,20 +3,27 @@ require 'test_helper'
 class Classrooms::Assignments::Submissions::GetSubmissionsTest < ActiveSupport::TestCase
 
     test "should get submissions by assignment_id" do
-        assignment_id = assignments(:math_assignment_one).id
+        user = create(:user, :student)
+        resource = create(:resource, :assignment_resource)
+        assignment = create(:assignment, resource_id: resource.id)
 
-        existing_submissions = [submissions(:submission_math_assignment_one)]
+        existing_submissions = [
+            create(:submission, assignment_id: assignment.id, student_id: user.id)
+        ]
 
-        result = Classrooms::Assignments::Submissions::GetSubmissions.call(assignment_id: assignment_id)
+        assignment.submissions << existing_submissions
+
+        result = Classrooms::Assignments::Submissions::GetSubmissions.call(assignment_id: assignment.id)
 
         assert result.success?
         assert_equal existing_submissions, result.submissions
     end
 
     test "should return empty array if no submissions" do
-        assignment_with_no_submissions = assignments(:math_assignment_two)
+        resource = create(:resource, :assignment_resource)
+        assignment = create(:assignment, resource_id: resource.id)
 
-        result = Classrooms::Assignments::Submissions::GetSubmissions.call(assignment_id: assignment_with_no_submissions.id)
+        result = Classrooms::Assignments::Submissions::GetSubmissions.call(assignment_id: assignment.id)
 
         assert result.success?
         assert_equal [], result.submissions

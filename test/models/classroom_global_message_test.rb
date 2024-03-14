@@ -10,20 +10,17 @@ class ClassroomGlobalMessageTest < ActiveSupport::TestCase
     should validate_presence_of(:classroom_id)
 
     test "message is created with validations passing" do
-        classroom = classrooms(:math_classroom)
-        user = users(:math_teacher)
-        valid_message = ClassroomGlobalMessage.new(
-            text: "Valid message text",
-            classroom_id: classroom.id,
-            user_id: user.id
-        )
+        classroom = create(:classroom)
+        user = create(:user)
+
+        valid_message = build(:classroom_global_message, classroom: classroom, user: user)
 
         assert valid_message.valid?
         assert_empty valid_message.errors
     end
 
     test "message fails to create with validations failing" do
-        invalid_message = ClassroomGlobalMessage.new
+        invalid_message = build(:classroom_global_message, text: "")
 
         assert_not invalid_message.valid?
         assert_not_empty invalid_message.errors[:text]

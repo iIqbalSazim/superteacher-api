@@ -6,11 +6,11 @@ class Classrooms::Students::RemoveStudentTest < ActiveSupport::TestCase
     ERROR_MSG_FAILED_TO_REMOVE_STUDENT = Classrooms::Students::RemoveStudent::FAILED_TO_REMOVE_STUDENT 
 
     def setup
-        @classroom = classrooms(:math_classroom)
+        @classroom = create(:classroom)
     end
 
     test "successfully unenrolls student" do
-        enrolled_student = classroom_students(:math_student_one)
+        enrolled_student = create(:classroom_student, classroom: @classroom)
 
         params = {
             student_id: enrolled_student.student_id,
@@ -24,7 +24,7 @@ class Classrooms::Students::RemoveStudentTest < ActiveSupport::TestCase
     end
 
     test "fails to unenroll student if enrollment does not exist" do
-        unenrolled_student = users(:unenrolled_student)
+        unenrolled_student = create(:user, :student)
 
         params = {
             student_id: unenrolled_student.id,
@@ -40,7 +40,7 @@ class Classrooms::Students::RemoveStudentTest < ActiveSupport::TestCase
     end
 
     test "fails to remove enrollment if record destroy fails" do
-        enrolled_student = classroom_students(:math_student_two)
+        enrolled_student = create(:classroom_student, classroom: @classroom)
 
         params = {
             student_id: enrolled_student.student_id,

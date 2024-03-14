@@ -71,6 +71,8 @@ gem 'shoulda'
 
 gem 'rails-controller-testing'
 
+gem 'factory_bot_rails'
+
 gem 'simplecov'
 
 gem 'simplecov-cobertura'

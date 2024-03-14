@@ -8,17 +8,15 @@ class ClassroomStudentTest < ActiveSupport::TestCase
     should validate_presence_of(:student)
 
     test "student is created when validations passing and association established with classroom and student" do
-        classroom = classrooms(:math_classroom)
-        student = users(:math_student)
+        classroom = create(:classroom)
+        student = create(:user, :student)
 
-        classroom_student = ClassroomStudent.new(classroom: classroom, student: student)
+        classroom_student = build(:classroom_student, classroom: classroom, student: student)
 
         assert classroom_student.valid?
     end
 
     test "student fails to create with validations failing" do
-        classroom = classrooms(:math_classroom)
-
         classroom_student = ClassroomStudent.new
 
         assert_not classroom_student.valid?

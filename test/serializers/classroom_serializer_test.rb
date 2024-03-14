@@ -2,7 +2,7 @@ require 'test_helper'
 
 class ClassroomSerializerTest < ActiveSupport::TestCase
     test 'should render correct attributes' do
-        classroom_data = classrooms(:math_classroom)
+        classroom_data = create(:classroom)
 
         serialized_object = ClassroomSerializer.new.serialize(classroom_data)
         parsed_object = JSON.parse(serialized_object.to_json)

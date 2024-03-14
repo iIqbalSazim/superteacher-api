@@ -3,10 +3,17 @@ require 'test_helper'
 class Classrooms::Resources::MailEnrolledStudentsTest < ActiveSupport::TestCase
 
     test "should send email to all enrolled students" do
-        classroom = classrooms(:math_classroom)
-        resource = resources(:math_resource_one)
+        classroom = create(:classroom)
+        resource = create(:resource, :assignment_resource, classroom: classroom)
 
         student_emails = ["student1@example.com", "student2@example.com"]
+
+        enrolled_students = [
+            create(:user, :math_student, email: student_emails[0]),
+            create(:user, :math_student_two, email: student_emails[1])
+        ]
+
+        classroom.students << enrolled_students
 
         classroom.students.each_with_index do |student, index|
             student.stubs(:email).returns(student_emails[index])

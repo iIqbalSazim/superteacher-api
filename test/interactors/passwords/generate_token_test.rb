@@ -3,7 +3,7 @@ require 'test_helper'
 class Passwords::GenerateTokenTest < ActiveSupport::TestCase
 
     test 'should generate token and mail user with valid email' do
-        student_user = users(:math_student)
+        student_user = create(:user, :student)
 
         email = "test@email.com"
         

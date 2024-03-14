@@ -3,7 +3,8 @@ require 'test_helper'
 class ProfileSerializerTest < ActiveSupport::TestCase
 
     test 'should render correct attributes if user is a teacher' do
-        teacher_profile = teacher_profiles(:math_teacher_profile)
+        teacher = create(:user, :teacher)
+        teacher_profile = build_stubbed(:teacher_profile, teacher: teacher)
 
         serialized_object = ProfileSerializer.new.serialize(teacher_profile)
         parsed_object = JSON.parse(serialized_object.to_json)
@@ -15,7 +16,8 @@ class ProfileSerializerTest < ActiveSupport::TestCase
     end
 
     test 'should render correct attributes if user is a student' do
-        student_profile = student_profiles(:math_student_profile)
+        student = create(:user, :student)
+        student_profile = build_stubbed(:student_profile, student: student)
 
         serialized_object = ProfileSerializer.new.serialize(student_profile)
         parsed_object = JSON.parse(serialized_object.to_json)

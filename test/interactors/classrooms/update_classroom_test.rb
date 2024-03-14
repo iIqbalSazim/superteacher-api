@@ -5,7 +5,7 @@ class Classrooms::UpdateClassroomTest < ActiveSupport::TestCase
     ERROR_MSG_CLASSROOM_FAILED_TO_UPDATE = Classrooms::UpdateClassroom::CLASSROOM_FAILED_TO_UPDATE
 
     def setup
-        @classroom = classrooms(:math_classroom)
+        @classroom = create(:classroom)
     end
 
     test "update classroom with valid parameters" do

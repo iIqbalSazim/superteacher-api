@@ -1,9 +1,0 @@
-math_student_one:
-  id: 1
-  student_id: 10
-  classroom_id: 1
-
-math_student_two:
-  id: 2
-  student_id: 12
-  classroom_id: 1

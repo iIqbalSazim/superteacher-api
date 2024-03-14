@@ -14,24 +14,13 @@ class ClassroomTest < ActiveSupport::TestCase
     should validate_presence_of(:days)
 
     test "should validate days format" do
-        classroom = Classroom.new(
-            teacher: users(:math_teacher),
-            title: "Test Classroom",
-            subject: "Test Subject",
-            class_time: "10:00 AM - 12:00 PM",
-            days: ["Monday", "Tuesday", "Wednesday"] # Valid days
-        )
+        teacher = build_stubbed(:user, :math_teacher)
+        classroom_params = attributes_for(:classroom)
 
-        assert classroom.valid?
+        valid_classroom = build_stubbed(:classroom, teacher: teacher)
+        assert valid_classroom.valid?
 
-        invalid_classroom = Classroom.new(
-            teacher: users(:math_teacher),
-            title: "Test Classroom",
-            subject: "Test Subject",
-            class_time: "10:00 AM - 12:00 PM",
-            days: ["Monday", "Invalid Day"] 
-        )
-
+        invalid_classroom = build_stubbed(:classroom, teacher: teacher, days: ["Monday", "Invalid Day"])
         assert_not invalid_classroom.valid?
     end
 end

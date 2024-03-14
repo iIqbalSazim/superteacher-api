@@ -2,20 +2,18 @@ require 'test_helper'
 
 class Profiles::UpdateProfileTest < ActiveSupport::TestCase
 
-    ERROR_MSG_PROFILE_DOES_NOT_EXIST = 'Profile does not exist in the database'
-
     def setup
-        @teacher_user = users(:math_teacher)
-        @student_user = users(:math_student)
+        @teacher_user = create(:user, :teacher)
+        @student_user = create(:user, :student)
     end
 
     test 'should update teacher profile with valid parameters' do
-        teacher_profile = teacher_profiles(:math_teacher_profile)
+        teacher_profile = build_stubbed(:teacher_profile)
 
         params = {
-            highest_education_level: 'Masters',
-            major_subject: 'Mathematics',
-            subjects_to_teach: ['Physics', 'Chemistry']
+            highest_education_level: teacher_profile.highest_education_level,
+            major_subject: teacher_profile.major_subject,
+            subjects_to_teach: teacher_profile.subjects_to_teach
         }
 
         result = Profiles::UpdateProfile.call(params: params, current_user: @teacher_user)
@@ -27,17 +25,17 @@ class Profiles::UpdateProfileTest < ActiveSupport::TestCase
     end
 
     test 'should update student profile with valid parameters' do
-        student_profile = student_profiles(:math_student_profile)
+        student_profile = build_stubbed(:student_profile)
 
         params = {
             education: {
-                level: 'University',
-                english_bangla_medium: '',
-                class_level: '',
-                degree_level: 'Bachelors',
-                semester_year: '2023'
+                level: student_profile.education['level'],
+                english_bangla_medium: student_profile.education['english_bangla_medium'],
+                class_level: student_profile.education['class_level'],
+                degree_level: student_profile.education['degree_level'],
+                semester_year: student_profile.education['semester_year']
             },
-            address: '123 Main St'
+            address: student_profile.address
         }
 
         result = Profiles::UpdateProfile.call(params: params, current_user: @student_user)
@@ -50,7 +48,7 @@ class Profiles::UpdateProfileTest < ActiveSupport::TestCase
     end
 
     test 'should fail if profile does not exist' do
-        user_without_profile = users(:biology_classroom_teacher)
+        user_without_profile = build_stubbed(:user, :math_student)
 
         params = {
             highest_education_level: 'Masters',

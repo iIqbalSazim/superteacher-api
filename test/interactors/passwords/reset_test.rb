@@ -7,12 +7,12 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
 
 
     def setup
-        @user = users(:math_teacher)
+        @user = create(:user)
     end
 
     test 'should reset password with valid parameters' do
         params = {
-            email: @user["email"],
+            email: @user.email,
             old_password: "password",
             new_password: "Password1"
         }
@@ -29,7 +29,7 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
 
     test 'should fail if old password is incorrect' do
         params = {
-            email: @user["email"],
+            email: @user.email,
             old_password: "incorrect_password",
             new_password: "Password1"
         }
@@ -47,7 +47,7 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
 
     test 'should fail if something goes wrong during password update' do
         params = {
-            email: @user["email"],
+            email: @user.email,
             old_password: "password",
             new_password: "Password1"
         }

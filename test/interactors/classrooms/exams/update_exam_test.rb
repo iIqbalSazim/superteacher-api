@@ -4,17 +4,17 @@ class Classrooms::Exams::UpdateExamTest < ActiveSupport::TestCase
 
     ERROR_MSG_EXAM_UPDATE_FAILED = Classrooms::Exams::UpdateExam::EXAM_UPDATE_FAILED
 
+    def setup
+        @classroom = create(:classroom)
+        @exam = create(:exam, classroom: @classroom)
+    end
+
     test "update exam with valid parameters" do
-        valid_exam_params = {
-            title: "Exam title",
-            description: "Exam description",
-            classroom_id: 1,
-            date: "29 Feb, 2024"
-        }
+        valid_exam_params = attributes_for(:exam, classroom: @classroom)
 
         result = Classrooms::Exams::UpdateExam.call(
             params: valid_exam_params, 
-            exam_id: 1 
+            exam_id: @exam.id 
         )
 
         assert result.success?
@@ -24,13 +24,11 @@ class Classrooms::Exams::UpdateExamTest < ActiveSupport::TestCase
     end
 
     test "fail to update exam with invalid parameters" do
-        invalid_exam_params = {
-            title: ""
-        }
+        invalid_exam_params = attributes_for(:exam, classroom: @classroom, title: "")
 
         result = Classrooms::Exams::UpdateExam.call(
             params: invalid_exam_params, 
-            exam_id: 1 
+            exam_id: @exam.id 
         )
 
         assert_not result.success?

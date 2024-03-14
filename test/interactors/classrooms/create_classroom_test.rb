@@ -5,13 +5,8 @@ class CreateClassroomTest < ActiveSupport::TestCase
     ERROR_MSG_FAILED_TO_CREATE = Classrooms::CreateClassroom::FAILED_TO_CREATE
 
     test "creates new classroom when correct params are passed" do
-        classroom_params = {
-            title: "Mathematics",
-            subject: "Math",
-            class_time: "10:00 AM",
-            days: ["Monday", "Wednesday", "Friday"],
-            teacher_id: users(:math_teacher).id
-        }
+        teacher = create(:user, :math_teacher)
+        classroom_params = attributes_for(:classroom, teacher_id: teacher.id)
 
         result = Classrooms::CreateClassroom.call(classroom_params: classroom_params)
 
@@ -20,13 +15,8 @@ class CreateClassroomTest < ActiveSupport::TestCase
     end
 
     test "returns error if classroom creation fails" do
-        invalid_classroom_params = {
-            title: "",
-            subject: "Math",
-            class_time: "10:00 AM",
-            days: ["Monday", "Wednesday", "Friday"],
-            teacher_id: users(:math_teacher).id
-        }
+        teacher = create(:user, :math_teacher)
+        invalid_classroom_params = attributes_for(:classroom, title: "", teacher_id: teacher.id)
 
         result = Classrooms::CreateClassroom.call(classroom_params: invalid_classroom_params)
 

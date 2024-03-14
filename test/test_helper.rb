@@ -12,15 +12,16 @@ require 'minitest/unit'
 require 'minitest'
 require 'json'
 require 'shoulda/matchers'
-
+require 'factory_bot_rails'
 
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
     # parallelize(workers: :number_of_processors)
+    include FactoryBot::Syntax::Methods
 
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
-    fixtures :all
+    # fixtures :all
 
     # Add more helper methods to be used by all tests here...
     include Shoulda::Matchers::ActiveModel
@@ -36,7 +37,7 @@ module ActiveSupport
 
   class ActionController::TestCase
     def setup_controller_with_fake_user
-      @fake_user = users(:math_teacher)
+      @fake_user = create(:user, :teacher)
 
       token = mock
       token.stubs(:acceptable?).returns(true)
@@ -46,7 +47,7 @@ module ActiveSupport
     end
 
     def setup_controller_with_fake_student_user
-      @fake_user = users(:math_student)
+      @fake_user = create(:user, :student)
 
       token = mock
       token.stubs(:acceptable?).returns(true)

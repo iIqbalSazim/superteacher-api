@@ -62,8 +62,8 @@ class Api::V1::Classrooms::ResourcesController < BaseController
             :description,
             :resource_type,
             :url,
+            :due_date,
             :classroom_id,
-            :due_date
         )
     end
 

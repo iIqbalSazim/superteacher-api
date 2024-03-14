@@ -4,8 +4,10 @@ class Api::V1::ProfilesControllerTest < ActionController::TestCase
     setup :setup_controller_with_fake_user
 
     test "should update teacher profile with valid parameters" do
+        teacher = create(:user, :teacher)
+
         teacher_profile_params = {
-            id: "1",
+            id: teacher.id,
             profile: {
                 first_name: "John",
                 last_name: "Doe",
@@ -16,21 +18,24 @@ class Api::V1::ProfilesControllerTest < ActionController::TestCase
             }
         }
 
+
         interactor_result = mock
         interactor_result.expects(:success?).returns(true)
-        interactor_result.expects(:user).returns(users(:math_teacher))
+        interactor_result.expects(:user).returns(teacher)
 
         Profiles::UpdateProfileFlow.expects(:call).returns(interactor_result)
 
         put :update, params: teacher_profile_params
 
         assert_response :ok
-        assert_equal users(:math_teacher).id, JSON.parse(response.body)["user"]["id"]
+        assert_equal teacher.id, JSON.parse(response.body)["user"]["id"]
     end
 
     test "should update student profile with valid parameters" do
+        student = create(:user, :student)
+
         student_profile_params = {
-            id: @fake_user.id,
+            id: student.id,
             profile: {
                 first_name: "Alice",
                 last_name: "Smith",
@@ -49,14 +54,14 @@ class Api::V1::ProfilesControllerTest < ActionController::TestCase
 
         interactor_result = mock
         interactor_result.expects(:success?).returns(true)
-        interactor_result.expects(:user).returns(users(:math_student))
+        interactor_result.expects(:user).returns(student)
 
         Profiles::UpdateProfileFlow.expects(:call).returns(interactor_result)
 
         put :update, params: student_profile_params
 
         assert_response :ok
-        assert_equal users(:math_student).id, JSON.parse(response.body)["user"]["id"]
+        assert_equal student.id, JSON.parse(response.body)["user"]["id"]
     end
 
     test "should not update profile with invalid parameters" do
