@@ -13,7 +13,7 @@ class Users::ValidateRegistrationCode < BaseInteractor
 
         return unless user_params[:role] == "teacher"
 
-        existing_code = RegistrationCode.find_by(email: user_params[:email])
+        existing_code = RegistrationCodeRepository.find_by_email(user_params[:email])
 
         handle_code_does_not_exist unless existing_code.present?
 

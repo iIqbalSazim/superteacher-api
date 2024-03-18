@@ -62,6 +62,14 @@ class Users::CreateUserProfileTest < ActiveSupport::TestCase
                 }
         }
 
+        teacher_profile_mock = mock
+        teacher_profile_mock.expects(:save).returns(false)
+
+        teacher.expects(:destroy)
+
+        TeacherProfileRepository.expects(:new)
+                               .returns(teacher_profile_mock)
+
         result = Users::CreateUserProfile.call(invalid_teacher_params)
 
         assert_not result.success?
@@ -87,6 +95,14 @@ class Users::CreateUserProfileTest < ActiveSupport::TestCase
                 address: ""
             }
         }
+
+        student_profile_mock = mock
+        student_profile_mock.expects(:save).returns(false)
+
+        StudentProfileRepository.expects(:new)
+                               .returns(student_profile_mock)
+
+        student.expects(:destroy)
 
         result = Users::CreateUserProfile.call(invalid_student_params)
 

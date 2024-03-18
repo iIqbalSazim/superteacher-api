@@ -10,15 +10,9 @@ class Classrooms::CreateClassroom < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        new_classroom = Classroom.new(classroom_params)
+        new_classroom = ClassroomRepository.create(classroom_params)
 
-        save_classroom(new_classroom)
-    end
-
-    private
-
-    def save_classroom(new_classroom)
-        if new_classroom.save
+        if new_classroom.valid?
             context.new_classroom = new_classroom
         else
             context.fail!(

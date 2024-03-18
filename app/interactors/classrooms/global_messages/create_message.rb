@@ -10,7 +10,7 @@ class Classrooms::GlobalMessages::CreateMessage < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        new_message = ClassroomGlobalMessage.create(params)
+        new_message = ClassroomGlobalMessageRepository.create(params)
 
         handle_message_creation_result(new_message)
     end

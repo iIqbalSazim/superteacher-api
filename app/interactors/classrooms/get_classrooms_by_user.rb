@@ -17,9 +17,9 @@ class Classrooms::GetClassroomsByUser < BaseInteractor
 
     def fetch_classrooms
         if current_user.teacher?
-            Classroom.where(teacher_id: current_user.id)
+            ClassroomRepository.find_by_teacher_id(current_user.id)
         else
-            Classroom.left_outer_joins(:classroom_students).where(classroom_students: { student_id: current_user.id })
+            ClassroomRepository.find_by_student_id(current_user.id)
         end
     end
 end

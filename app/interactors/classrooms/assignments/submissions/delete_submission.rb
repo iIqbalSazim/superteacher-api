@@ -11,9 +11,9 @@ class Classrooms::Assignments::Submissions::DeleteSubmission < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        submission = Submission.find_by(id: submission_id, assignment_id: assignment_id)
+        submission = SubmissionRepository.find_by_id(submission_id)
 
-        if submission
+        if submission.present?
             delete_submission(submission)
         else
             context.fail!(
@@ -26,8 +26,9 @@ class Classrooms::Assignments::Submissions::DeleteSubmission < BaseInteractor
     private
 
     def delete_submission(submission)
-        if submission.destroy  
-            context.submission_id = submission.id
+        id = submission.id
+        if SubmissionRepository.destroy(submission)
+            context.submission_id = id
         else
             context.fail!(
                 message: DELETE_FAILED,

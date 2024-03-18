@@ -6,9 +6,9 @@ class Classrooms::Resources::CreateNewResourceTest < ActiveSupport::TestCase
     ERROR_MSG_ASSIGNMENT_CREATION_FAILED = Classrooms::Resources::CreateNewResource::ASSIGNMENT_CREATION_FAILED
 
     def setup
-        classroom = create(:classroom)
-        @valid_material_params = attributes_for(:resource, :material_resource, classroom_id: classroom.id)
-        @valid_assignment_params = attributes_for(:resource, :assignment_resource, classroom_id: classroom.id, due_date: "29 Feb, 2024") 
+        @classroom = create(:classroom)
+        @valid_material_params = attributes_for(:resource, :material_resource, classroom_id: @classroom.id)
+        @valid_assignment_params = attributes_for(:resource, :assignment_resource, classroom_id: @classroom.id, due_date: "29 Feb, 2024") 
     end
 
     test "should create a new material resource with valid parameters" do
@@ -37,7 +37,12 @@ class Classrooms::Resources::CreateNewResourceTest < ActiveSupport::TestCase
     end
 
     test "should fail with an error if resource creation fails" do
-        Resource.any_instance.stubs(:save).returns(false)
+        resource_mock = mock
+        resource_mock.expects(:save).returns(false)
+
+        ResourceRepository.expects(:new)
+                          .with(@valid_material_params)
+                          .returns(resource_mock)
 
         result = Classrooms::Resources::CreateNewResource.call(params: @valid_material_params)
 
@@ -58,10 +63,13 @@ class Classrooms::Resources::CreateNewResourceTest < ActiveSupport::TestCase
     end
     
     test "should fail with an error if assignment creation fails" do
-        assignment = mock
-        assignment.stubs(:persisted?).returns(false)
+        assignment_resource = create(:resource, :assignment_resource, classroom_id: @classroom.id)
 
-        Resource.any_instance.stubs(:create_assignment).returns(assignment)
+        assignment_mock = mock("assignment")
+        assignment_mock.expects(:persisted?).returns(false)
+
+        AssignmentRepository.expects(:create)
+                            .returns(assignment_mock)
 
         result = Classrooms::Resources::CreateNewResource.call(params: @valid_assignment_params)
 

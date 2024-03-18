@@ -24,9 +24,6 @@ class Passwords::ResetForgotPasswordTest < ActiveSupport::TestCase
 
         params = params.stringify_keys
 
-        User.any_instance.stubs(:update).with(password: new_password).returns(true)
-        existing_token.stubs(:update).with(is_used: true).returns(true)
-
         result = Passwords::ResetForgotPassword.call(params: params, token: token)
 
         assert result.success?
@@ -44,7 +41,12 @@ class Passwords::ResetForgotPasswordTest < ActiveSupport::TestCase
 
         params = params.stringify_keys
 
-        User.stubs(:find_by).with(email: email).returns(nil)
+        user_mock = mock
+        user_mock.expects(:present?).returns(false)
+
+        UserRepository.expects(:find_user_by_email)
+                      .with(email)
+                      .returns(user_mock)
 
         result = Passwords::ResetForgotPassword.call(params: params, token: token)
 
@@ -93,8 +95,6 @@ class Passwords::ResetForgotPasswordTest < ActiveSupport::TestCase
         params = params.stringify_keys
 
         existing_token = create(:password_reset_token, email: email, code: token, is_used: false)
-
-        User.any_instance.stubs(:update).with(password: new_password).returns(false)
 
         result = Passwords::ResetForgotPassword.call(params: params, token: token)
 

@@ -37,7 +37,12 @@ class Classrooms::Exams::CreateNewExamTest < ActiveSupport::TestCase
     test "should fail with an error if exam creation fails" do
         valid_exam_params = attributes_for(:exam, classroom_id: @classroom.id)
 
-        Exam.any_instance.stubs(:save).returns(false)
+        exam_mock = mock
+        exam_mock.expects(:persisted?).returns(false)
+
+        ExamRepository.expects(:create)
+                      .with(valid_exam_params)
+                      .returns(exam_mock)
 
         result = Classrooms::Exams::CreateNewExam.call(params: valid_exam_params)
 

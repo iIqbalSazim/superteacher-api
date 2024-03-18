@@ -10,12 +10,14 @@ class Passwords::Reset < BaseInteractor
   def call
     validate_params REQUIRED_PARAMS
 
-    user = User.find_by(id: current_user.id)
+    user = UserRepository.find_by_id(current_user.id)
 
     if user.authenticate(params["old_password"])
+        updated_user = UserRepository.update(user, { password: params["new_password"] })
+
         context.fail!(
           message: SOMETHING_WENT_WRONG
-        ) unless user.update(password: params["new_password"])
+        ) unless updated_user.valid?
 
     else
       context.fail!(

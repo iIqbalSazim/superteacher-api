@@ -8,7 +8,7 @@ class Classrooms::Exams::GetExams < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        exams = Exam.where(classroom_id: classroom_id)
+        exams = ExamRepository.find_by_classroom_id(classroom_id)
 
         context.exams = exams
     end

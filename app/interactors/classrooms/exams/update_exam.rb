@@ -10,10 +10,10 @@ class Classrooms::Exams::UpdateExam < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        exam = Exam.find_by(id: exam_id)
+        exam = ExamRepository.find_by_id(exam_id)
 
-        if exam.update(exam_params)
-            context.exam = exam
+        if exam.present?
+            handle_update_exam(exam)
         else
             context.fail!(
                 message: EXAM_UPDATE_FAILED,
@@ -23,6 +23,19 @@ class Classrooms::Exams::UpdateExam < BaseInteractor
     end
 
     private 
+
+    def handle_update_exam(exam)
+        updated_exam = ExamRepository.update(exam, exam_params)
+
+        if updated_exam.valid?
+            context.exam = exam
+        else
+            context.fail!(
+                message: EXAM_UPDATE_FAILED,
+                status: :unprocessable_entity
+            )
+        end
+    end
 
     def exam_params
         params.except(:classroom_id)

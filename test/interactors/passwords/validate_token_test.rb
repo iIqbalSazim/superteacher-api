@@ -16,7 +16,12 @@ class Passwords::ValidateTokenTest < ActiveSupport::TestCase
         email = 'test@example.com'
         token = '12345678'
 
-        PasswordResetToken.stubs(:find_by).with(email: email, code: token).returns(nil)
+        token_mock = mock
+        token_mock.expects(:present?).returns(false)
+
+        PasswordResetTokenRepository.expects(:find_by_email_and_code)
+                                    .with(email, token)
+                                    .returns(token_mock)
 
         result = Passwords::ValidateToken.call(email: email, token: token)
 

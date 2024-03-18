@@ -16,7 +16,9 @@ class Classrooms::DeleteClassroomTest < ActiveSupport::TestCase
     test "fail to delete classroom" do
         classroom = create(:classroom)
 
-        classroom.stubs(:destroy).returns(false)
+        ClassroomRepository.expects(:destroy)
+                           .with(classroom)
+                           .returns(false)
 
         result = Classrooms::DeleteClassroom.call(classroom: classroom)
 

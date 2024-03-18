@@ -10,11 +10,11 @@ class Classrooms::Exams::DeleteExam < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        exam = Exam.find_by(id: exam_id)
+        exam = ExamRepository.find_by_id(exam_id)
 
         context.fail!(
             message: EXAM_DELETE_FAILED,
             status: :unprocessable_entity
-        ) unless exam.destroy
+        ) unless ExamRepository.destroy(exam) 
     end
 end

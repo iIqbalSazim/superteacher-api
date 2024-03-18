@@ -21,7 +21,7 @@ class Classrooms::Assignments::Submissions::GetSubmissionsTest < ActiveSupport::
 
     test "should return empty array if no submissions" do
         resource = create(:resource, :assignment_resource)
-        assignment = create(:assignment, resource_id: resource.id)
+        assignment = create(:assignment, resource: resource)
 
         result = Classrooms::Assignments::Submissions::GetSubmissions.call(assignment_id: assignment.id)
 

@@ -10,7 +10,7 @@ class Shared::FindClassroom < BaseInteractor
   def call
     validate_params REQUIRED_PARAMS
 
-    classroom = Classroom.find_by(id: classroom_id)
+    classroom = ClassroomRepository.find_by_id(classroom_id)
 
     handle_classroom_result(classroom)
   end

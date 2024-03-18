@@ -46,8 +46,16 @@ class Classrooms::Students::RemoveStudentTest < ActiveSupport::TestCase
             student_id: enrolled_student.student_id,
             classroom: @classroom
         } 
+        
+        classroom_student_mock = mock
 
-        ClassroomStudent.any_instance.stubs(:destroy).returns(false)
+        ClassroomStudentRepository.expects(:find_by_classroom_and_student_id)
+                                  .with(@classroom.id, enrolled_student.student_id)
+                                  .returns(classroom_student_mock)
+
+        ClassroomStudentRepository.expects(:destroy)
+                                  .with(classroom_student_mock)
+                                  .returns(false)
 
         result = Classrooms::Students::RemoveStudent.call(params)
 

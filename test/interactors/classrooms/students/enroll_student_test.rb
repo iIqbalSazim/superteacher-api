@@ -31,7 +31,12 @@ class Classrooms::Students::EnrollStudentTest < ActiveSupport::TestCase
             classroom: @classroom
         }
 
-        ClassroomStudent.any_instance.stubs(:persisted?).returns(false)
+        classroom_student_mock = mock
+        classroom_student_mock.expects(:persisted?).returns(false)
+
+        ClassroomStudentRepository.expects(:create)
+                                  .with(classroom_id: @classroom.id, student_id: unenrolled_student.id)
+                                  .returns(classroom_student_mock)
 
         result = Classrooms::Students::EnrollStudent.call(params)
 

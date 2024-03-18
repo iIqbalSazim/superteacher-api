@@ -10,7 +10,7 @@ class Shared::ValidateUserAccess < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        classroom = Classroom.find_by(id: classroom_id)
+        classroom = ClassroomRepository.find_by_id(classroom_id)
 
         if classroom.present?
             validate_teacher_access(classroom) if current_user.teacher?

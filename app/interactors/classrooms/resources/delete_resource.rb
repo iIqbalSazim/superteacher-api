@@ -10,7 +10,7 @@ class Classrooms::Resources::DeleteResource < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        resource = Resource.find_by(id: resource_id)
+        resource = ResourceRepository.find_by_id(resource_id)
 
         context.fail!(
             message: RESOURCE_DELETE_FAILED,

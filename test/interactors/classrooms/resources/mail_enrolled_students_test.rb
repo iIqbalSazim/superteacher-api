@@ -15,10 +15,6 @@ class Classrooms::Resources::MailEnrolledStudentsTest < ActiveSupport::TestCase
 
         classroom.students << enrolled_students
 
-        classroom.students.each_with_index do |student, index|
-            student.stubs(:email).returns(student_emails[index])
-        end
-
         ResourceMailer.expects(:with).times(student_emails.length).returns(ResourceMailer)
         ResourceMailer.expects(:create_resource_email).times(student_emails.length).returns(ResourceMailer)
         ResourceMailer.expects(:deliver_later).times(student_emails.length)

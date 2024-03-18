@@ -11,7 +11,7 @@ class FindClassroomTest < ActiveSupport::TestCase
 
         assert result.success?
         assert_not_nil result.classroom
-        assert_equal classroom.id, result.classroom.id
+        assert_equal classroom, result.classroom
     end
 
     test "returns error if classroom with id does not exist" do

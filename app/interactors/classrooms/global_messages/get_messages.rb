@@ -8,7 +8,7 @@ class Classrooms::GlobalMessages::GetMessages < BaseInteractor
   def call
     validate_params REQUIRED_PARAMS
 
-    all_messages = ClassroomGlobalMessage.where(classroom_id: classroom_id)
+    all_messages = ClassroomGlobalMessageRepository.find_by_classroom_id(classroom_id)
 
     context.messages = all_messages
   end

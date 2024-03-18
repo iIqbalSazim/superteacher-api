@@ -19,8 +19,6 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
 
         params = params.stringify_keys
 
-        User.any_instance.stubs(:authenticate).returns(true)
-
         result = Passwords::Reset.call(params: params, current_user: @user)
 
         assert result.success?
@@ -36,8 +34,6 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
 
         params = params.stringify_keys
 
-        User.any_instance.stubs(:authenticate).returns(false)
-
         result = Passwords::Reset.call(params: params, current_user: @user)
 
         assert_not result.success?
@@ -45,7 +41,7 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
         assert_equal :unprocessable_entity, result.status
     end
 
-    test 'should fail if something goes wrong during password update' do
+    test 'should fail if user fails to update' do
         params = {
             email: @user.email,
             old_password: "password",
@@ -54,8 +50,12 @@ class Passwords::ResetPasswordTest < ActiveSupport::TestCase
 
         params = params.stringify_keys
 
-        User.any_instance.stubs(:authenticate).returns(true)
-        User.any_instance.stubs(:update).returns(false)
+        user_mock = mock
+        user_mock.expects(:valid?).returns(false)
+
+        UserRepository.expects(:update)
+                      .with(@user, { password: params["new_password"] })
+                      .returns(user_mock)
 
         result = Passwords::Reset.call(params: params, current_user: @user)
 

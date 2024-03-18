@@ -10,9 +10,9 @@ class Classrooms::Exams::CreateNewExam < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        new_exam = Exam.new(params)
+        new_exam = ExamRepository.create(params)
 
-        if new_exam.save
+        if new_exam.persisted?
             context.exam = new_exam
         else
             context.fail!(

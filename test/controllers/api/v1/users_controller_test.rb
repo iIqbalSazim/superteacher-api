@@ -9,7 +9,10 @@ class Api::V1::UsersControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:user_data).returns({})
 
-        UserSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        UserSerializer.expects(:new).returns(serializer_mock)
 
         Users::UserRegistrationFlow.expects(:call).returns(interactor_result)
 

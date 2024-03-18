@@ -10,16 +10,35 @@ class Classrooms::Resources::UpdateResource < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        resource = Resource.find_by(id: resource_id)
+        resource = ResourceRepository.find_by_id(resource_id)
 
-        update_resource(resource)
+        if resource.present?
+            update_resource(resource)
+        else
+            context.fail!(
+                message: RESOURCE_UPDATE_FAILED,
+                status: :unprocessable_entity
+            )
+        end
     end
 
     private
 
     def update_resource(resource)
-        if resource.update(resource_params)
-            resource.assignment.update(assignment_params(resource.id)) unless resource.material?
+        if resource.assignment?
+            updated_assignment = AssignmentRepository.update(resource.assignment, assignment_params(resource.id))
+
+            unless updated_assignment.valid?
+                context.fail!(
+                    message: RESOURCE_UPDATE_FAILED,
+                    status: :unprocessable_entity
+                )
+            end
+        end
+
+        updated_resource = ResourceRepository.update(resource, resource_params)
+
+        if updated_resource.valid?
             context.resource = resource
         else
             context.fail!(

@@ -9,7 +9,7 @@ class Classrooms::Assignments::Submissions::DeleteSubmissionTest < ActiveSupport
         @user = create(:user, :student)
         @classroom = create(:classroom)
         @resource = create(:resource, :assignment_resource, classroom: @classroom)
-        @assignment = create(:assignment, resource_id: @resource.id)
+        @assignment = create(:assignment, resource: @resource)
     end
 
     test "delete submission successfully" do
@@ -34,13 +34,17 @@ class Classrooms::Assignments::Submissions::DeleteSubmissionTest < ActiveSupport
     test "fail to delete submission" do
         submission = create(:submission, assignment_id: @assignment.id, student_id: @user.id)
 
-        Submission.any_instance.stubs(:destroy).returns(false)
+        submission_id = submission.id
+        assignment_id = @assignment.id
 
-        result = Classrooms::Assignments::Submissions::DeleteSubmission.call(assignment_id: @assignment.id,submission_id: submission.id)
+        SubmissionRepository.expects(:destroy)
+                            .with(submission)
+                            .returns(false)
+
+        result = Classrooms::Assignments::Submissions::DeleteSubmission.call(assignment_id: assignment_id,submission_id: submission_id)
 
         assert_not result.success?
         assert_equal :unprocessable_entity, result.status
         assert_equal ERROR_MSG_DELETE_FAILED, result.message
-        assert Submission.find_by(id: submission.id)
     end
 end
