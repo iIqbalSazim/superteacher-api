@@ -8,7 +8,7 @@ class Classrooms::Assignments::Submissions::CreateNewSubmissionTest < ActiveSupp
     def setup
         @student = create(:user, :student)
         @resource = create(:resource, :assignment_resource)
-        @assignment = create(:assignment, resource_id: @resource.id)
+        @assignment = create(:assignment, resource: @resource)
     end
 
     test "should create new submission with valid parameters" do
@@ -55,7 +55,12 @@ class Classrooms::Assignments::Submissions::CreateNewSubmissionTest < ActiveSupp
     test "should fail with an error if submission creation fails" do
         valid_submission_params = attributes_for(:submission)
 
-        Submission.any_instance.stubs(:save).returns(false)
+        submission_mock = mock
+        submission_mock.expects(:persisted?).returns(false)
+
+        SubmissionRepository.expects(:create)
+                            .with(valid_submission_params)
+                            .returns(submission_mock)
 
         result = Classrooms::Assignments::Submissions::CreateNewSubmission.call(params: valid_submission_params)
 

@@ -12,7 +12,7 @@ class SubmissionTest < ActiveSupport::TestCase
         @student = create(:user, :student)
         @classroom = create(:classroom)
         @resource = create(:resource, :assignment_resource, classroom: @classroom)
-        @assignment = create(:assignment, resource_id: @resource.id)
+        @assignment = create(:assignment, resource: @resource)
     end
 
     test "submission is created with validations passing" do

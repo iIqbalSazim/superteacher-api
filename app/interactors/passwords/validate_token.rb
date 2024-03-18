@@ -8,7 +8,7 @@ class Passwords::ValidateToken < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        existing_token = PasswordResetToken.find_by(email: email, code: token)
+        existing_token = PasswordResetTokenRepository.find_by_email_and_code(email, token)
 
         if existing_token.present? && !existing_token[:is_used]
             return

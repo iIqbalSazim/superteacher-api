@@ -25,7 +25,7 @@ class Classrooms::Students::EnrollStudent < BaseInteractor
   end
 
   def enroll_student
-    new_enrollment = ClassroomStudent.create(classroom_id: classroom.id, student_id: student_id)
+    new_enrollment = ClassroomStudentRepository.create(classroom_id: classroom.id, student_id: student_id)
 
     if new_enrollment.persisted?
       context.student = new_enrollment.student

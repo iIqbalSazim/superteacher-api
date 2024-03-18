@@ -11,7 +11,7 @@ class Classrooms::Resources::CreateNewResource < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        new_resource = Resource.new(resource_params)
+        new_resource = ResourceRepository.new(resource_params)
 
         save_resource(new_resource)
     end
@@ -31,10 +31,10 @@ class Classrooms::Resources::CreateNewResource < BaseInteractor
     end
 
     def handle_assignment_creation(resource)
-        assignment = resource.create_assignment(assignment_params(resource.id))
+        assignment = AssignmentRepository.create(assignment_params(resource.id))
 
         unless assignment.persisted?
-            resource.destroy
+            ResourceRepository.destroy(resource)
             context.fail!(
                 message: ASSIGNMENT_CREATION_FAILED,
                 status: :unprocessable_entity

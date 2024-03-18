@@ -16,10 +16,10 @@ class Classrooms::Students::GetStudents < BaseInteractor
     end
 
     def fetch_enrolled_students
-        context.students = User.where(role: "student").where(id: classroom.student_ids)
+        context.students = UserRepository.fetch_enrolled_students(classroom.student_ids)
     end
 
     def fetch_unenrolled_students
-        context.students = User.where(role: "student").where.not(id: classroom.student_ids)
+        context.students = UserRepository.fetch_unenrolled_students(classroom.student_ids)
     end
 end

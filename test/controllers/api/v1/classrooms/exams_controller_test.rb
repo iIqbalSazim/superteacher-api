@@ -50,7 +50,10 @@ class Api::V1::Classrooms::ExamsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:exam).returns({})
 
-        ExamSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ExamSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Exams::CreateNewExamFlow.expects(:call).returns(interactor_result)
 
@@ -98,7 +101,10 @@ class Api::V1::Classrooms::ExamsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:exam).returns({})
 
-        ExamSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ExamSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Exams::UpdateExamFlow.expects(:call).returns(interactor_result)
 
@@ -123,8 +129,6 @@ class Api::V1::Classrooms::ExamsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(false)
         interactor_result.expects(:message).returns("some error")
         interactor_result.expects(:status).returns(:unprocessable_entity)
-
-        ExamSerializer.any_instance.stubs(:serialize).returns({})
 
         Classrooms::Exams::UpdateExamFlow.expects(:call).returns(interactor_result)
 

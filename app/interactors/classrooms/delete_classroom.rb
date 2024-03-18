@@ -13,6 +13,6 @@ class Classrooms::DeleteClassroom < BaseInteractor
         context.fail!(
             message: CLASSROOM_DELETE_FAILED,
             status: :unprocessable_entity
-        ) unless classroom.destroy
+        ) unless ClassroomRepository.destroy(classroom)
     end
 end

@@ -43,7 +43,10 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:student).returns({})
 
-        UserSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        UserSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Students::EnrollStudentFlow.expects(:call).returns(interactor_result)
 
@@ -70,7 +73,10 @@ class Api::V1::Classrooms::StudentsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:removed_student).returns({})
 
-        UserSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        UserSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Students::RemoveStudentFlow.expects(:call).returns(interactor_result)
 

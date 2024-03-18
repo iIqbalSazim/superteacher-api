@@ -39,21 +39,23 @@ module ActiveSupport
     def setup_controller_with_fake_user
       @fake_user = create(:user, :teacher)
 
-      token = mock
-      token.stubs(:acceptable?).returns(true)
-      token.stubs(:resource_owner_id).returns(@fake_user.id)
+      token_mock = mock
 
-      @controller.stubs(:doorkeeper_token).returns(token)
+      token_mock.expects(:acceptable?).returns(true)
+      token_mock.expects(:resource_owner_id).returns(@fake_user.id)
+
+      @controller.stubs(:doorkeeper_token).returns(token_mock)
     end
 
     def setup_controller_with_fake_student_user
       @fake_user = create(:user, :student)
 
-      token = mock
-      token.stubs(:acceptable?).returns(true)
-      token.stubs(:resource_owner_id).returns(@fake_user.id)
+      token_mock = mock
 
-      @controller.stubs(:doorkeeper_token).returns(token)
+      token_mock.expects(:acceptable?).returns(true)
+      token_mock.expects(:resource_owner_id).returns(@fake_user.id)
+
+      @controller.stubs(:doorkeeper_token).returns(token_mock)
     end
   end
 end

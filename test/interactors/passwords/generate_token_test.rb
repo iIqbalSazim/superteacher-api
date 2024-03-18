@@ -5,16 +5,22 @@ class Passwords::GenerateTokenTest < ActiveSupport::TestCase
     test 'should generate token and mail user with valid email' do
         student_user = create(:user, :student)
 
-        email = "test@email.com"
-        
-        User.stubs(:find_by).with(email: email).returns(student_user)
+        email = student_user.email
+        code = "a1b2c3d4"
 
-        PasswordResetToken.any_instance.stubs(:persisted?).returns(true)
-        PasswordResetToken.any_instance.stubs(:code).returns('12345678')
+        SecureRandom.expects(:random_number).returns(code)
+        
+        token_mock = mock
+        token_mock.expects(:persisted?).returns(true)
+        token_mock.expects(:code).returns(code)
+
+        PasswordResetTokenRepository.expects(:create_token_with_email)
+                                    .with(email, code)
+                                    .returns(token_mock)
 
         mailer = mock
         mailer.expects(:password_token_email).returns(mock(deliver_later: true))
-        PasswordMailer.expects(:with).with(email: email, token: '12345678').returns(mailer) 
+        PasswordMailer.expects(:with).with(email: email, token: code).returns(mailer) 
 
         result = Passwords::GenerateToken.call(email: email)
 
@@ -22,11 +28,12 @@ class Passwords::GenerateTokenTest < ActiveSupport::TestCase
     end
 
     test 'should do nothing if user with email does not exist' do
-        email = 'nonexistent@example.com'
+        email = 'nonexistent@user.com'
 
-        User.stubs(:find_by).with(email: email).returns(nil)
+        user_mock = mock
+        user_mock.expects(:present?).returns(false)
 
-        PasswordResetToken.expects(:create).never
+        User.expects(:find_by).with(email: email).returns(user_mock)
 
         result = Passwords::GenerateToken.call(email: email)
 

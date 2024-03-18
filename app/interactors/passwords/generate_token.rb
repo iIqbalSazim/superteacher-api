@@ -28,7 +28,7 @@ class Passwords::GenerateToken < BaseInteractor
 
   def generate_token
     code = SecureRandom.random_number(1_000_000_00).to_s.rjust(8, '0')
-    new_token = PasswordResetToken.create(email: email, code: code)
+    new_token = PasswordResetTokenRepository.create_token_with_email(email, code)
 
     if new_token.persisted?
       return new_token.code

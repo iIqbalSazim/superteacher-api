@@ -16,7 +16,8 @@ class Classrooms::UpdateClassroom < BaseInteractor
     private
 
     def update_classroom
-        if classroom.update(classroom_params)
+        updated_classroom = ClassroomRepository.update(classroom, classroom_params)
+        if updated_classroom.valid?
             context.updated_classroom = classroom
         else
             context.fail!(

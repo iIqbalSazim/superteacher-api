@@ -44,7 +44,10 @@ class Api::V1::ClassroomsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:classroom).returns({})
 
-        ClassroomSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ClassroomSerializer.expects(:new).returns(serializer_mock)
 
         Shared::FindClassroom.expects(:call).returns(interactor_result)
 
@@ -70,7 +73,10 @@ class Api::V1::ClassroomsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:new_classroom).returns({})
 
-        ClassroomSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ClassroomSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::CreateClassroom.expects(:call).returns(interactor_result)
 
@@ -102,7 +108,10 @@ class Api::V1::ClassroomsControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:updated_classroom).returns({})
 
-        ClassroomSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ClassroomSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::UpdateClassroomFlow.expects(:call).returns(interactor_result)
 

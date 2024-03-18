@@ -10,7 +10,7 @@ class Users::AuthenticateUser < BaseInteractor
   def call
     validate_params REQUIRED_PARAMS
 
-    existing_user = User.find_by(email: user_params[:email])
+    existing_user = UserRepository.find_user_by_email(user_params[:email])
 
     if existing_user && existing_user.authenticate(user_params[:password])
         context.user_data = existing_user

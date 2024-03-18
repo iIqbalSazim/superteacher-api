@@ -11,7 +11,7 @@ class Classrooms::Students::RemoveStudent < BaseInteractor
   def call
     validate_params(REQUIRED_PARAMS)
 
-    enrollment_to_remove = ClassroomStudent.find_by(classroom_id: classroom.id, student_id: student_id)
+    enrollment_to_remove = ClassroomStudentRepository.find_by_classroom_and_student_id(classroom.id, student_id)
 
     handle_enrollment_result(enrollment_to_remove)
   end
@@ -27,8 +27,10 @@ class Classrooms::Students::RemoveStudent < BaseInteractor
   end
 
   def remove_enrollment(enrollment)
-    if enrollment.destroy
-      context.removed_student = enrollment.student
+    destroyed_enrollment = enrollment
+
+    if ClassroomStudentRepository.destroy(enrollment)
+      context.removed_student = destroyed_enrollment.student
     else
       handle_removal_failure(FAILED_TO_REMOVE_STUDENT)
     end

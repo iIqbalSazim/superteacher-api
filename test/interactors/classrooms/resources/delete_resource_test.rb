@@ -20,13 +20,17 @@ class Classrooms::Resources::DeleteResourceTest < ActiveSupport::TestCase
     test "fail to delete non-existing resource" do
         resource = create(:resource, :assignment_resource, classroom: @classroom)
 
-        Resource.any_instance.stubs(:destroy).returns(false)
+        resource_mock = mock
+        resource_mock.expects(:destroy).returns(false)
+
+        ResourceRepository.expects(:find_by_id)
+                          .with(resource.id)
+                          .returns(resource_mock)
 
         result = Classrooms::Resources::DeleteResource.call(resource_id: resource.id)
 
         assert_not result.success?
         assert_equal :unprocessable_entity, result.status
         assert_equal ERROR_MSG_RESOURCE_DELETE_FAILED, result.message
-        assert Resource.find_by(id: resource.id)
     end
 end

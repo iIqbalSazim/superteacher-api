@@ -8,7 +8,7 @@ class Classrooms::Resources::GetResources < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        resources = Resource.where(classroom_id: classroom_id)
+        resources = ResourceRepository.find_by_classroom_id(classroom_id)
 
         context.resources = resources
     end

@@ -12,7 +12,7 @@ class Passwords::ResetForgotPassword < BaseInteractor
   def call
     validate_params REQUIRED_PARAMS
 
-    user = User.find_by(email: params["email"])
+    user = UserRepository.find_user_by_email(params["email"])
 
     if user.present?
       handle_existing_token(user)
@@ -24,7 +24,7 @@ class Passwords::ResetForgotPassword < BaseInteractor
   private
 
   def handle_existing_token(user)
-    existing_token = PasswordResetToken.find_by(email: user[:email], code: token)
+    existing_token = PasswordResetTokenRepository.find_by_email_and_code(user[:email], token)
 
     if existing_token.present? && !existing_token[:is_used]
       update_password(user, existing_token)
@@ -34,8 +34,10 @@ class Passwords::ResetForgotPassword < BaseInteractor
   end
 
   def update_password(user, token)
-    if user.update(password: params["new_password"])
-      token.update(is_used: true)
+    updated_user = UserRepository.update(user, { password: params["new_password"] })
+
+    if updated_user.valid?
+      PasswordResetTokenRepository.update(token, { is_used: true })
       return
     else
       context.fail!(message: FAILED_UPDATE_ERROR)

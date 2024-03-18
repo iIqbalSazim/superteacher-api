@@ -12,15 +12,19 @@ class Users::CreateUserProfile < BaseInteractor
   def call
     validate_params REQUIRED_PARAMS
 
-    profile_data = user_profile.new(profile_params)
+    profile_data = user_profile(profile_params)
 
     save_profile_data(profile_data)
   end
 
   private
 
-  def user_profile
-    role == "teacher" ? TeacherProfile : StudentProfile
+  def user_profile(params)
+    if role == "teacher"
+      TeacherProfileRepository.new(params)
+    else
+      StudentProfileRepository.new(params)
+    end
   end
 
   def profile_params

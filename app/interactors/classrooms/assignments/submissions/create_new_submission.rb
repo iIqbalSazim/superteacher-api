@@ -11,7 +11,7 @@ class Classrooms::Assignments::Submissions::CreateNewSubmission < BaseInteractor
     def call
         validate_params REQUIRED_PARAMS
 
-        existing_submission = Submission.find_by(student_id: params[:student_id], assignment_id: params[:assignment_id])
+        existing_submission = SubmissionRepository.find_by_student_and_assignment_id(params[:student_id], params[:assignment_id])
 
         if existing_submission.present?
             context.fail!(
@@ -26,9 +26,9 @@ class Classrooms::Assignments::Submissions::CreateNewSubmission < BaseInteractor
     private
 
     def create_new_submission
-        new_submission = Submission.new(submission_params)
+        new_submission = SubmissionRepository.create(submission_params)
 
-        if new_submission.save
+        if new_submission.persisted?
             context.submission = new_submission
         else
             context.fail!(

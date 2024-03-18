@@ -43,7 +43,10 @@ class Api::V1::Classrooms::GlobalMessagesControllerTest < ActionController::Test
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:new_message).returns({})
 
-        GlobalMessageSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        GlobalMessageSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::GlobalMessages::CreateMessageFlow.expects(:call).returns(interactor_result)
 

@@ -49,7 +49,10 @@ class Api::V1::Classrooms::ResourcesControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:resource).returns({})
 
-        ResourceSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ResourceSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Resources::CreateNewResourceFlow.expects(:call).returns(interactor_result)
 
@@ -95,7 +98,10 @@ class Api::V1::Classrooms::ResourcesControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:resource).returns({})
 
-        ResourceSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        ResourceSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Resources::UpdateResourceFlow.expects(:call).returns(interactor_result)
 
@@ -119,8 +125,6 @@ class Api::V1::Classrooms::ResourcesControllerTest < ActionController::TestCase
         interactor_result.expects(:success?).returns(false)
         interactor_result.expects(:message).returns("some error")
         interactor_result.expects(:status).returns(:unprocessable_entity)
-
-        ResourceSerializer.any_instance.stubs(:serialize).returns({})
 
         Classrooms::Resources::UpdateResourceFlow.expects(:call).returns(interactor_result)
 

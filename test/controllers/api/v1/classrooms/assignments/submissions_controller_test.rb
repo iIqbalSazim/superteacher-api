@@ -1,8 +1,6 @@
 require 'test_helper'
 
 class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionController::TestCase
-    setup :setup_controller_with_fake_student_user
-
     test "#index responds with success" do
         setup_controller_with_fake_user
 
@@ -42,6 +40,8 @@ class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionContro
     end
 
     test "#create responds with success" do
+        setup_controller_with_fake_student_user
+
         submission_params = {
             classroom_id: 1,
             assignment_id: 1,
@@ -57,7 +57,10 @@ class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionContro
         interactor_result.expects(:success?).returns(true)
         interactor_result.expects(:submission).returns({})
 
-        SubmissionSerializer.any_instance.stubs(:serialize).returns({})
+        serializer_mock = mock
+        serializer_mock.expects(:serialize).returns({})
+
+        SubmissionSerializer.expects(:new).returns(serializer_mock)
 
         Classrooms::Assignments::Submissions::CreateNewSubmissionFlow.expects(:call).returns(interactor_result)
 
@@ -67,6 +70,8 @@ class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionContro
     end
 
     test "#create does not respond with success" do
+        setup_controller_with_fake_student_user
+
         submission_params = {
             classroom_id: 1,
             assignment_id: 1,
@@ -90,6 +95,8 @@ class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionContro
     end
 
     test "#destroy responds with success" do
+        setup_controller_with_fake_student_user
+
         submission_params = {
             classroom_id: 1,
             assignment_id: 1,
@@ -108,6 +115,8 @@ class Api::V1::Classrooms::Assignments::SubmissionsControllerTest < ActionContro
     end
 
     test "#destroy does not respond with success" do
+        setup_controller_with_fake_student_user
+
         submission_params = {
             classroom_id: 1,
             assignment_id: 1,

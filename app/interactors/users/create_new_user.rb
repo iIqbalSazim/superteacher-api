@@ -24,13 +24,13 @@ class Users::CreateNewUser < BaseInteractor
     private
 
     def user_already_exists?
-        User.exists?(email: user_params[:email])
+        UserRepository.find_user_by_email(user_params[:email]).present?
     end
 
     def create_and_save_new_user
-        new_user = User.new(new_user_params)
+        new_user = UserRepository.create(new_user_params)
 
-        if new_user.save
+        if new_user.valid?
             context.user_data = new_user
         else
             context.fail!(
@@ -39,6 +39,11 @@ class Users::CreateNewUser < BaseInteractor
             )
         end
     end
+
+    # context.voyce_session = VoyceSessionRepository.create(meeting: meeting)
+
+    # context.fail!(message: CREATE_FAILED) unless context.voyce_session.valid?
+
 
     def new_user_params
         user_params.slice(:email, :password, :first_name, :last_name, :gender, :phone_number, :role)

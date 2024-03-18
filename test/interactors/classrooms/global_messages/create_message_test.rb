@@ -33,7 +33,12 @@ class Classrooms::GlobalMessages::CreateMessageTest < ActiveSupport::TestCase
                                       user: create(:user, :teacher),
                                       classroom: create(:classroom))
 
-        ClassroomGlobalMessage.any_instance.stubs(:persisted?).returns(false)
+        message_mock = mock
+        message_mock.expects(:persisted?).returns(false)
+
+        ClassroomGlobalMessageRepository.expects(:create)
+                                        .with(valid_params)
+                                        .returns(message_mock)
 
         result = Classrooms::GlobalMessages::CreateMessage.call(params: valid_params)
 
